@@ -1,20 +1,35 @@
-import { posthog } from 'posthog-js';
-
-// Initialize PostHog
-export const initPostHog = () => {
-  if (typeof window !== 'undefined' && !posthog.__loaded) {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || '', {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
-      person_profiles: 'identified_only',
-      loaded: (posthog) => {
-        if (process.env.NODE_ENV === 'development') posthog.debug();
-      },
-    });
-  }
-};
+import posthog from 'posthog-js';
 
 // Analytics functions
 export const analytics = {
+  // Capture a custom event
+  capture: (eventName: string, properties?: Record<string, unknown>) => {
+    if (typeof window !== 'undefined' && posthog) {
+      posthog.capture(eventName, properties);
+    }
+  },
+
+  // Identify a user
+  identify: (userId: string, properties?: Record<string, unknown>) => {
+    if (typeof window !== 'undefined' && posthog) {
+      posthog.identify(userId, properties);
+    }
+  },
+
+  // Set user properties
+  setPersonProperties: (properties: Record<string, unknown>) => {
+    if (typeof window !== 'undefined' && posthog) {
+      posthog.setPersonProperties(properties);
+    }
+  },
+
+  // Track page views (automatically handled by PostHog, but can be called manually)
+  pageview: (path?: string) => {
+    if (typeof window !== 'undefined' && posthog) {
+      posthog.capture('$pageview', { $current_url: path || window.location.href });
+    }
+  },
+
   // Track location data using PostHog
   trackLocation: async () => {
     if (typeof window === 'undefined') return;
@@ -33,7 +48,7 @@ export const analytics = {
         const data = await response.json();
         
         // Send location data to PostHog
-        if (posthog.__loaded && data.location) {
+        if (posthog && data.location) {
           posthog.capture('location_tracked', {
             city: data.location.city,
             region: data.location.region,
