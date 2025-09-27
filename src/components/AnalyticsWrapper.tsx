@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { analytics } from '../lib/analytics';
+import { analytics, initPostHog } from '../lib/analytics';
 
 interface AnalyticsWrapperProps {
   children: React.ReactNode;
@@ -9,7 +9,10 @@ interface AnalyticsWrapperProps {
 
 export default function AnalyticsWrapper({ children }: AnalyticsWrapperProps) {
   useEffect(() => {
-    // Track location data
+    // Initialize PostHog
+    initPostHog();
+    
+    // Track location data (now sends to PostHog)
     analytics.trackLocation();
   }, []);
 

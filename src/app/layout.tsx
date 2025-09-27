@@ -3,6 +3,7 @@ import { Geist as GeistSans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Navbar } from "../components/nav";
+import AnalyticsWrapper from "../components/AnalyticsWrapper";
 import "./globals.css";
 
 const geistSans = GeistSans({
@@ -94,13 +95,14 @@ export default function RootLayout({
         <meta name="geo.placename" content="Global" />
       </head>
       <body className="antialiased min-h-screen">
-        <main className="min-h-screen bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
-          <Navbar />
-          {children}
-          <Analytics />
-          <SpeedInsights />
-        </main>
-        
+        <AnalyticsWrapper>
+          <main className="min-h-screen bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
+            <Navbar />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </main>
+        </AnalyticsWrapper>
       </body>
     </html>
   );
