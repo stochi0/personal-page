@@ -64,10 +64,10 @@ export default function Home() {
         </h2>
         <div className="space-y-4 text-neutral-700 dark:text-neutral-300">
           <p className="leading-relaxed">
-            Founding AI Engineer at a stealth startup in London, building agentic knowledge graph systems for private equity firms.
+            Founding AI Engineer at London based startup, building agentic knowledge graph and recommendation systems for private equity firms.
           </p>
           <p className="leading-relaxed">
-            Previously at Y Combinator 25, MIT, Tsinghua University, and IIT Bombay.
+          Formerly, Founding AI Engineer at Y Combinator F25 AI startup and research at MIT, Tsinghua University, and IIT Bombay.
           </p>
             </div>
           </div>
@@ -112,12 +112,62 @@ export default function Home() {
         <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
           Music
         </h2>
-        <div className="text-neutral-700 dark:text-neutral-300">
-          <p className="leading-relaxed text-sm">
-            Piano and keyboard since childhood. Led school choir, won district competitions, and performed at various ceremonies. Music remains a core part of my creative process.
-          </p>
-            </div>
+        <div className="space-y-4">
+          <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
+            Piano & Keyboard
+          </h3>
+          <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance, showcasing technical skill and expressive interpretation.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements, demonstrating leadership and collaboration.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students' farewell, creating a memorable musical experience.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music, enriching the theatrical atmosphere with dynamic soundscapes.
+            </p>
           </div>
+        </div>
+      </div>
+
+      {/* Honors & Achievements */}
+      <div className="space-y-6">
+        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
+          Honors & Achievements
+        </h2>
+        <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
+          <div className="space-y-3">
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">CSC Scholarship:</span> Awarded a CSC Scholarship to attend the HTGR Summer School 2025.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Meta Hacker Cup 2024 (Round 2):</span> Advanced to Round 2 in Meta's global ACM-ICPC-style algorithmic competition.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">CodeUncode 2024:</span> Secured 49th position out of 2000 participants in an ACM-ICPC-style algorithmic contest.
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <p className="font-medium text-neutral-700 dark:text-neutral-300 mb-3">Selected for Tsinghua University Programs:</p>
+            <ul className="space-y-2 pl-4">
+              <li className="leading-relaxed">• HTGR Summer School</li>
+              <li className="leading-relaxed">• 2025 Tsinghua Summer School for International Construction</li>
+              <li className="leading-relaxed">• "Design Futures·Shared Vision" 2025 International Summer Program, Academy of Arts & Design</li>
+              <li className="leading-relaxed">• 2025 IEDA Summer School - Industrial Engineering and Data Analytics</li>
+              <li className="leading-relaxed">• 2025 Tsinghua-Princeton-CI Summer School on Combustion</li>
+              <li className="leading-relaxed">• Brain and Intelligence Laboratory "Music Brain Science Summer Training Camp"</li>
+            </ul>
+          </div>
+
+          <p className="leading-relaxed pt-2">
+            <span className="font-medium text-neutral-700 dark:text-neutral-300">2025 RUC International Summer School:</span> Selected for Renmin University of China, Beijing.
+          </p>
+        </div>
+      </div>
 
       {/* Footer */}
       <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
