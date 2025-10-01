@@ -67,7 +67,7 @@ export default function Home() {
             Founding AI Engineer at a stealth startup in London, building agentic knowledge graph systems for private equity firms.
           </p>
           <p className="leading-relaxed">
-            Previously at Y Combinator W25, MIT, Tsinghua University, and IIT Bombay.
+            Previously at Y Combinator 25, MIT, Tsinghua University, and IIT Bombay.
           </p>
             </div>
           </div>
