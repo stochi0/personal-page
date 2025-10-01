@@ -125,7 +125,7 @@ export default function Home() {
               <span className="font-medium text-neutral-700 dark:text-neutral-300">CSC Scholarship:</span> Awarded a CSC Scholarship to attend the HTGR Summer School 2025.
             </p>
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Meta Hacker Cup 2024 (Round 2):</span> Advanced to Round 2 in Meta's global ACM-ICPC-style algorithmic competition.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Meta Hacker Cup 2024 (Round 2):</span> Advanced to Round 2 in Meta&apos;s global ACM-ICPC-style algorithmic competition.
             </p>
             <p className="leading-relaxed">
               <span className="font-medium text-neutral-700 dark:text-neutral-300">CodeUncode 2024:</span> Secured 49th position out of 2000 participants in an ACM-ICPC-style algorithmic contest.
@@ -137,10 +137,10 @@ export default function Home() {
             <ul className="space-y-2 pl-4">
               <li className="leading-relaxed">• HTGR Summer School</li>
               <li className="leading-relaxed">• 2025 Tsinghua Summer School for International Construction</li>
-              <li className="leading-relaxed">• "Design Futures·Shared Vision" 2025 International Summer Program, Academy of Arts & Design</li>
+              <li className="leading-relaxed">• &ldquo;Design Futures·Shared Vision&rdquo; 2025 International Summer Program, Academy of Arts & Design</li>
               <li className="leading-relaxed">• 2025 IEDA Summer School - Industrial Engineering and Data Analytics</li>
               <li className="leading-relaxed">• 2025 Tsinghua-Princeton-CI Summer School on Combustion</li>
-              <li className="leading-relaxed">• Brain and Intelligence Laboratory "Music Brain Science Summer Training Camp"</li>
+              <li className="leading-relaxed">• Brain and Intelligence Laboratory &ldquo;Music Brain Science Summer Training Camp&rdquo;</li>
             </ul>
           </div>
 
@@ -167,7 +167,7 @@ export default function Home() {
               <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements, demonstrating leadership and collaboration.
             </p>
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students' farewell, creating a memorable musical experience.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students&apos; farewell, creating a memorable musical experience.
             </p>
             <p className="leading-relaxed">
               <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music, enriching the theatrical atmosphere with dynamic soundscapes.
