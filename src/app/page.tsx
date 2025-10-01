@@ -27,7 +27,7 @@ export default function Home() {
             stochi
           </h1>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
-            AI, Agents, RL, Vision. Hands play piano.
+            Research & Engineering: AI, Agents, RL, Vision. Hands play piano.
           </p>
           </div>
 
