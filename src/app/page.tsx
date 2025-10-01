@@ -107,34 +107,8 @@ export default function Home() {
             </div>
           </div>
 
-      {/* Music */}
-      <div className="space-y-6">
-        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
-          Music
-        </h2>
-        <div className="space-y-4">
-          <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-            Piano & Keyboard
-          </h3>
-          <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance, showcasing technical skill and expressive interpretation.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements, demonstrating leadership and collaboration.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students' farewell, creating a memorable musical experience.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music, enriching the theatrical atmosphere with dynamic soundscapes.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Honors & Achievements */}
-      <div className="space-y-6">
+     {/* Honors & Achievements */}
+     <div className="space-y-6">
         <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
           Honors & Achievements
         </h2>
@@ -166,6 +140,32 @@ export default function Home() {
           <p className="leading-relaxed pt-2">
             <span className="font-medium text-neutral-700 dark:text-neutral-300">2025 RUC International Summer School:</span> Selected for Renmin University of China, Beijing.
           </p>
+        </div>
+      </div>
+      
+      {/* Music */}
+      <div className="space-y-6">
+        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
+          Music
+        </h2>
+        <div className="space-y-4">
+          <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
+            Piano & Keyboard
+          </h3>
+          <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance, showcasing technical skill and expressive interpretation.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements, demonstrating leadership and collaboration.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students' farewell, creating a memorable musical experience.
+            </p>
+            <p className="leading-relaxed">
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music, enriching the theatrical atmosphere with dynamic soundscapes.
+            </p>
+          </div>
         </div>
       </div>
 
