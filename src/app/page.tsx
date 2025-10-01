@@ -67,7 +67,10 @@ export default function Home() {
             Founding AI Engineer at London based startup, building agentic knowledge graph and recommendation systems for private equity firms.
           </p>
           <p className="leading-relaxed">
-          Formerly, Founding AI Engineer at Y Combinator F25 AI startup and research at MIT, Tsinghua University, and IIT Bombay.
+          Formerly, Founding AI Engineer at Y Combinator F25, built AI platform from ground up, now serving Fortune 500 enterprises.
+          </p>
+          <p className="leading-relaxed">
+          Also, research at MIT, Tsinghua University, and IIT Bombay.
           </p>
             </div>
           </div>
