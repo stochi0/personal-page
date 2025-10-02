@@ -161,16 +161,16 @@ export default function Home() {
           </h3>
           <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance, showcasing technical skill and expressive interpretation.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance.
             </p>
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements, demonstrating leadership and collaboration.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements.
             </p>
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students&apos; farewell, creating a memorable musical experience.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students&apos; ceremony.
             </p>
             <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music, enriching the theatrical atmosphere with dynamic soundscapes.
+              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music.
             </p>
           </div>
         </div>
