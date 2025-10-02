@@ -179,7 +179,7 @@ export default function Home() {
       {/* Footer */}
       <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
         <p className="text-xs text-neutral-400 dark:text-neutral-500 text-center">
-          My heart&apos;s beating for now.
+          Game Is Game.
         </p>
           </div>
       </div>
