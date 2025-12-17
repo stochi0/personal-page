@@ -132,7 +132,7 @@ export default function Work() {
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay, Mumbai, India</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Developed and implemented spiking neural networks for German Speech classification</li>
+                <li>• Developed and implemented spiking neural networks for German Speech classification.</li>
                 <li>• Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
               </ul>
             </div>
