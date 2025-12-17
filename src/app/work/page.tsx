@@ -103,7 +103,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">10/2024–07/2025</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Covenants PharmaChem, Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Covenants PharmaChem</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Building an AI platform for end-to-end procurement automation.</li>
               </ul>
@@ -116,7 +116,9 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">09/2024–12/2024</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Sardar Patel Institute of Technology, Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                <span className="blur-sm select-none">Sardar Patel Institute of Technology</span>
+              </p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Led problem-solving sessions and mentored 16 master&apos;s students, enhancing their grasp of advanced algorithms.</li>
                 <li>• Designed problem sets based on research papers and lectures to promote critical thinking beyond the curriculum.</li>
@@ -130,7 +132,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">08/2024–02/2025</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay, Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Developed and implemented spiking neural networks for German Speech classification.</li>
                 <li>• Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
@@ -144,7 +146,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">08/2024–11/2024</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay, Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis.</li>
                 <li>• Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
@@ -158,7 +160,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">06/2023–08/2023</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Predoole Analytics, Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Predoole Analytics</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Built an email-generation API for personalized outreach; integrated Apollo.io data-fetch APIs.</li>
                 <li>• Tech stack: Flask, LangChain, OpenAI API, Python.</li>
@@ -172,7 +174,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">11/2022–12/2023</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IEEE CS Student Chapter, S.P.I.T., Mumbai, India</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IEEE CS Student Chapter, S.P.I.T.</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Coordinated events, meetings, conferences, hackathons, and competitions to ensure smooth operations.</li>
               </ul>
