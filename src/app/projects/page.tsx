@@ -26,6 +26,7 @@ export default function Projects() {
           <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
             Projects
           </h2>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Will add other links soon.</p>
           <div className="space-y-8">
 
             <div>
