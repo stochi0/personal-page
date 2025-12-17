@@ -29,9 +29,19 @@ export default function Projects() {
           <div className="space-y-8">
 
             <div>
-              <h3 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                BeaconGrad
-              </h3>
+              <div className="flex items-baseline justify-between gap-3 mb-2">
+                <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
+                  BeaconGrad
+                </h3>
+                <a
+                  href="https://github.com/stochi0/beacongrad"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-xs text-neutral-600 dark:text-neutral-400 underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+                >
+                  GitHub
+                </a>
+              </div>
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">Python, NumPy</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• A NumPy-based tensor automatic-differentiation (autograd) engine with broadcasting-aware backprop, neural modules, and optimizers; validated gradients via finite-difference gradchecks and float64 PyTorch parity tests.</li>
