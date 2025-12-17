@@ -34,7 +34,7 @@ export default function Home() {
             Research & Engineering: AI, Agents, RL, Vision and Piano.
           </p>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
-            Open to research / applied AI roles.
+            Looking for research / applied AI roles.
           </p>
           </div>
 
