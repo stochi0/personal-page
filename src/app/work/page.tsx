@@ -116,9 +116,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">09/2024–12/2024</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
-                <span className="blur-sm select-none">Sardar Patel Institute of Technology</span>
-              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Bachelor&apos;s — Computer Engineering</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Led problem-solving sessions and mentored 16 master&apos;s students, enhancing their grasp of advanced algorithms.</li>
                 <li>• Designed problem sets based on research papers and lectures to promote critical thinking beyond the curriculum.</li>
