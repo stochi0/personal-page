@@ -128,7 +128,7 @@ export default function Work() {
                 <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
                   Research Intern, Spin-Neuro-Quantum-AI Group
                 </h3>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">08/2024–02/2025</span>
+                <span className="text-sm text-neutral-500 dark:text-neutral-400">10/2024–01/2025</span>
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
