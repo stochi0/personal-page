@@ -59,40 +59,17 @@ export default function Work() {
             <div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  Independent Research Project
-                </h3>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">11/2024–12/2025</span>
-              </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Massachusetts Institute of Technology (MIT), Cambridge, MA, USA</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics).</li>
-                <li>• Received informal mentorship from an MIT postdoctoral researcher.</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  Research Collaborator
-                </h3>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">11/2024–01/2025</span>
-              </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Tsinghua University, Beijing, China</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Conducted literature reviews in 3D reconstruction and generation; proposed architectural optimizations to improve spatial reasoning in multimodal LLMs.</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  Guest Researcher
+                  Research (selected collaborations & independent work)
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">09/2024–01/2025</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">University of Amsterdam, Amsterdam, Netherlands</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                Massachusetts Institute of Technology (MIT) · Tsinghua University · University of Amsterdam
+              </p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal model research.</li>
+                <li>• MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from an MIT postdoctoral researcher.</li>
+                <li>• Tsinghua: Literature reviews in 3D reconstruction and generation; proposed architectural optimizations to improve spatial reasoning in multimodal LLMs.</li>
+                <li>• UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal model research.</li>
               </ul>
             </div>
 
