@@ -103,28 +103,14 @@ export default function Work() {
             <div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  Research Intern, Spin-Neuro-Quantum-AI Group
+                  Research Intern (2 projects)
                 </h3>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">10/2024–01/2025</span>
+                <span className="text-sm text-neutral-500 dark:text-neutral-400">08/2024–01/2025</span>
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Developed and implemented spiking neural networks for German Speech classification.</li>
-                <li>• Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  Research Intern, Real-Time Early Fault Detection
-                </h3>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">08/2024–11/2024</span>
-              </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis.</li>
-                <li>• Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
+                <li>• Spin-Neuro-Quantum-AI Group (10/2024–01/2025): Developed and implemented spiking neural networks for German Speech classification. Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
+                <li>• Real-Time Early Fault Detection (08/2024–11/2024): Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis. Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
               </ul>
             </div>
 
