@@ -73,7 +73,7 @@ export default function Home() {
           Recently returned from a solo adventure through China (11 cities), Macau, and Hong Kong, still unpacking stories!
         </p>
         <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Previously: QX Labs, Unsiloed AI (YC F25) Check out my <Link href="/work" className="font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">work</Link> page.
+          Previously: QX Labs, Unsiloed AI (YC S25) Check out my <Link href="/work" className="font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">work</Link> page.
         </p>
       </div>
 

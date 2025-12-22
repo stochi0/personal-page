@@ -37,8 +37,11 @@ export default function Work() {
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">QX Labs, London, UK</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Agentic KG QA: delegator router → vector retrieval → Cypher generation; Neo4j + vector store; async streaming.</li>
-                <li>• Graph recommender + perf: attribute bucketing + weighted seed expansion; MongoDB→Neo4j ETL (3M companies); latency 42s→10–12s.</li>
+                <li>• Architected and launched a production agentic knowledge-graph platform for private-equity workflows supporting multi-hop natural-language queries, streaming responses and multi-database storage (graph, vector, NoSQL).</li>
+                <li>• Designed a modular agent orchestration layer for automatic query routing, parallel execution and optimized database query generation enabling multi-stage reasoning.</li>
+                <li>• Built scalable ETL and ingestion pipelines to normalize and import ~3 million company records from NoSQL into Neo4j, improving data coverage and freshness.</li>
+                <li>• Developed graph-based recommendation (attribute bucketing + weighted seed expansion); reduced recommendation &amp; company-search latency from 42s to 10–12s.</li>
+                <li>• Owned full-stack production systems: streaming APIs, observability, and on-call reliability.</li>
               </ul>
             </div>
 
@@ -49,10 +52,12 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">01/2025–07/2025</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Unsiloed AI, San Francisco, CA, USA</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Unsiloed AI (YC S25), San Francisco, CA</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Doc AI CV: YOLOv11 fine-tuning (10 classes); inference optimization via OpenVINO/TensorRT/ONNX.</li>
-                <li>• Financial IE platform: extraction fine-tuning (10k reports/SEC), spreadsheet encoding, streaming APIs + HITL; backend ownership + intern mentorship (2).</li>
+                <li>• Led engineering for document-AI and RAG pipelines for financial customers; productionized chunking, extraction and streaming inference APIs.</li>
+                <li>• Fine-tuned vision models (YOLOv11) for document-layout segmentation (10 classes) and optimized inference across OpenVINO / TensorRT / ONNX runtimes for CPU/GPU deployment.</li>
+                <li>• Trained and benchmarked field-extraction models on 10k+ financial reports and SEC filings; developed an evaluation suite and achieved top performance vs competitors.</li>
+                <li>• Implemented spreadsheet-encoding techniques for robust LLM-ready extraction (merged cells, cap tables) and a human-in-the-loop pipeline to continuously improve labels and model quality.</li>
               </ul>
             </div>
 
@@ -109,8 +114,8 @@ export default function Work() {
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">IIT Bombay</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>• Spin-Neuro-Quantum-AI Group (10/2024–01/2025): Developed and implemented spiking neural networks for German Speech classification. Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
-                <li>• Real-Time Early Fault Detection (08/2024–11/2024): Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis. Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
+                <li>• Spin-Neuro-Quantum-AI Group: Developed and implemented spiking neural networks for German Speech classification. Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
+                <li>• Real-Time Early Fault Detection: Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis. Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
               </ul>
             </div>
 
