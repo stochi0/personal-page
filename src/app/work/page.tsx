@@ -52,7 +52,7 @@ export default function Work() {
                 </h3>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400">01/2025–07/2025</span>
               </div>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Unsiloed AI (YC S25), San Francisco, CA</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Unsiloed AI (YC F25), San Francisco, CA</p>
               <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
                 <li>• Led engineering for document-AI and RAG pipelines for financial customers; productionized chunking, extraction and streaming inference APIs.</li>
                 <li>• Fine-tuned vision models (YOLOv11) for document-layout segmentation (10 classes) and optimized inference across OpenVINO / TensorRT / ONNX runtimes for CPU/GPU deployment.</li>
