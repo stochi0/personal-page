@@ -1,20 +1,37 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { profile, now, social, connect } from "@/content";
 
 export const metadata: Metadata = {
-  title: 'Ayush',
-  description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
+  title: profile.title,
+  description: profile.description,
   openGraph: {
-    title: 'Ayush',
-    description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
+    title: profile.title,
+    description: profile.description,
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ayush',
-    description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
+    title: profile.title,
+    description: profile.description,
   },
 };
+
+// Helper to render bio text with highlights
+function renderBio(text: string) {
+  const parts = text.split(/\{([^}]+)\}/g);
+  return parts.map((part, i) => 
+    i % 2 === 1 ? <span key={i} className="highlight">{part}</span> : part
+  );
+}
+
+// Helper to render markdown-style bold
+function renderMarkdown(text: string) {
+  const parts = text.split(/\*\*([^*]+)\*\*/g);
+  return parts.map((part, i) => 
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+  );
+}
 
 export default function Home() {
   return (
@@ -22,17 +39,13 @@ export default function Home() {
       {/* Hero - Personal Introduction */}
       <section id="intro" className="hero-section">
         <div className="hero-greeting">Hey, I&apos;m</div>
-        <h1 className="hero-name">Ayush</h1>
-        <p className="hero-aka">aka stochi0</p>
-        <p className="hero-bio">
-          I build things at the intersection of <span className="highlight">AI research</span> and 
-          <span className="highlight"> engineering</span>. Currently obsessed with agents, reinforcement learning, 
-          and making machines understand the world better.
-        </p>
-        <p className="hero-bio" style={{ marginTop: '1rem' }}>
-          When I&apos;m not training models, you&apos;ll find me at the <span className="highlight">piano</span> — 
-          music is my other language.
-        </p>
+        <h1 className="hero-name">{profile.name}</h1>
+        <p className="hero-aka">aka {profile.aka}</p>
+        {profile.bio.map((paragraph, i) => (
+          <p key={i} className="hero-bio" style={i > 0 ? { marginTop: '1rem' } : undefined}>
+            {renderBio(paragraph)}
+          </p>
+        ))}
       </section>
 
       {/* Now - What I'm up to */}
@@ -43,13 +56,20 @@ export default function Home() {
         </div>
         <div className="now-card">
           <p className="now-text">
-            Just returned from a solo adventure through <strong>11 cities in China</strong>, Macau, and Hong Kong. 
-            Still processing the chaos of night markets in Chengdu, the quiet of West Lake in Hangzhou, 
-            and way too much hotpot.
+            {renderMarkdown(now.current)}
           </p>
           <p className="now-text" style={{ marginTop: '1.5rem' }}>
-            Previously shipped AI at <Link href="/work" className="inline-link">QX Labs</Link> and 
-            <Link href="/work" className="inline-link"> Unsiloed AI</Link> (YC F25).
+            Previously shipped AI at{' '}
+            {now.previous.map((item, i) => (
+              <span key={item.name}>
+                <Link href={item.link} className="inline-link">
+                  {item.name}
+                </Link>
+                {item.badge && ` (${item.badge})`}
+                {i < now.previous.length - 1 && ' and '}
+              </span>
+            ))}
+            .
           </p>
         </div>
       </section>
@@ -74,20 +94,18 @@ export default function Home() {
 
       {/* Connect */}
       <section id="connect" className="section connect-section">
-        <h2 className="connect-title">Let&apos;s talk</h2>
-        <p className="connect-text">
-          I&apos;m always interested in new projects, research collaborations, or just chatting about AI, music, or travel stories.
-        </p>
+        <h2 className="connect-title">{connect.title}</h2>
+        <p className="connect-text">{connect.description}</p>
         <div className="connect-links">
-          <a href="mailto:ayushbodade1@gmail.com" className="connect-btn">
+          <a href={`mailto:${social.email}`} className="connect-btn">
             <span className="connect-icon">✉</span>
             Email
           </a>
-          <a href="https://x.com/stochi0" target="_blank" rel="noopener noreferrer" className="connect-btn">
+          <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="connect-btn">
             <span className="connect-icon">𝕏</span>
             Twitter
           </a>
-          <a href="https://github.com/stochi0" target="_blank" rel="noopener noreferrer" className="connect-btn">
+          <a href={social.github} target="_blank" rel="noopener noreferrer" className="connect-btn">
             <span className="connect-icon">◆</span>
             GitHub
           </a>
@@ -96,7 +114,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="footer">
-        <p className="footer-quote">&ldquo;Game Is Game.&rdquo;</p>
+        <p className="footer-quote">&ldquo;{profile.footerQuote}&rdquo;</p>
       </footer>
     </div>
   );
