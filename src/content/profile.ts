@@ -37,7 +37,7 @@ export const profile = {
 
 export const now = {
   // Main update - what you're doing right now
-  current: "Just returned from a solo adventure through **11 cities in China**, Macau, and Hong Kong. Still processing the chaos of night markets in Chengdu, the quiet of West Lake in Hangzhou, and way too much hotpot.",
+  current: "A few months ago I was on a solo adventure through **11 cities in China**, Macau, and Hong Kong. I love hotpot.",
   
   // Previous roles to mention (links to /work)
   previous: [
