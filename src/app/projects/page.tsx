@@ -71,11 +71,6 @@ export default function Projects() {
 
       {/* Footer */}
       <footer className="footer">
-        {projectsPageMeta.footer && (
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-            {projectsPageMeta.footer}
-          </p>
-        )}
         <p className="footer-quote">&ldquo;{profile.footerQuote}&rdquo;</p>
       </footer>
     </div>
