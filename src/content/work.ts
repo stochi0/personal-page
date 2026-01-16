@@ -23,11 +23,10 @@ export const industry: WorkItem[] = [
     location: "London, UK",
     date: "05/2025–10/2025",
     description: [
-      "Architected and launched a production agentic knowledge-graph platform for private-equity workflows supporting multi-hop natural-language queries, streaming responses and multi-database storage (graph, vector, NoSQL).",
-      "Designed a modular agent orchestration layer for automatic query routing, parallel execution and optimized database query generation enabling multi-stage reasoning.",
-      "Built scalable ETL and ingestion pipelines to normalize and import ~3 million company records from NoSQL into Neo4j, improving data coverage and freshness.",
-      "Developed graph-based recommendation (attribute bucketing + weighted seed expansion); reduced recommendation & company-search latency from 42s to 10–12s.",
-      "Owned full-stack production systems: streaming APIs, observability, and on-call reliability.",
+      "Architected and built a production agentic knowledge-graph for private-equity workflows supporting multi-hop natural-language queries, streaming responses and multi-database storage (graph, vector, NoSQL).",
+      "Designed an agent orchestration layer for query routing, async execution and optimized database query generation for multi-hop queries.",
+      "Built scalable ETL and ingestion pipelines with ~3 million company records from NoSQL into Neo4j, for periodic updates to the knowledge graph.",
+      "Developed graph-based recommendation algorithm (attribute bucketing + weighted seed expansion); reduced recommendation & query latency from 42s to 10–12s.",
     ],
   },
   {
@@ -36,7 +35,7 @@ export const industry: WorkItem[] = [
     location: "San Francisco, CA",
     date: "01/2025–07/2025",
     description: [
-      "Led engineering for document-AI and RAG pipelines for financial customers; productionized chunking, extraction and streaming inference APIs.",
+      "Built extraction, classifier, splitter APIs, document chunking strategies, all with streaming support for Fortune 500 firms.",
       "Fine-tuned vision models (YOLOv11) for document-layout segmentation (10 classes) and optimized inference across OpenVINO / TensorRT / ONNX runtimes for CPU/GPU deployment.",
       "Trained and benchmarked field-extraction models on 10k+ financial reports and SEC filings; developed an evaluation suite and achieved top performance vs competitors.",
       "Implemented spreadsheet-encoding techniques for robust LLM-ready extraction (merged cells, cap tables) and a human-in-the-loop pipeline to continuously improve labels and model quality.",
@@ -67,13 +66,13 @@ export const industry: WorkItem[] = [
 
 export const research: WorkItem[] = [
   {
-    title: "Research Collaborations",
-    company: "MIT · Tsinghua University · University of Amsterdam",
+    title: "Research (selected collaborations & independent work)",
+    company: "Massachusetts Institute of Technology · Tsinghua University · University of Amsterdam",
     date: "09/2024–01/2025",
     description: [
       "MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from an MIT postdoctoral researcher.",
       "Tsinghua: Literature reviews in 3D reconstruction and generation; proposed architectural optimizations to improve spatial reasoning in multimodal LLMs.",
-      "UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal model research.",
+      "UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal models.",
     ],
   },
   {

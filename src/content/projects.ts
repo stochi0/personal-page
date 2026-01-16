@@ -26,6 +26,16 @@ export const projectCategories: ProjectCategory[] = [
     name: "ML & Deep Learning",
     projects: [
       {
+        title: "GPT-2 Speedrun: Single-Node Multi-GPU Pretraining (DDP)",
+        tech: "PyTorch, Distributed Data Parallel (DDP), torch.compile, AMP (BF16/FP16)",
+        description: [
+          "Implemented an end-to-end GPT-2 (124M) pretraining stack with DDP gradient accumulation, cosine LR + warmup scheduling, checkpoint/resume, and optional initialization from HuggingFace GPT-2 weights.",
+          "Optimized throughput via torch.compile, fused AdamW (CUDA), TF32 matmul, Flash SDP attention when available, pinned-memory non-blocking transfers, and mixed precision (BF16/FP16 w/ GradScaler).",
+        ],
+        link: "https://github.com/stochi0/gpt2-speedrun",
+        linkText: "GitHub →",
+      },
+      {
         title: "BeaconGrad",
         tech: "Python, NumPy",
         description: [
@@ -35,7 +45,7 @@ export const projectCategories: ProjectCategory[] = [
         linkText: "GitHub →",
       },
       {
-        title: "Optimized YOLOv11 for Document Layout Recognition",
+        title: "Optimized YOLOv11 for Document Layout Recognition and Inference",
         tech: "PyTorch, YOLO, TensorRT, onnxruntime, OpenVINO",
         description: [
           "Fine-tuned YOLOv11 on DocLayNet for document layout analysis (captions, footnotes, formulas, etc.).",
@@ -48,6 +58,8 @@ export const projectCategories: ProjectCategory[] = [
         description: [
           "Implemented a subspace expansion technique to retain previous classes without forgetting, benchmarked on CIFAR-10 from scratch.",
         ],
+        link: "https://github.com/stochi0/expandable-subspace-ensemble-cil",
+        linkText: "GitHub →",
       },
     ],
   },
@@ -56,27 +68,26 @@ export const projectCategories: ProjectCategory[] = [
     projects: [
       {
         title: "Discrete Walk-Jump Sampling for Protein Discovery",
-        tech: "PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence",
+        tech: "PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence, Denoising Networks",
         description: [
           "Implemented Discrete Walk-Jump Sampling for antibody sequence generation using EBMs trained via contrastive divergence.",
           "Employed Langevin MCMC for exploration and one-step denoising for refinement, optimizing sampling efficiency and sequence quality.",
         ],
+        link: "https://github.com/stochi0/discrete-walk-jump-sampling",
+        linkText: "GitHub →",
       },
       {
-        title: "Concrete Score Matching",
-        tech: "PyTorch, NumPy, Metropolis–Hastings",
+        title: "Concrete Score Matching: Generalized Score Matching for Discrete Data",
+        tech: "PyTorch, NumPy, Concrete Score Matching, Metropolis–Hastings",
         description: [
           "Implemented the CSM algorithm to learn score functions in discrete spaces.",
           "Used Metropolis–Hastings sampling for data generation and visualized true vs. generated distributions.",
         ],
+        link: "https://github.com/stochi0/concrete-score-matching-discrete-data",
+        linkText: "GitHub →",
       },
     ],
   },
-  // Add more categories here as needed:
-  // {
-  //   name: "Web & Apps",
-  //   projects: [...]
-  // },
 ];
 
 // Page metadata
