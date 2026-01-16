@@ -23,8 +23,7 @@ export const profile = {
   
   // Hero section bio - use {highlight} to wrap text you want accented
   bio: [
-    "I build things at the intersection of {AI research} and {engineering}. Currently obsessed with agents, reinforcement learning, and making machines understand the world better.",
-    "When I'm not training models, you'll find me at the {piano} — music is my other language.",
+    "I like solving {AI research} and {engineering} problems.",
   ],
   
   // Footer quote
