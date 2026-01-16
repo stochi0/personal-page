@@ -37,7 +37,7 @@ export const profile = {
 
 export const now = {
   // Main update - what you're doing right now
-  current: "A few months ago I was on a solo adventure through **11 cities in China**, Macau, and Hong Kong. I love hotpot.",
+  current: `A few months ago I was on a solo adventure through **11 cities in China**, Macau, and Hong Kong. I love hotpot. \n\nIf you're looking for someone to solve **research + engineering** problems (**RL / Agents / Vision / Post-Training**). Hit me up.`,
   
   // Previous roles to mention (links to /work)
   previous: [
