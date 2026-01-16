@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import AnalyticsWrapper from "@/components/AnalyticsWrapper";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Projects - Ayush',
+  title: 'Projects',
   description: 'Technical projects and implementations',
   openGraph: {
     title: 'Projects - Ayush',
@@ -18,89 +18,92 @@ export const metadata: Metadata = {
 
 export default function Projects() {
   return (
-    <AnalyticsWrapper>
-      <div className="max-w-2xl mx-auto px-6 py-16 space-y-16">
+    <div className="main-container">
+      {/* Header */}
+      <header className="section" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <h1>Ayush</h1>
+        </Link>
+      </header>
+
+      <div className="star">✦</div>
+
+      {/* Projects */}
+      <section className="section">
+        <h2 className="section-title">Projects</h2>
         
-        {/* Projects */}
-        <div className="space-y-6">
-          <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
-            Projects
-          </h2>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Will add other links soon.</p>
-          <div className="space-y-8">
-
-            <div>
-              <div className="flex items-baseline justify-between gap-3 mb-2">
-                <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-                  BeaconGrad
-                </h3>
-                <a
-                  href="https://github.com/stochi0/beacongrad"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-xs text-neutral-600 dark:text-neutral-400 underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-                >
-                  GitHub
-                </a>
-              </div>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">Python, NumPy</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>- A NumPy-based tensor automatic-differentiation (autograd) engine with broadcasting-aware backprop, neural modules, and optimizers; validated gradients via finite-difference gradchecks and float64 PyTorch parity tests.</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                Optimized YOLOv11 for Document Layout Recognition and Inference
-              </h3>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">PyTorch, YOLO, TensorRT, onnxruntime, OpenVINO</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>- Fine-tuned YOLOv11 on DocLayNet for document layout analysis (captions, footnotes, formulas, etc.).</li>
-                <li>- Accelerated inference via TensorRT, ONNXRUNTIME, and OpenVINO, achieving scalable batch processing with threaded execution.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                Discrete Walk-Jump Sampling for Protein Discovery
-              </h3>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence, Denoising Networks</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>- Implemented Discrete Walk-Jump Sampling for antibody sequence generation using EBMs trained via contrastive divergence.</li>
-                <li>- Employed Langevin MCMC for exploration and one-step denoising for refinement, optimizing sampling efficiency and sequence quality.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                Expandable Subspace Ensemble for Class-Incremental Learning
-              </h3>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">PyTorch, NumPy</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>- Implemented a subspace expansion technique to retain previous classes without forgetting, benchmarked on CIFAR-10 from scratch.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                Concrete Score Matching: Generalized Score Matching for Discrete Data
-              </h3>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3 italic">PyTorch, NumPy, Concrete Score Matching, Metropolis–Hastings</p>
-              <ul className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2 pl-4">
-                <li>- Implemented the CSM algorithm to learn score functions in discrete spaces.</li>
-                <li>- Used Metropolis–Hastings sampling for data generation and visualized true vs. generated distributions.</li>
-              </ul>
-            </div>
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">BeaconGrad</span>
+            <a
+              href="https://github.com/stochi0/beacongrad"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="content-link"
+              style={{ fontSize: '0.85rem', textDecoration: 'underline', textUnderlineOffset: '4px' }}
+            >
+              GitHub →
+            </a>
           </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>Python, NumPy</div>
+          <ul className="work-description">
+            <li>A NumPy-based tensor automatic-differentiation (autograd) engine with broadcasting-aware backprop, neural modules, and optimizers; validated gradients via finite-difference gradchecks and float64 PyTorch parity tests.</li>
+          </ul>
+        </div>
+        
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Optimized YOLOv11 for Document Layout Recognition</span>
+          </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, YOLO, TensorRT, onnxruntime, OpenVINO</div>
+          <ul className="work-description">
+            <li>Fine-tuned YOLOv11 on DocLayNet for document layout analysis (captions, footnotes, formulas, etc.).</li>
+            <li>Accelerated inference via TensorRT, ONNXRUNTIME, and OpenVINO, achieving scalable batch processing with threaded execution.</li>
+          </ul>
         </div>
 
-        {/* Footer */}
-        <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
-          <p className="text-xs text-neutral-400 dark:text-neutral-500">
-          Game Is Game.
-          </p>
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Discrete Walk-Jump Sampling for Protein Discovery</span>
+          </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence, Denoising Networks</div>
+          <ul className="work-description">
+            <li>Implemented Discrete Walk-Jump Sampling for antibody sequence generation using EBMs trained via contrastive divergence.</li>
+            <li>Employed Langevin MCMC for exploration and one-step denoising for refinement, optimizing sampling efficiency and sequence quality.</li>
+          </ul>
         </div>
-      </div>
-    </AnalyticsWrapper>
+
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Expandable Subspace Ensemble for Class-Incremental Learning</span>
+          </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy</div>
+          <ul className="work-description">
+            <li>Implemented a subspace expansion technique to retain previous classes without forgetting, benchmarked on CIFAR-10 from scratch.</li>
+          </ul>
+        </div>
+
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Concrete Score Matching: Generalized Score Matching for Discrete Data</span>
+          </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy, Concrete Score Matching, Metropolis–Hastings</div>
+          <ul className="work-description">
+            <li>Implemented the CSM algorithm to learn score functions in discrete spaces.</li>
+            <li>Used Metropolis–Hastings sampling for data generation and visualized true vs. generated distributions.</li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="star">✦</div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <Link href="/" className="connect-link" style={{ fontSize: '0.85rem' }}>
+          ← Back to home
+        </Link>
+        <p style={{ marginTop: '1.5rem' }}>Game Is Game.</p>
+      </footer>
+    </div>
   );
 }

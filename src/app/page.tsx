@@ -1,152 +1,205 @@
 import { Metadata } from "next";
-import AnalyticsWrapper from "@/components/AnalyticsWrapper";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Ayush (aka stochi0)',
-  description: 'AI, Agents, RL, Vision. Open to AI research & applied roles. Hands play piano.',
+  title: 'Ayush',
+  description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
   openGraph: {
-    title: 'Ayush (aka stochi0)',
-    description: 'AI, Agents, RL, Vision. Open to AI research & applied roles. Hands play piano.',
+    title: 'Ayush',
+    description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ayush (aka stochi0)',
-    description: 'AI, Agents, RL, Vision. Open to AI research & applied roles. Hands play piano.',
+    title: 'Ayush',
+    description: 'AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.',
   },
 };
 
 export default function Home() {
   return (
-    <AnalyticsWrapper>
-      <div className="max-w-2xl mx-auto px-6 py-16 space-y-16">
-      {/* Hero */}
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-light tracking-tight text-neutral-900 dark:text-neutral-100">
-            Ayush
-          </h1>
-          <p className="text-sm text-neutral-500 dark:text-neutral-500 font-light">
-            aka stochi0
-          </p>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
-            Research & Engineering: AI, Agents, RL, Vision and Piano.
-          </p>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
-            Looking for research / applied AI roles.
-          </p>
-          </div>
+    <div className="main-container">
+      {/* Header */}
+      <header className="section" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <h1>Ayush</h1>
+      </header>
 
-        <div className="flex justify-start gap-6 text-sm">
+      {/* Tagline */}
+      <section className="section" style={{ textAlign: 'center' }}>
+        <p className="tagline">
+          Research & Engineering: AI, Agents, RL, Vision and Piano.
+        </p>
+      </section>
+
+      <div className="star">✦</div>
+
+      {/* Currently */}
+      <section className="section">
+        <h2 className="section-title">Currently</h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+          Recently returned from a solo adventure through China (11 cities), Macau, and Hong Kong, still unpacking stories!
+        </p>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          Previously: QX Labs, Unsiloed AI (YC F25). Check out my <Link href="/work" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>work</Link> page.
+        </p>
+      </section>
+
+      {/* Projects */}
+      <section className="section">
+        <h2 className="section-title">Projects</h2>
+        <ul className="item-list">
+          <li>
+            <a href="https://github.com/stochi0/beacongrad" target="_blank" rel="noopener noreferrer" className="content-link" style={{ display: 'block' }}>
+              <div className="item-title">BeaconGrad</div>
+              <div className="item-description">A NumPy-based autograd engine with neural modules and optimizers.</div>
+            </a>
+          </li>
+          <li>
+            <div className="item-title">YOLOv11 Document Layout Recognition</div>
+            <div className="item-description">Fine-tuned for document analysis, accelerated via TensorRT & ONNX.</div>
+          </li>
+          <li>
+            <div className="item-title">Discrete Walk-Jump Sampling</div>
+            <div className="item-description">Protein discovery using EBMs and Langevin MCMC.</div>
+          </li>
+          <li>
+            <div className="item-title">Expandable Subspace Ensemble</div>
+            <div className="item-description">Class-incremental learning without catastrophic forgetting.</div>
+          </li>
+          <li>
+            <div className="item-title">Concrete Score Matching</div>
+            <div className="item-description">Generalized score matching for discrete data distributions.</div>
+          </li>
+        </ul>
+        <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+          <Link href="/projects" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px', fontSize: '0.9rem' }}>
+            View all projects →
+          </Link>
+        </p>
+      </section>
+
+      {/* Work */}
+      <section className="section">
+        <h2 className="section-title">Experience</h2>
+        <ul className="item-list">
+          <li>
+            <Link href="/work" className="content-link" style={{ display: 'block' }}>
+              <div className="item-title">Founding AI Engineer · QX Labs</div>
+              <div className="item-description">Agentic knowledge-graph platform for private-equity workflows.</div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/work" className="content-link" style={{ display: 'block' }}>
+              <div className="item-title">Founding AI Engineer · Unsiloed AI (YC F25)</div>
+              <div className="item-description">Document-AI and RAG pipelines for financial customers.</div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/work" className="content-link" style={{ display: 'block' }}>
+              <div className="item-title">Research · MIT, Tsinghua, UvA</div>
+              <div className="item-description">CRH hypothesis, 3D reconstruction, multimodal models.</div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/work" className="content-link" style={{ display: 'block' }}>
+              <div className="item-title">Research Intern · IIT Bombay</div>
+              <div className="item-description">Spiking neural networks, real-time fault detection.</div>
+            </Link>
+          </li>
+        </ul>
+        <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+          <Link href="/work" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px', fontSize: '0.9rem' }}>
+            Full work history →
+          </Link>
+        </p>
+      </section>
+
+      {/* Honors */}
+      <section className="section">
+        <h2 className="section-title">Honors & Achievements</h2>
+        <ul className="item-list">
+          <li>
+            <div className="item-title">CSC Scholarship</div>
+            <div className="item-description">Awarded to attend the HTGR Summer School 2025.</div>
+          </li>
+          <li>
+            <div className="item-title">Meta Hacker Cup 2024 (Round 2)</div>
+            <div className="item-description">Advanced in Meta&apos;s global ACM-ICPC-style competition.</div>
+          </li>
+          <li>
+            <div className="item-title">CodeUncode 2024</div>
+            <div className="item-description">Secured 49th position out of 2000 participants.</div>
+          </li>
+          <li>
+            <div className="item-title">Tsinghua University Programs</div>
+            <div className="item-description">Selected for multiple summer schools including HTGR, IEDA, Design Futures, and Music Brain Science.</div>
+          </li>
+          <li>
+            <div className="item-title">2025 RUC International Summer School</div>
+            <div className="item-description">Selected for Renmin University of China, Beijing.</div>
+          </li>
+        </ul>
+      </section>
+
+      {/* Music */}
+      <section className="section">
+        <h2 className="section-title">Music</h2>
+        <ul className="item-list">
+          <li>
+            <div className="item-title">1st Place, District Classical Music Concert</div>
+            <div className="item-description">Led as the pianist in a winning group performance.</div>
+          </li>
+          <li>
+            <div className="item-title">Lead Pianist, School Choir (Grades 5–12)</div>
+            <div className="item-description">Directed and performed all musical arrangements.</div>
+          </li>
+          <li>
+            <div className="item-title">Farewell Ceremony Pianist</div>
+            <div className="item-description">Selected to perform for the senior students&apos; ceremony.</div>
+          </li>
+          <li>
+            <div className="item-title">1st Runner-up, Greek Play Competition</div>
+            <div className="item-description">Awarded for live background music.</div>
+          </li>
+        </ul>
+      </section>
+
+      <div className="star">✦</div>
+
+      {/* Connect */}
+      <section className="section" style={{ textAlign: 'center' }}>
+        <h2 className="section-title">Connect</h2>
+        <div className="connect-links">
           <a 
             href="mailto:ayushbodade1@gmail.com" 
-            className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="connect-link"
           >
-            email
+            Email
           </a>
           <a 
             href="https://x.com/stochi0" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="connect-link"
           >
-            twitter
+            Twitter
           </a>
           <a 
             href="https://github.com/stochi0" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="connect-link"
           >
-            github
+            GitHub
           </a>
-            </div>
-          </div>
-
-      {/* Current */}
-      <div className="space-y-6">
-        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
-          Currently
-        </h2>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Recently returned from a solo adventure through China (11 cities), Macau, and Hong Kong, still unpacking stories!
-        </p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Previously: QX Labs, Unsiloed AI (YC F25) Check out my <Link href="/work" className="font-medium text-neutral-900 dark:text-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">work</Link> page.
-        </p>
-      </div>
-
-
-     {/* Honors & Achievements */}
-     <div className="space-y-6">
-        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
-          Honors & Achievements
-        </h2>
-        <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
-          <div className="space-y-3">
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">CSC Scholarship:</span> Awarded a CSC Scholarship to attend the HTGR Summer School 2025.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Meta Hacker Cup 2024 (Round 2):</span> Advanced to Round 2 in Meta&apos;s global ACM-ICPC-style algorithmic competition.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">CodeUncode 2024:</span> Secured 49th position out of 2000 participants in an ACM-ICPC-style algorithmic contest.
-            </p>
-          </div>
-
-          <div className="pt-2">
-            <p className="font-medium text-neutral-700 dark:text-neutral-300 mb-3">Selected for Tsinghua University Programs:</p>
-            <ul className="space-y-2 pl-4">
-              <li className="leading-relaxed">• HTGR Summer School</li>
-              <li className="leading-relaxed">• 2025 Tsinghua Summer School for International Construction</li>
-              <li className="leading-relaxed">• &ldquo;Design Futures·Shared Vision&rdquo; 2025 International Summer Program, Academy of Arts & Design</li>
-              <li className="leading-relaxed">• 2025 IEDA Summer School - Industrial Engineering and Data Analytics</li>
-              <li className="leading-relaxed">• 2025 Tsinghua-Princeton-CI Summer School on Combustion</li>
-              <li className="leading-relaxed">• Brain and Intelligence Laboratory &ldquo;Music Brain Science Summer Training Camp&rdquo;</li>
-            </ul>
-          </div>
-
-          <p className="leading-relaxed pt-2">
-            <span className="font-medium text-neutral-700 dark:text-neutral-300">2025 RUC International Summer School:</span> Selected for Renmin University of China, Beijing.
-          </p>
         </div>
-      </div>
-      
-      {/* Music */}
-      <div className="space-y-6">
-        <h2 className="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">
-          Music
-        </h2>
-        <div className="space-y-4">
-          <h3 className="font-medium text-neutral-900 dark:text-neutral-100">
-            Piano & Keyboard
-          </h3>
-          <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Place, District Classical Music Concert:</span> Led as the pianist in a winning group performance.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Lead Pianist, School Choir (Grades 5–12):</span> Directed and performed all musical arrangements.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">Farewell Ceremony Pianist:</span> Selected to perform for the senior students&apos; ceremony.
-            </p>
-            <p className="leading-relaxed">
-              <span className="font-medium text-neutral-700 dark:text-neutral-300">1st Runner-up, Greek Play Competition:</span> Awarded for live background music.
-            </p>
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
-        <p className="text-xs text-neutral-400 dark:text-neutral-500">
-          Game Is Game.
-        </p>
-          </div>
-      </div>
-    </AnalyticsWrapper>
+      <footer className="footer">
+        <div className="star" style={{ margin: '2rem 0 1rem' }}>✦</div>
+        <p>Game Is Game.</p>
+      </footer>
+    </div>
   );
 }
