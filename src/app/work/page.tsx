@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: 'Work',
@@ -19,18 +18,19 @@ export const metadata: Metadata = {
 export default function Work() {
   return (
     <div className="main-container">
-      {/* Header */}
-      <header className="section" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <h1>Ayush</h1>
-        </Link>
+      {/* Page Title */}
+      <header className="section" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <h1 style={{ fontSize: '2.5rem' }}>Work</h1>
+        <p className="tagline" style={{ marginTop: '1rem' }}>
+          Experience across startups, research labs, and academia.
+        </p>
       </header>
 
       <div className="star">✦</div>
 
       {/* Work Experience */}
       <section className="section">
-        <h2 className="section-title">Work Experience</h2>
+        <h2 className="section-title">Industry</h2>
         
         <div className="work-item">
           <div className="work-header">
@@ -63,49 +63,12 @@ export default function Work() {
 
         <div className="work-item">
           <div className="work-header">
-            <span className="work-title">Research (selected collaborations & independent work)</span>
-            <span className="work-date">09/2024–01/2025</span>
-          </div>
-          <div className="work-company">Massachusetts Institute of Technology (MIT) · Tsinghua University · University of Amsterdam</div>
-          <ul className="work-description">
-            <li>MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from an MIT postdoctoral researcher.</li>
-            <li>Tsinghua: Literature reviews in 3D reconstruction and generation; proposed architectural optimizations to improve spatial reasoning in multimodal LLMs.</li>
-            <li>UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal model research.</li>
-          </ul>
-        </div>
-
-        <div className="work-item">
-          <div className="work-header">
             <span className="work-title">Tech Lead</span>
             <span className="work-date">10/2024–07/2025</span>
           </div>
           <div className="work-company">Covenants PharmaChem</div>
           <ul className="work-description">
             <li>Building an AI platform for end-to-end procurement automation.</li>
-          </ul>
-        </div>
-
-        <div className="work-item">
-          <div className="work-header">
-            <span className="work-title">Teaching Assistant, Advanced Algorithms and Complexity</span>
-            <span className="work-date">09/2024–12/2024</span>
-          </div>
-          <div className="work-company">Bachelor&apos;s — Computer Engineering</div>
-          <ul className="work-description">
-            <li>Led problem-solving sessions and mentored 16 master&apos;s students, enhancing their grasp of advanced algorithms.</li>
-            <li>Designed problem sets based on research papers and lectures to promote critical thinking beyond the curriculum.</li>
-          </ul>
-        </div>
-
-        <div className="work-item">
-          <div className="work-header">
-            <span className="work-title">Research Intern (2 projects)</span>
-            <span className="work-date">08/2024–01/2025</span>
-          </div>
-          <div className="work-company">IIT Bombay</div>
-          <ul className="work-description">
-            <li>Spin-Neuro-Quantum-AI Group: Developed and implemented spiking neural networks for German Speech classification. Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
-            <li>Real-Time Early Fault Detection: Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis. Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
           </ul>
         </div>
 
@@ -118,6 +81,53 @@ export default function Work() {
           <ul className="work-description">
             <li>Built an email-generation API for personalized outreach; integrated Apollo.io data-fetch APIs.</li>
             <li>Tech stack: Flask, LangChain, OpenAI API, Python.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Research */}
+      <section className="section">
+        <h2 className="section-title">Research</h2>
+
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Research Collaborations</span>
+            <span className="work-date">09/2024–01/2025</span>
+          </div>
+          <div className="work-company">MIT · Tsinghua University · University of Amsterdam</div>
+          <ul className="work-description">
+            <li>MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from an MIT postdoctoral researcher.</li>
+            <li>Tsinghua: Literature reviews in 3D reconstruction and generation; proposed architectural optimizations to improve spatial reasoning in multimodal LLMs.</li>
+            <li>UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal model research.</li>
+          </ul>
+        </div>
+
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Research Intern</span>
+            <span className="work-date">08/2024–01/2025</span>
+          </div>
+          <div className="work-company">IIT Bombay</div>
+          <ul className="work-description">
+            <li>Spin-Neuro-Quantum-AI Group: Developed and implemented spiking neural networks for German Speech classification. Tech stack: Python, snnTorch, PyTorch, NumPy, Pandas.</li>
+            <li>Real-Time Early Fault Detection: Built a real-time fault detection system predicting faults in electromagnetic machines via digital signal and magnetic flux analysis. Tech stack: Python, PyTorch, Librosa, SciPy, Pandas, DSP.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Academia */}
+      <section className="section">
+        <h2 className="section-title">Academia & Community</h2>
+
+        <div className="work-item">
+          <div className="work-header">
+            <span className="work-title">Teaching Assistant, Advanced Algorithms and Complexity</span>
+            <span className="work-date">09/2024–12/2024</span>
+          </div>
+          <div className="work-company">Bachelor&apos;s — Computer Engineering</div>
+          <ul className="work-description">
+            <li>Led problem-solving sessions and mentored 16 master&apos;s students, enhancing their grasp of advanced algorithms.</li>
+            <li>Designed problem sets based on research papers and lectures to promote critical thinking beyond the curriculum.</li>
           </ul>
         </div>
 
@@ -137,10 +147,7 @@ export default function Work() {
 
       {/* Footer */}
       <footer className="footer">
-        <Link href="/" className="connect-link" style={{ fontSize: '0.85rem' }}>
-          ← Back to home
-        </Link>
-        <p style={{ marginTop: '1.5rem' }}>Game Is Game.</p>
+        <p>Game Is Game.</p>
       </footer>
     </div>
   );

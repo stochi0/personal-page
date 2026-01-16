@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AnalyticsWrapper from "../components/AnalyticsWrapper";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { Navigation, ScrollToTop } from "../components/Navigation";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -83,12 +84,14 @@ export default function RootLayout({
       </head>
       <body>
         <AnalyticsWrapper>
+          <Navigation />
           <ThemeToggle />
           <main>
             {children}
             <Analytics />
             <SpeedInsights />
           </main>
+          <ScrollToTop />
         </AnalyticsWrapper>
       </body>
     </html>

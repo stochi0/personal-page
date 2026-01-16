@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -19,18 +18,19 @@ export const metadata: Metadata = {
 export default function Projects() {
   return (
     <div className="main-container">
-      {/* Header */}
-      <header className="section" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <h1>Ayush</h1>
-        </Link>
+      {/* Page Title */}
+      <header className="section" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <h1 style={{ fontSize: '2.5rem' }}>Projects</h1>
+        <p className="tagline" style={{ marginTop: '1rem' }}>
+          Implementations, experiments, and explorations.
+        </p>
       </header>
 
       <div className="star">✦</div>
 
-      {/* Projects */}
+      {/* ML & Deep Learning */}
       <section className="section">
-        <h2 className="section-title">Projects</h2>
+        <h2 className="section-title">ML & Deep Learning</h2>
         
         <div className="work-item">
           <div className="work-header">
@@ -64,9 +64,24 @@ export default function Projects() {
 
         <div className="work-item">
           <div className="work-header">
+            <span className="work-title">Expandable Subspace Ensemble for Class-Incremental Learning</span>
+          </div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy</div>
+          <ul className="work-description">
+            <li>Implemented a subspace expansion technique to retain previous classes without forgetting, benchmarked on CIFAR-10 from scratch.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Generative & Probabilistic */}
+      <section className="section">
+        <h2 className="section-title">Generative & Probabilistic</h2>
+
+        <div className="work-item">
+          <div className="work-header">
             <span className="work-title">Discrete Walk-Jump Sampling for Protein Discovery</span>
           </div>
-          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence, Denoising Networks</div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, Energy-Based Models, Langevin MCMC, Contrastive Divergence</div>
           <ul className="work-description">
             <li>Implemented Discrete Walk-Jump Sampling for antibody sequence generation using EBMs trained via contrastive divergence.</li>
             <li>Employed Langevin MCMC for exploration and one-step denoising for refinement, optimizing sampling efficiency and sequence quality.</li>
@@ -75,19 +90,9 @@ export default function Projects() {
 
         <div className="work-item">
           <div className="work-header">
-            <span className="work-title">Expandable Subspace Ensemble for Class-Incremental Learning</span>
+            <span className="work-title">Concrete Score Matching</span>
           </div>
-          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy</div>
-          <ul className="work-description">
-            <li>Implemented a subspace expansion technique to retain previous classes without forgetting, benchmarked on CIFAR-10 from scratch.</li>
-          </ul>
-        </div>
-
-        <div className="work-item">
-          <div className="work-header">
-            <span className="work-title">Concrete Score Matching: Generalized Score Matching for Discrete Data</span>
-          </div>
-          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy, Concrete Score Matching, Metropolis–Hastings</div>
+          <div className="work-company" style={{ fontStyle: 'italic' }}>PyTorch, NumPy, Metropolis–Hastings</div>
           <ul className="work-description">
             <li>Implemented the CSM algorithm to learn score functions in discrete spaces.</li>
             <li>Used Metropolis–Hastings sampling for data generation and visualized true vs. generated distributions.</li>
@@ -99,10 +104,10 @@ export default function Projects() {
 
       {/* Footer */}
       <footer className="footer">
-        <Link href="/" className="connect-link" style={{ fontSize: '0.85rem' }}>
-          ← Back to home
-        </Link>
-        <p style={{ marginTop: '1.5rem' }}>Game Is Game.</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+          More projects coming soon...
+        </p>
+        <p>Game Is Game.</p>
       </footer>
     </div>
   );

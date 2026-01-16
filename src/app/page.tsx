@@ -34,7 +34,7 @@ export default function Home() {
       <div className="star">✦</div>
 
       {/* Currently */}
-      <section className="section">
+      <section id="currently" className="section">
         <h2 className="section-title">Currently</h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
           Recently returned from a solo adventure through China (11 cities), Macau, and Hong Kong, still unpacking stories!
@@ -45,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* Projects */}
-      <section className="section">
+      <section id="projects" className="section">
         <h2 className="section-title">Projects</h2>
         <ul className="item-list">
           <li>
@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* Work */}
-      <section className="section">
+      <section id="experience" className="section">
         <h2 className="section-title">Experience</h2>
         <ul className="item-list">
           <li>
@@ -115,7 +115,7 @@ export default function Home() {
       </section>
 
       {/* Honors */}
-      <section className="section">
+      <section id="honors" className="section">
         <h2 className="section-title">Honors & Achievements</h2>
         <ul className="item-list">
           <li>
@@ -142,7 +142,7 @@ export default function Home() {
       </section>
 
       {/* Music */}
-      <section className="section">
+      <section id="music" className="section">
         <h2 className="section-title">Music</h2>
         <ul className="item-list">
           <li>
@@ -167,7 +167,7 @@ export default function Home() {
       <div className="star">✦</div>
 
       {/* Connect */}
-      <section className="section" style={{ textAlign: 'center' }}>
+      <section id="connect" className="section" style={{ textAlign: 'center' }}>
         <h2 className="section-title">Connect</h2>
         <div className="connect-links">
           <a 
