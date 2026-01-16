@@ -58,10 +58,3 @@ export const social = {
   // linkedin: "https://linkedin.com/in/...",
   // website: "https://...",
 };
-
-// Connect section text
-export const connect = {
-  title: "Let's talk",
-  description: "I'm always interested in new projects, research collaborations, or just chatting about AI, music, or travel stories.",
-};
-
