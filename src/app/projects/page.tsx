@@ -76,7 +76,7 @@ export default function Projects() {
             {projectsPageMeta.footer}
           </p>
         )}
-        <p>{profile.footerQuote}</p>
+        <p className="footer-quote">&ldquo;{profile.footerQuote}&rdquo;</p>
       </footer>
     </div>
   );

@@ -78,7 +78,7 @@ export default function Work() {
 
       {/* Footer */}
       <footer className="footer">
-        <p>{profile.footerQuote}</p>
+        <p className="footer-quote">&ldquo;{profile.footerQuote}&rdquo;</p>
       </footer>
     </div>
   );

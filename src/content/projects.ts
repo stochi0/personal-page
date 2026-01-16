@@ -95,6 +95,5 @@ export const projectsPageMeta = {
   title: "Projects",
   description: "Technical projects and implementations",
   tagline: "Implementations, experiments, and explorations.",
-  footer: "More projects coming soon...",
 };
 
