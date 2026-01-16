@@ -35,21 +35,29 @@ export function Navigation() {
 
       // Only track sections on homepage
       if (pathname === "/") {
-        const sections = document.querySelectorAll("section[id]");
+        const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+        const markerY = window.scrollY + 200;
         let current = "";
 
-        sections.forEach((section) => {
-          const sectionTop = section.getBoundingClientRect().top;
-          if (sectionTop < 200) {
-            current = section.getAttribute("id") || "";
+        for (const section of sections) {
+          if (section.offsetTop <= markerY) {
+            current = section.id;
           }
-        });
+        }
+
+        // If we're at the bottom, ensure the last section is marked active.
+        if (sections.length > 0) {
+          const atBottom =
+            window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+          if (atBottom) current = sections[sections.length - 1]!.id;
+        }
 
         setActiveSection(current);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
