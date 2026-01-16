@@ -37,23 +37,22 @@ export default function Home() {
   return (
     <div className="main-container">
       {/* Hero - Personal Introduction */}
-      <section id="intro" className="hero-section">
-        <div className="hero-greeting">Hey, I&apos;m</div>
-        <h1 className="hero-name">{profile.name}</h1>
+      <header className="section" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <p className="hero-greeting">Hey, I&apos;m</p>
+        <h1 style={{ fontSize: '2.5rem' }}>{profile.name}</h1>
         <p className="hero-aka">aka {profile.aka}</p>
         {profile.bio.map((paragraph, i) => (
-          <p key={i} className="hero-bio" style={i > 0 ? { marginTop: '1rem' } : undefined}>
+          <p key={i} className="tagline" style={{ marginTop: i === 0 ? '1.5rem' : '1rem' }}>
             {renderBio(paragraph)}
           </p>
         ))}
-      </section>
+      </header>
+
+      <div className="star">✦</div>
 
       {/* Now - What I'm up to */}
       <section id="now" className="section">
-        <div className="section-header">
-          <span className="section-label">Now</span>
-          <div className="section-line"></div>
-        </div>
+        <h2 className="section-title">Now</h2>
         <div className="now-card">
           <p className="now-text">
             {renderMarkdown(now.current)}
@@ -90,7 +89,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="divider divider-accent">✦</div>
+      <div className="star">✦</div>
 
       {/* Connect */}
       <section id="connect" className="section connect-section">

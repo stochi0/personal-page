@@ -78,7 +78,7 @@ export function Navigation() {
           {/* Section dots - only on homepage */}
           {pathname === "/" && (
             <div className="nav-dots">
-              {["intro", "now", "explore", "connect"].map((section) => (
+              {["now", "explore", "connect"].map((section) => (
                 <a
                   key={section}
                   href={`#${section}`}
