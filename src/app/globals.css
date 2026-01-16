@@ -268,37 +268,8 @@ html.light .nav-scrolled {
 }
 
 /* ========================================
-   NOW SECTION
+   INLINE LINKS
    ======================================== */
-
-.now-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 2rem 2.5rem;
-  position: relative;
-}
-
-.now-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(to right, var(--accent), transparent);
-}
-
-.now-text {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-.now-text strong {
-  color: var(--text-primary);
-  font-weight: 500;
-}
 
 .inline-link {
   color: var(--accent);
@@ -312,79 +283,61 @@ html.light .nav-scrolled {
 }
 
 /* ========================================
-   EXPLORE GRID
+   EXPLORE LINKS (Minimal style)
    ======================================== */
 
-.explore-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.explore-card {
+.explore-links {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
+  gap: 1rem;
+}
+
+.explore-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
 }
 
-.explore-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, var(--accent), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.explore-link:hover {
+  padding-left: 0.5rem;
+  border-color: var(--accent);
 }
 
-.explore-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-}
-
-.explore-card:hover::before {
-  opacity: 1;
-}
-
-.explore-label {
+.explore-link-title {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
 }
 
-.explore-desc {
+.explore-link:hover .explore-link-title {
+  color: var(--accent);
+}
+
+.explore-link-desc {
   font-size: 0.9rem;
   color: var(--text-muted);
-  line-height: 1.5;
-  flex: 1;
+  font-style: italic;
 }
 
-.explore-arrow {
-  font-size: 1.25rem;
-  color: var(--accent);
-  margin-top: 1rem;
-  transition: transform 0.2s ease;
+/* ========================================
+   BODY TEXT
+   ======================================== */
+
+.body-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
 }
 
-.explore-card:hover .explore-arrow {
-  transform: translateX(4px);
-}
-
-@media (max-width: 640px) {
-  .explore-grid {
-    grid-template-columns: 1fr;
-  }
+.body-text strong {
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 /* ========================================
@@ -653,58 +606,48 @@ html.light .craft-card-featured {
 }
 
 /* ========================================
-   CONNECT
+   SOCIAL LINKS (Minimal style)
    ======================================== */
 
-.connect-section {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.connect-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 2.5rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-}
-
-.connect-text {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  max-width: 500px;
-  margin: 0 auto 2.5rem;
-}
-
-.connect-links {
+.social-links {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-.connect-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+.social-link {
+  font-size: 0.9rem;
   color: var(--text-secondary);
   text-decoration: none;
-  border: 1px solid var(--border-color);
-  border-radius: 2px;
-  transition: all 0.2s ease;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+  position: relative;
 }
 
-.connect-btn:hover {
-  border-color: var(--accent);
+.social-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.social-link:hover {
   color: var(--accent);
 }
 
-.connect-icon {
-  font-size: 1rem;
+.social-link:hover::after {
+  width: 100%;
+}
+
+.social-divider {
+  color: var(--text-muted);
+  opacity: 0.5;
 }
 
 /* ========================================
@@ -1006,29 +949,11 @@ section[id] {
     height: 36px;
   }
   
-  .connect-title {
-    font-size: 2rem;
-  }
-  
-  .connect-links {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .connect-btn {
-    width: 100%;
-    max-width: 200px;
-    justify-content: center;
-  }
 }
 
 @media (max-width: 480px) {
   .craft-card {
     padding: 1.25rem 1.5rem;
-  }
-  
-  .now-card {
-    padding: 1.5rem;
   }
 }
 

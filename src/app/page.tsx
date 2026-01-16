@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { profile, now, social, connect } from "@/content";
+import { profile, now, social } from "@/content";
 
 export const metadata: Metadata = {
   title: profile.title,
@@ -53,61 +53,53 @@ export default function Home() {
       {/* Now - What I'm up to */}
       <section id="now" className="section">
         <h2 className="section-title">Now</h2>
-        <div className="now-card">
-          <p className="now-text">
-            {renderMarkdown(now.current)}
-          </p>
-          <p className="now-text" style={{ marginTop: '1.5rem' }}>
-            Previously shipped AI at{' '}
-            {now.previous.map((item, i) => (
-              <span key={item.name}>
-                <Link href={item.link} className="inline-link">
-                  {item.name}
-                </Link>
-                {item.badge && ` (${item.badge})`}
-                {i < now.previous.length - 1 && ' and '}
-              </span>
-            ))}
-            .
-          </p>
-        </div>
+        <p className="body-text">
+          {renderMarkdown(now.current)}
+        </p>
+        <p className="body-text" style={{ marginTop: '1.5rem' }}>
+          Previously shipped AI at{' '}
+          {now.previous.map((item, i) => (
+            <span key={item.name}>
+              <Link href={item.link} className="inline-link">
+                {item.name}
+              </Link>
+              {item.badge && ` (${item.badge})`}
+              {i < now.previous.length - 1 && ' and '}
+            </span>
+          ))}
+          .
+        </p>
       </section>
 
-      {/* Explore */}
+      {/* Explore - Minimal links */}
       <section id="explore" className="section">
-        <div className="explore-grid">
-          <Link href="/work" className="explore-card">
-            <span className="explore-label">Work</span>
-            <span className="explore-desc">Experience, research, and where I&apos;ve been</span>
-            <span className="explore-arrow">→</span>
+        <h2 className="section-title">Explore</h2>
+        <div className="explore-links">
+          <Link href="/work" className="explore-link">
+            <span className="explore-link-title">Work</span>
+            <span className="explore-link-desc">— experience & research</span>
           </Link>
-          <Link href="/projects" className="explore-card">
-            <span className="explore-label">Projects</span>
-            <span className="explore-desc">Things I&apos;ve built and experiments</span>
-            <span className="explore-arrow">→</span>
+          <Link href="/projects" className="explore-link">
+            <span className="explore-link-title">Projects</span>
+            <span className="explore-link-desc">— things I&apos;ve built</span>
           </Link>
         </div>
       </section>
 
       <div className="star">✦</div>
 
-      {/* Connect */}
-      <section id="connect" className="section connect-section">
-        <h2 className="connect-title">{connect.title}</h2>
-        <p className="connect-text">{connect.description}</p>
-        <div className="connect-links">
-          <a href={`mailto:${social.email}`} className="connect-btn">
-            <span className="connect-icon">✉</span>
-            Email
-          </a>
-          <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="connect-btn">
-            <span className="connect-icon">𝕏</span>
-            Twitter
-          </a>
-          <a href={social.github} target="_blank" rel="noopener noreferrer" className="connect-btn">
-            <span className="connect-icon">◆</span>
-            GitHub
-          </a>
+      {/* Connect - Simple & elegant */}
+      <section id="connect" className="section" style={{ textAlign: 'center' }}>
+        <h2 className="section-title" style={{ textAlign: 'center' }}>Connect</h2>
+        <p className="body-text" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          Open to collaborations, research, or just a good conversation.
+        </p>
+        <div className="social-links">
+          <a href={`mailto:${social.email}`} className="social-link">Email</a>
+          <span className="social-divider">·</span>
+          <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="social-link">Twitter</a>
+          <span className="social-divider">·</span>
+          <a href={social.github} target="_blank" rel="noopener noreferrer" className="social-link">GitHub</a>
         </div>
       </section>
 
