@@ -26,10 +26,10 @@ export const projectCategories: ProjectCategory[] = [
     name: "ML & Deep Learning",
     projects: [
       {
-        title: "GPT-2 Speedrun: Single-Node Multi-GPU Pretraining (DDP)",
+        title: "GPT-2 Speedrun: Single-Node Multi-GPU Pre-Training (DDP)",
         tech: "PyTorch, Distributed Data Parallel (DDP), torch.compile, AMP (BF16/FP16)",
         description: [
-          "Implemented an end-to-end GPT-2 (124M) pretraining stack with DDP gradient accumulation, cosine LR + warmup scheduling, checkpoint/resume, and optional initialization from HuggingFace GPT-2 weights.",
+          "Implemented an end-to-end GPT-2 (124M) pre-training stack with DDP gradient accumulation, cosine LR + warmup scheduling, checkpoint/resume, and optional initialization from HuggingFace GPT-2 weights.",
           "Optimized throughput via torch.compile, fused AdamW (CUDA), TF32 matmul, Flash SDP attention when available, pinned-memory non-blocking transfers, and mixed precision (BF16/FP16 w/ GradScaler).",
         ],
         link: "https://github.com/stochi0/gpt2-speedrun",
