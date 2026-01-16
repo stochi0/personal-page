@@ -14,7 +14,7 @@ export function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,6 +23,9 @@ export function Navigation() {
     if (stored) {
       setTheme(stored);
       document.documentElement.classList.toggle("light", stored === "light");
+    } else {
+      // Set light theme as default
+      document.documentElement.classList.add("light");
     }
   }, []);
 
