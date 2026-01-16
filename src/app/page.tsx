@@ -19,177 +19,228 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="main-container">
-      {/* Header */}
-      <header className="section" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h1>Ayush</h1>
-      </header>
-
-      {/* Tagline */}
-      <section className="section" style={{ textAlign: 'center' }}>
-        <p className="tagline">
-          Research & Engineering: AI, Agents, RL, Vision and Piano.
+      {/* Hero - Personal Introduction */}
+      <section id="intro" className="hero-section">
+        <div className="hero-greeting">Hey, I&apos;m</div>
+        <h1 className="hero-name">Ayush</h1>
+        <p className="hero-bio">
+          I build things at the intersection of <span className="highlight">AI research</span> and 
+          <span className="highlight"> engineering</span>. Currently obsessed with agents, reinforcement learning, 
+          and making machines understand the world better.
+        </p>
+        <p className="hero-bio" style={{ marginTop: '1rem' }}>
+          When I&apos;m not training models, you&apos;ll find me at the <span className="highlight">piano</span> — 
+          music is my other language.
         </p>
       </section>
 
-      <div className="star">✦</div>
-
-      {/* Currently */}
-      <section id="currently" className="section">
-        <h2 className="section-title">Currently</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-          Recently returned from a solo adventure through China (11 cities), Macau, and Hong Kong, still unpacking stories!
-        </p>
-        <p style={{ color: 'var(--text-secondary)' }}>
-          Previously: QX Labs, Unsiloed AI (YC F25). Check out my <Link href="/work" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}>work</Link> page.
-        </p>
+      {/* Now - What I'm up to */}
+      <section id="now" className="section">
+        <div className="section-header">
+          <span className="section-label">Now</span>
+          <div className="section-line"></div>
+        </div>
+        <div className="now-card">
+          <p className="now-text">
+            Just returned from a solo adventure through <strong>11 cities in China</strong>, Macau, and Hong Kong. 
+            Still processing the chaos of night markets in Chengdu, the quiet of West Lake in Hangzhou, 
+            and way too much hotpot.
+          </p>
+          <p className="now-text" style={{ marginTop: '1.5rem' }}>
+            Previously shipped AI at <Link href="/work" className="inline-link">QX Labs</Link> and 
+            <Link href="/work" className="inline-link"> Unsiloed AI</Link> (YC F25).
+          </p>
+        </div>
       </section>
 
-      {/* Projects */}
-      <section id="projects" className="section">
-        <h2 className="section-title">Projects</h2>
-        <ul className="item-list">
-          <li>
-            <a href="https://github.com/stochi0/beacongrad" target="_blank" rel="noopener noreferrer" className="content-link" style={{ display: 'block' }}>
-              <div className="item-title">BeaconGrad</div>
-              <div className="item-description">A NumPy-based autograd engine with neural modules and optimizers.</div>
-            </a>
-          </li>
-          <li>
-            <div className="item-title">YOLOv11 Document Layout Recognition</div>
-            <div className="item-description">Fine-tuned for document analysis, accelerated via TensorRT & ONNX.</div>
-          </li>
-          <li>
-            <div className="item-title">Discrete Walk-Jump Sampling</div>
-            <div className="item-description">Protein discovery using EBMs and Langevin MCMC.</div>
-          </li>
-          <li>
-            <div className="item-title">Expandable Subspace Ensemble</div>
-            <div className="item-description">Class-incremental learning without catastrophic forgetting.</div>
-          </li>
-          <li>
-            <div className="item-title">Concrete Score Matching</div>
-            <div className="item-description">Generalized score matching for discrete data distributions.</div>
-          </li>
-        </ul>
-        <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <Link href="/projects" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px', fontSize: '0.9rem' }}>
-            View all projects →
+      <div className="divider">
+        <span className="divider-text">what I&apos;ve been building</span>
+      </div>
+
+      {/* Craft - Featured Work */}
+      <section id="craft" className="section">
+        <div className="section-header">
+          <span className="section-label">Craft</span>
+          <div className="section-line"></div>
+        </div>
+        
+        <div className="craft-grid">
+          <a href="https://github.com/stochi0/beacongrad" target="_blank" rel="noopener noreferrer" className="craft-card craft-card-featured">
+            <div className="craft-tag">Open Source</div>
+            <h3 className="craft-title">BeaconGrad</h3>
+            <p className="craft-desc">A NumPy-based autograd engine I built to understand backprop from scratch. Neural modules, optimizers, the whole deal.</p>
+            <span className="craft-link">View on GitHub →</span>
+          </a>
+          
+          <div className="craft-card">
+            <div className="craft-tag">Computer Vision</div>
+            <h3 className="craft-title">YOLOv11 Document Layout</h3>
+            <p className="craft-desc">Fine-tuned for document analysis. Accelerated with TensorRT & ONNX for real-world speed.</p>
+          </div>
+          
+          <div className="craft-card">
+            <div className="craft-tag">Generative Models</div>
+            <h3 className="craft-title">Discrete Walk-Jump Sampling</h3>
+            <p className="craft-desc">Protein discovery using energy-based models and Langevin MCMC. Biology meets ML.</p>
+          </div>
+          
+          <div className="craft-card">
+            <div className="craft-tag">Continual Learning</div>
+            <h3 className="craft-title">Expandable Subspace Ensemble</h3>
+            <p className="craft-desc">Teaching models to learn new things without forgetting the old. No catastrophic forgetting here.</p>
+          </div>
+          
+          <div className="craft-card">
+            <div className="craft-tag">Research</div>
+            <h3 className="craft-title">Concrete Score Matching</h3>
+            <p className="craft-desc">Generalized score matching for discrete distributions. Math that actually works.</p>
+          </div>
+        </div>
+        
+        <div className="section-cta">
+          <Link href="/projects" className="cta-link">
+            See all projects <span className="arrow">→</span>
           </Link>
-        </p>
+        </div>
       </section>
 
-      {/* Work */}
-      <section id="experience" className="section">
-        <h2 className="section-title">Experience</h2>
-        <ul className="item-list">
-          <li>
-            <Link href="/work" className="content-link" style={{ display: 'block' }}>
-              <div className="item-title">Founding AI Engineer · QX Labs</div>
-              <div className="item-description">Agentic knowledge-graph platform for private-equity workflows.</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/work" className="content-link" style={{ display: 'block' }}>
-              <div className="item-title">Founding AI Engineer · Unsiloed AI (YC F25)</div>
-              <div className="item-description">Document-AI and RAG pipelines for financial customers.</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/work" className="content-link" style={{ display: 'block' }}>
-              <div className="item-title">Research · MIT, Tsinghua, UvA</div>
-              <div className="item-description">CRH hypothesis, 3D reconstruction, multimodal models.</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/work" className="content-link" style={{ display: 'block' }}>
-              <div className="item-title">Research Intern · IIT Bombay</div>
-              <div className="item-description">Spiking neural networks, real-time fault detection.</div>
-            </Link>
-          </li>
-        </ul>
-        <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <Link href="/work" className="content-link" style={{ textDecoration: 'underline', textUnderlineOffset: '4px', fontSize: '0.9rem' }}>
-            Full work history →
+      <div className="divider">
+        <span className="divider-text">where I&apos;ve been</span>
+      </div>
+
+      {/* Journey - Experience */}
+      <section id="journey" className="section">
+        <div className="section-header">
+          <span className="section-label">Journey</span>
+          <div className="section-line"></div>
+        </div>
+        
+        <div className="journey-timeline">
+          <Link href="/work" className="journey-item">
+            <div className="journey-marker"></div>
+            <div className="journey-content">
+              <span className="journey-role">Founding AI Engineer</span>
+              <span className="journey-place">QX Labs</span>
+              <p className="journey-desc">Building an agentic knowledge-graph platform for private-equity workflows.</p>
+            </div>
           </Link>
-        </p>
+          
+          <Link href="/work" className="journey-item">
+            <div className="journey-marker"></div>
+            <div className="journey-content">
+              <span className="journey-role">Founding AI Engineer</span>
+              <span className="journey-place">Unsiloed AI <span className="badge">YC F25</span></span>
+              <p className="journey-desc">Document-AI and RAG pipelines for financial customers. Shipped fast.</p>
+            </div>
+          </Link>
+          
+          <Link href="/work" className="journey-item">
+            <div className="journey-marker"></div>
+            <div className="journey-content">
+              <span className="journey-role">Research</span>
+              <span className="journey-place">MIT · Tsinghua · UvA</span>
+              <p className="journey-desc">CRH hypothesis, 3D reconstruction, multimodal models. Academic adventures.</p>
+            </div>
+          </Link>
+          
+          <Link href="/work" className="journey-item">
+            <div className="journey-marker"></div>
+            <div className="journey-content">
+              <span className="journey-role">Research Intern</span>
+              <span className="journey-place">IIT Bombay</span>
+              <p className="journey-desc">Spiking neural networks and real-time fault detection systems.</p>
+            </div>
+          </Link>
+        </div>
+        
+        <div className="section-cta">
+          <Link href="/work" className="cta-link">
+            Full story <span className="arrow">→</span>
+          </Link>
+        </div>
       </section>
 
-      {/* Honors */}
-      <section id="honors" className="section">
-        <h2 className="section-title">Honors & Achievements</h2>
-        <ul className="item-list">
-          <li>
-            <div className="item-title">CSC Scholarship</div>
-            <div className="item-description">Awarded to attend the HTGR Summer School 2025.</div>
-          </li>
-          <li>
-            <div className="item-title">Meta Hacker Cup 2024 (Round 2)</div>
-            <div className="item-description">Advanced in Meta&apos;s global ACM-ICPC-style competition.</div>
-          </li>
-          <li>
-            <div className="item-title">CodeUncode 2024</div>
-            <div className="item-description">Secured 49th position out of 2000 participants.</div>
-          </li>
-          <li>
-            <div className="item-title">Tsinghua University Programs</div>
-            <div className="item-description">Selected for multiple summer schools including HTGR, IEDA, Design Futures, and Music Brain Science.</div>
-          </li>
-          <li>
-            <div className="item-title">2025 RUC International Summer School</div>
-            <div className="item-description">Selected for Renmin University of China, Beijing.</div>
-          </li>
-        </ul>
+      <div className="divider">
+        <span className="divider-text">some highlights</span>
+      </div>
+
+      {/* Notes - Achievements & Music combined */}
+      <section id="notes" className="section">
+        <div className="section-header">
+          <span className="section-label">Notes</span>
+          <div className="section-line"></div>
+        </div>
+        
+        <div className="notes-grid">
+          <div className="notes-column">
+            <h3 className="notes-heading">Honors</h3>
+            <ul className="notes-list">
+              <li>
+                <span className="note-title">CSC Scholarship</span>
+                <span className="note-detail">HTGR Summer School 2025</span>
+              </li>
+              <li>
+                <span className="note-title">Meta Hacker Cup 2024</span>
+                <span className="note-detail">Advanced to Round 2</span>
+              </li>
+              <li>
+                <span className="note-title">CodeUncode 2024</span>
+                <span className="note-detail">49th / 2000</span>
+              </li>
+              <li>
+                <span className="note-title">Tsinghua Programs</span>
+                <span className="note-detail">HTGR, IEDA, Design Futures, Music Brain Science</span>
+              </li>
+              <li>
+                <span className="note-title">RUC Summer School</span>
+                <span className="note-detail">Renmin University, Beijing 2025</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="notes-column">
+            <h3 className="notes-heading">Music</h3>
+            <ul className="notes-list">
+              <li>
+                <span className="note-title">1st Place, District Classical</span>
+                <span className="note-detail">Lead pianist, group performance</span>
+              </li>
+              <li>
+                <span className="note-title">School Choir Pianist</span>
+                <span className="note-detail">Grades 5–12, all arrangements</span>
+              </li>
+              <li>
+                <span className="note-title">Farewell Ceremony</span>
+                <span className="note-detail">Selected as ceremony pianist</span>
+              </li>
+              <li>
+                <span className="note-title">Greek Play Competition</span>
+                <span className="note-detail">1st Runner-up, live music</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </section>
 
-      {/* Music */}
-      <section id="music" className="section">
-        <h2 className="section-title">Music</h2>
-        <ul className="item-list">
-          <li>
-            <div className="item-title">1st Place, District Classical Music Concert</div>
-            <div className="item-description">Led as the pianist in a winning group performance.</div>
-          </li>
-          <li>
-            <div className="item-title">Lead Pianist, School Choir (Grades 5–12)</div>
-            <div className="item-description">Directed and performed all musical arrangements.</div>
-          </li>
-          <li>
-            <div className="item-title">Farewell Ceremony Pianist</div>
-            <div className="item-description">Selected to perform for the senior students&apos; ceremony.</div>
-          </li>
-          <li>
-            <div className="item-title">1st Runner-up, Greek Play Competition</div>
-            <div className="item-description">Awarded for live background music.</div>
-          </li>
-        </ul>
-      </section>
-
-      <div className="star">✦</div>
+      <div className="divider divider-accent">✦</div>
 
       {/* Connect */}
-      <section id="connect" className="section" style={{ textAlign: 'center' }}>
-        <h2 className="section-title">Connect</h2>
+      <section id="connect" className="section connect-section">
+        <h2 className="connect-title">Let&apos;s talk</h2>
+        <p className="connect-text">
+          I&apos;m always interested in new projects, research collaborations, or just chatting about AI, music, or travel stories.
+        </p>
         <div className="connect-links">
-          <a 
-            href="mailto:ayushbodade1@gmail.com" 
-            className="connect-link"
-          >
+          <a href="mailto:ayushbodade1@gmail.com" className="connect-btn">
+            <span className="connect-icon">✉</span>
             Email
           </a>
-          <a 
-            href="https://x.com/stochi0" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="connect-link"
-          >
+          <a href="https://x.com/stochi0" target="_blank" rel="noopener noreferrer" className="connect-btn">
+            <span className="connect-icon">𝕏</span>
             Twitter
           </a>
-          <a 
-            href="https://github.com/stochi0" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="connect-link"
-          >
+          <a href="https://github.com/stochi0" target="_blank" rel="noopener noreferrer" className="connect-btn">
+            <span className="connect-icon">◆</span>
             GitHub
           </a>
         </div>
@@ -197,8 +248,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="star" style={{ margin: '2rem 0 1rem' }}>✦</div>
-        <p>Game Is Game.</p>
+        <p className="footer-quote">&ldquo;Game Is Game.&rdquo;</p>
       </footer>
     </div>
   );

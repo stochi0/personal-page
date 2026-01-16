@@ -14,6 +14,17 @@ export function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const stored = localStorage.getItem("theme") as "dark" | "light" | null;
+    if (stored) {
+      setTheme(stored);
+      document.documentElement.classList.toggle("light", stored === "light");
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +50,13 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("light", newTheme === "light");
+  };
+
   return (
     <nav className={`nav-container ${scrolled ? "nav-scrolled" : ""}`}>
       <div className="nav-inner">
@@ -55,19 +73,33 @@ export function Navigation() {
           ))}
         </div>
 
-        {/* Section dots - only on homepage */}
-        {pathname === "/" && (
-          <div className="nav-dots">
-            {["currently", "projects", "experience", "honors", "music", "connect"].map((section) => (
-              <a
-                key={section}
-                href={`#${section}`}
-                className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
-                title={section.charAt(0).toUpperCase() + section.slice(1)}
-              />
-            ))}
-          </div>
-        )}
+        {/* Right side: dots + theme toggle */}
+        <div className="nav-right">
+          {/* Section dots - only on homepage */}
+          {pathname === "/" && (
+            <div className="nav-dots">
+              {["intro", "now", "craft", "journey", "notes", "connect"].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
+                  title={section.charAt(0).toUpperCase() + section.slice(1)}
+                />
+              ))}
+            </div>
+          )}
+          
+          {/* Theme toggle */}
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="nav-theme-toggle"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? "☀" : "☽"}
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );
@@ -101,4 +133,3 @@ export function ScrollToTop() {
     </button>
   );
 }
-

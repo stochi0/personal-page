@@ -3,7 +3,6 @@ import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AnalyticsWrapper from "../components/AnalyticsWrapper";
-import { ThemeToggle } from "../components/ThemeToggle";
 import { Navigation, ScrollToTop } from "../components/Navigation";
 import "./globals.css";
 
@@ -85,7 +84,6 @@ export default function RootLayout({
       <body>
         <AnalyticsWrapper>
           <Navigation />
-          <ThemeToggle />
           <main>
             {children}
             <Analytics />
