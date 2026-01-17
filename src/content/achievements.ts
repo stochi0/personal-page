@@ -24,8 +24,8 @@ export interface PianoAchievement {
 
 export const achievements: Achievement[] = [
   {
-    title: "CSC Scholarship",
-    detail: "Chinese Government Scholarship for HTGR Summer School",
+    title: "Scholarship — Tsinghua HTGR Summer School",
+    detail: "Chinese Government Scholarship (CSC)",
     year: "2025",
   },
   {

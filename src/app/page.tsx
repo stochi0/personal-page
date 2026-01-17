@@ -124,7 +124,7 @@ export default function Home() {
       <section id="piano" className="section">
         <h2 className="section-title">Off the Keys</h2>
         <p className="body-text" style={{ marginBottom: '2rem', fontStyle: 'italic' }}>
-          Before I wrote code, I wrote music. The piano has been my companion since childhood.
+          Before I wrote code, I played music. The piano has been my companion since childhood.
         </p>
         
         <div className="piano-list">
