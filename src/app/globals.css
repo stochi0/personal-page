@@ -992,47 +992,48 @@ html.light .craft-card-featured {
    PIANO / OFF THE KEYS SECTION
    ======================================== */
 
-.piano-achievements {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+.piano-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .piano-item {
-  padding: 1.25rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  transition: all 0.3s ease;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.piano-item:last-child {
+  border-bottom: none;
 }
 
 .piano-item:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  padding-left: 0.5rem;
+}
+
+.piano-item:hover .piano-title {
+  color: var(--accent);
 }
 
 .piano-title {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--text-primary);
-  line-height: 1.4;
+  transition: color 0.2s ease;
 }
 
 .piano-context {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
   font-style: italic;
 }
 
 @media (max-width: 600px) {
-  .piano-achievements {
-    grid-template-columns: 1fr;
-  }
-  
   .accolade-item {
     flex-direction: column;
     gap: 0.5rem;
@@ -1048,6 +1049,12 @@ html.light .craft-card-featured {
   
   .program-item {
     padding: 0.75rem 0;
+  }
+  
+  .piano-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 }
 

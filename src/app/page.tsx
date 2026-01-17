@@ -127,11 +127,11 @@ export default function Home() {
           Before I wrote code, I wrote music. The piano has been my companion since childhood.
         </p>
         
-        <div className="piano-achievements">
+        <div className="piano-list">
           {pianoAchievements.map((item, i) => (
             <div key={i} className="piano-item">
               <span className="piano-title">{item.title}</span>
-              {item.context && <span className="piano-context">{item.context}</span>}
+              {item.context && <span className="piano-context">— {item.context}</span>}
             </div>
           ))}
         </div>
