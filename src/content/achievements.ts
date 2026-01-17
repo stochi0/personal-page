@@ -58,15 +58,15 @@ export const programSelections = [
 export const pianoAchievements: PianoAchievement[] = [
   {
     title: "1st Place, District Classical Concert",
-    context: "Led as pianist in winning group performance",
+    context: "Led as pianist in the group performance",
   },
   {
     title: "Lead Pianist, School Choir",
-    context: "Grades 5–12, all musical arrangements",
+    context: "Grades 5–12, musical arrangements",
   },
   {
     title: "Farewell Ceremony Pianist",
-    context: "Selected for senior farewell performance",
+    context: "Senior farewell performance",
   },
   {
     title: "1st Runner-up, Greek Play",
