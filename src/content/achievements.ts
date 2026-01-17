@@ -44,11 +44,11 @@ export const achievements: Achievement[] = [
 export const programSelections = [
   "Tsinghua HTGR Summer School",
   "Tsinghua Summer School for International Construction",
-  "Design Futures · Shared Vision — Academy of Arts & Design",
+  "Tsinghua Design Futures · Shared Vision — Academy of Arts & Design",
   "Tsinghua IEDA Summer School — Industrial Engineering & Data Analytics",
   "Tsinghua–Princeton–CI Summer School on Combustion",
   "Tsinghua Brain & Intelligence Lab — Music Brain Science Camp",
-  "Renmin University International Summer School",
+  "Renmin University of China International Summer School",
 ];
 
 // ============================================
