@@ -89,12 +89,12 @@ export function Navigation() {
           {/* Section dots - only on homepage */}
           {pathname === "/" && (
             <div className="nav-dots">
-              {["now", "explore", "connect"].map((section) => (
+              {["now", "explore", "accolades", "piano", "connect"].map((section) => (
                 <a
                   key={section}
                   href={`#${section}`}
                   className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
-                  title={section.charAt(0).toUpperCase() + section.slice(1)}
+                  title={section === "piano" ? "Off the Keys" : section.charAt(0).toUpperCase() + section.slice(1)}
                 />
               ))}
             </div>

@@ -865,6 +865,192 @@ html.light .craft-card-featured {
   letter-spacing: 0.5em;
 }
 
+/* ========================================
+   ACCOLADES SECTION
+   ======================================== */
+
+.accolades-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.accolade-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.accolade-item:last-child {
+  border-bottom: none;
+}
+
+.accolade-item:hover {
+  padding-left: 0.5rem;
+}
+
+.accolade-year {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-weight: 500;
+  min-width: 3.5rem;
+  padding-top: 0.2rem;
+}
+
+.accolade-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.accolade-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.accolade-detail {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Programs Section */
+.programs-section {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.programs-intro {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.programs-intro .highlight {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.programs-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.program-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.program-item:last-child {
+  border-bottom: none;
+}
+
+.program-item:hover {
+  padding-left: 0.5rem;
+}
+
+.program-item:hover .program-name {
+  color: var(--text-primary);
+}
+
+.program-item:hover .program-marker {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.program-marker {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.program-name {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  line-height: 1.4;
+}
+
+/* ========================================
+   PIANO / OFF THE KEYS SECTION
+   ======================================== */
+
+.piano-achievements {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.piano-item {
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.piano-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.piano-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.piano-context {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .piano-achievements {
+    grid-template-columns: 1fr;
+  }
+  
+  .accolade-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .accolade-year {
+    min-width: auto;
+  }
+  
+  .program-name {
+    font-size: 0.95rem;
+  }
+  
+  .program-item {
+    padding: 0.75rem 0;
+  }
+}
+
 /* Headings */
 h1 {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;

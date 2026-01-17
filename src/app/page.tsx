@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { profile, now, social } from "@/content";
+import { profile, now, social, achievements, programSelections, pianoAchievements } from "@/content";
 
 export const metadata: Metadata = {
   title: profile.title,
@@ -83,6 +83,57 @@ export default function Home() {
             <span className="explore-link-title">Projects</span>
             <span className="explore-link-desc">— things I&apos;ve built</span>
           </Link>
+        </div>
+      </section>
+
+      <div className="star">✦</div>
+
+      {/* Accolades - Elegant achievements */}
+      <section id="accolades" className="section">
+        <h2 className="section-title">Accolades</h2>
+        
+        <div className="accolades-grid">
+          {achievements.map((item, i) => (
+            <div key={i} className="accolade-item">
+              <span className="accolade-year">{item.year}</span>
+              <div className="accolade-content">
+                <span className="accolade-title">{item.title}</span>
+                {item.detail && <span className="accolade-detail">{item.detail}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Program Selections */}
+        <div className="programs-section">
+          <p className="programs-intro">
+            Selected for <span className="highlight">7 international programs</span> in China, 2025
+          </p>
+          <div className="programs-list">
+            {programSelections.map((program, i) => (
+              <div key={i} className="program-item">
+                <span className="program-marker">✦</span>
+                <span className="program-name">{program}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Off the Keys - Piano */}
+      <section id="piano" className="section">
+        <h2 className="section-title">Off the Keys</h2>
+        <p className="body-text" style={{ marginBottom: '2rem', fontStyle: 'italic' }}>
+          Before I wrote code, I wrote music. The piano has been my companion since childhood.
+        </p>
+        
+        <div className="piano-achievements">
+          {pianoAchievements.map((item, i) => (
+            <div key={i} className="piano-item">
+              <span className="piano-title">{item.title}</span>
+              {item.context && <span className="piano-context">{item.context}</span>}
+            </div>
+          ))}
         </div>
       </section>
 
