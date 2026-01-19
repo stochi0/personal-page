@@ -46,19 +46,6 @@ export default function Home() {
             {renderBio(paragraph)}
           </p>
         ))}
-        {profile.heroQuotes?.length ? (
-          <div className="hero-quotes" style={{ marginTop: "2rem" }}>
-            {profile.heroQuotes.map((quote, i) => (
-              <p
-                key={i}
-                className="footer-quote hero-quote"
-                style={{ whiteSpace: "pre-line" }}
-              >
-                {quote}
-              </p>
-            ))}
-          </div>
-        ) : null}
       </header>
 
       <div className="star">✦</div>
@@ -166,6 +153,25 @@ export default function Home() {
           <a href={social.github} target="_blank" rel="noopener noreferrer" className="social-link">GitHub</a>
         </div>
       </section>
+
+      <div className="star">✦</div>
+
+      {/* Inspirational Quotes */}
+      {profile.heroQuotes?.length ? (
+        <section className="section" style={{ marginTop: '2rem' }}>
+          <div className="hero-quotes">
+            {profile.heroQuotes.map((quote, i) => (
+              <p
+                key={i}
+                className="footer-quote hero-quote"
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {quote}
+              </p>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Footer */}
       <footer className="footer">
