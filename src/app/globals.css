@@ -668,6 +668,28 @@ html.light .craft-card-featured {
   letter-spacing: 0.02em;
 }
 
+/* Hero quotes layout (keeps footer-quote typography) */
+.hero-quotes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.hero-quote {
+  margin: 0;
+  padding: 0 0 0 0.9rem;
+  border-left: 1px solid var(--border-color);
+  opacity: 0.95;
+}
+
+@media (min-width: 768px) {
+  .hero-quotes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
 /* ========================================
    SCROLL TO TOP
    ======================================== */

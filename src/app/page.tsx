@@ -46,11 +46,19 @@ export default function Home() {
             {renderBio(paragraph)}
           </p>
         ))}
-        {profile.heroQuote && (
-          <p className="footer-quote" style={{ marginTop: "2rem", whiteSpace: "pre-line" }}>
-            {profile.heroQuote}
-          </p>
-        )}
+        {profile.heroQuotes?.length ? (
+          <div className="hero-quotes" style={{ marginTop: "2rem" }}>
+            {profile.heroQuotes.map((quote, i) => (
+              <p
+                key={i}
+                className="footer-quote hero-quote"
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {quote}
+              </p>
+            ))}
+          </div>
+        ) : null}
       </header>
 
       <div className="star">✦</div>
