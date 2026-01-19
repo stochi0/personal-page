@@ -25,6 +25,23 @@ export const profile = {
   bio: [
     "I like solving {AI research} and {engineering} problems.",
   ],
+
+  // Home page quote (Hero)
+  heroQuote:
+    `🇨🇳 Chinese
+胜则生，败则死。
+不战，何来胜利？
+向前进。
+
+🇯🇵 Japanese
+勝てば生きる。負ければ死ぬ。
+戦わなければ勝てない。
+前へ進め。
+
+🇺🇸 English
+If You Win, You Live. If You Lose, You Die.
+If You Don’t Fight, You Can’t Win!
+Keep Moving Forward.`,
   
   // Footer quote
   footerQuote: "Game Is Game.",

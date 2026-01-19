@@ -46,6 +46,11 @@ export default function Home() {
             {renderBio(paragraph)}
           </p>
         ))}
+        {profile.heroQuote && (
+          <p className="footer-quote" style={{ marginTop: "2rem", whiteSpace: "pre-line" }}>
+            {profile.heroQuote}
+          </p>
+        )}
       </header>
 
       <div className="star">✦</div>
