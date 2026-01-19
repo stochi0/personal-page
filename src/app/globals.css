@@ -681,12 +681,20 @@ html.light .craft-card-featured {
   padding: 0 0 0 0.9rem;
   border-left: 1px solid var(--border-color);
   opacity: 0.95;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 768px) {
   .hero-quotes {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+  
+  .hero-quote {
+    text-align: left;
   }
 }
 

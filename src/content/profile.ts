@@ -30,13 +30,19 @@ export const profile = {
   heroQuotes: [
     `胜则生，败则死。
 不战，何来胜利？
-向前进。`,
+向前进。
+
+~ 艾伦·耶格尔`,
     `勝てば生きる。負ければ死ぬ。
 戦わなければ勝てない。
-前へ進め。`,
+前へ進め。
+
+~ エレン・イェーガー`,
     `If you win, you live. If you lose, you die.
 If you don't fight, you can't win.
-Keep moving forward.`,
+Keep moving forward.
+
+~ Eren Yeager`,
   ],
   
   // Footer quote
