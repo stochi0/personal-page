@@ -1,37 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { profile, now, social, achievements, programSelections, pianoAchievements } from "@/content";
+import { renderHighlights, renderBold } from "@/lib/text-utils";
+import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: profile.title,
-  description: profile.description,
-  openGraph: {
-    title: profile.title,
-    description: profile.description,
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: profile.title,
-    description: profile.description,
-  },
-};
-
-// Helper to render bio text with highlights
-function renderBio(text: string) {
-  const parts = text.split(/\{([^}]+)\}/g);
-  return parts.map((part, i) => 
-    i % 2 === 1 ? <span key={i} className="highlight">{part}</span> : part
-  );
-}
-
-// Helper to render markdown-style bold
-function renderMarkdown(text: string) {
-  const parts = text.split(/\*\*([^*]+)\*\*/g);
-  return parts.map((part, i) => 
-    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
-  );
-}
+export const metadata: Metadata = createMetadata(profile.title, profile.description);
 
 export default function Home() {
   return (
@@ -43,7 +16,7 @@ export default function Home() {
         <p className="hero-aka">aka {profile.aka}</p>
         {profile.bio.map((paragraph, i) => (
           <p key={i} className="tagline" style={{ marginTop: i === 0 ? '1.5rem' : '1rem' }}>
-            {renderBio(paragraph)}
+            {renderHighlights(paragraph)}
           </p>
         ))}
       </header>
@@ -54,7 +27,7 @@ export default function Home() {
       <section id="now" className="section">
         <h2 className="section-title">Now</h2>
         <p className="body-text">
-          {renderMarkdown(now.current)}
+          {renderBold(now.current)}
         </p>
         <p className="body-text" style={{ marginTop: '1.5rem' }}>
           Previously shipped AI at{' '}
@@ -157,21 +130,17 @@ export default function Home() {
       <div className="star">✦</div>
 
       {/* Inspirational Quotes */}
-      {profile.heroQuotes?.length ? (
+      {profile.heroQuotes.length > 0 && (
         <section className="section" style={{ marginTop: '2rem' }}>
           <div className="hero-quotes">
             {profile.heroQuotes.map((quote, i) => (
-              <p
-                key={i}
-                className="footer-quote hero-quote"
-                style={{ whiteSpace: "pre-line" }}
-              >
+              <p key={i} className="footer-quote hero-quote" style={{ whiteSpace: "pre-line" }}>
                 {quote}
               </p>
             ))}
           </div>
         </section>
-      ) : null}
+      )}
 
       {/* Footer */}
       <footer className="footer">

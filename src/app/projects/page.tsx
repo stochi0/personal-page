@@ -1,21 +1,12 @@
 import { Metadata } from "next";
-import { projectCategories, projectsPageMeta, Project } from "@/content";
-import { profile } from "@/content";
+import { projectCategories, projectsPageMeta, Project, profile } from "@/content";
+import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: projectsPageMeta.title,
-  description: projectsPageMeta.description,
-  openGraph: {
-    title: `${projectsPageMeta.title} - ${profile.name}`,
-    description: projectsPageMeta.description,
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${projectsPageMeta.title} - ${profile.name}`,
-    description: projectsPageMeta.description,
-  },
-};
+export const metadata: Metadata = createMetadata(
+  projectsPageMeta.title,
+  projectsPageMeta.description,
+  profile.name
+);
 
 function ProjectCard({ project }: { project: Project }) {
   return (

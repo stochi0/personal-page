@@ -1,12 +1,3 @@
-/**
- * ============================================
- * ACHIEVEMENTS & INTERESTS
- * ============================================
- * 
- * Honors, accolades, and creative pursuits.
- * These appear elegantly on the homepage.
- */
-
 export interface Achievement {
   title: string;
   detail?: string;
@@ -17,10 +8,6 @@ export interface PianoAchievement {
   title: string;
   context?: string;
 }
-
-// ============================================
-// HONORS & ACHIEVEMENTS
-// ============================================
 
 export const achievements: Achievement[] = [
   {
@@ -40,7 +27,6 @@ export const achievements: Achievement[] = [
   },
 ];
 
-// Programs & Selections (displayed separately for elegance)
 export const programSelections = [
   "Tsinghua HTGR Summer School",
   "Tsinghua Summer School for International Construction",
@@ -50,10 +36,6 @@ export const programSelections = [
   "Tsinghua Brain & Intelligence Lab — Music Brain Science Camp",
   "Renmin University of China International Summer School",
 ];
-
-// ============================================
-// PIANO & MUSIC
-// ============================================
 
 export const pianoAchievements: PianoAchievement[] = [
   {

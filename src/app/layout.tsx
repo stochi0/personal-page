@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import AnalyticsWrapper from "../components/AnalyticsWrapper";
 import { Navigation, ScrollToTop } from "../components/Navigation";
 import "./globals.css";
 
@@ -82,15 +81,13 @@ export default function RootLayout({
         <meta name="HandheldFriendly" content="true" />
       </head>
       <body>
-        <AnalyticsWrapper>
-          <Navigation />
-          <main>
-            {children}
-            <Analytics />
-            <SpeedInsights />
-          </main>
-          <ScrollToTop />
-        </AnalyticsWrapper>
+        <Navigation />
+        <main>
+          {children}
+          <Analytics />
+          <SpeedInsights />
+        </main>
+        <ScrollToTop />
       </body>
     </html>
   );

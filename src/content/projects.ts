@@ -1,8 +1,3 @@
-// ============================================
-// PROJECTS
-// Edit this file to update your projects
-// ============================================
-
 export type Project = {
   title: string;
   tech: string;
@@ -15,11 +10,6 @@ export type ProjectCategory = {
   name: string;
   projects: Project[];
 };
-
-// ============================================
-// PROJECT CATEGORIES
-// Add/remove categories as needed
-// ============================================
 
 export const projectCategories: ProjectCategory[] = [
   {
@@ -90,7 +80,6 @@ export const projectCategories: ProjectCategory[] = [
   },
 ];
 
-// Page metadata
 export const projectsPageMeta = {
   title: "Projects",
   description: "Technical projects and implementations",

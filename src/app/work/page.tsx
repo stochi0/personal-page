@@ -1,21 +1,12 @@
 import { Metadata } from "next";
-import { industry, research, academia, workPageMeta, WorkItem } from "@/content";
-import { profile } from "@/content";
+import { industry, research, academia, workPageMeta, WorkItem, profile } from "@/content";
+import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: workPageMeta.title,
-  description: workPageMeta.description,
-  openGraph: {
-    title: `${workPageMeta.title} - ${profile.name}`,
-    description: workPageMeta.description,
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${workPageMeta.title} - ${profile.name}`,
-    description: workPageMeta.description,
-  },
-};
+export const metadata: Metadata = createMetadata(
+  workPageMeta.title,
+  workPageMeta.description,
+  profile.name
+);
 
 function WorkItemCard({ item }: { item: WorkItem }) {
   return (

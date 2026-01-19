@@ -20,40 +20,31 @@ export function Navigation() {
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (stored) {
-      setTheme(stored);
-      document.documentElement.classList.toggle("light", stored === "light");
-    } else {
-      // Set light theme as default
-      document.documentElement.classList.add("light");
-    }
+    const newTheme = stored || "light";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("light", newTheme === "light");
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 100);
 
-      // Only track sections on homepage
-      if (pathname === "/") {
-        const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
-        const markerY = window.scrollY + 200;
-        let current = "";
+      if (pathname !== "/") return;
 
-        for (const section of sections) {
-          if (section.offsetTop <= markerY) {
-            current = section.id;
-          }
-        }
-
-        // If we're at the bottom, ensure the last section is marked active.
-        if (sections.length > 0) {
-          const atBottom =
-            window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-          if (atBottom) current = sections[sections.length - 1]!.id;
-        }
-
-        setActiveSection(current);
+      const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+      const markerY = window.scrollY + 200;
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      
+      let current = "";
+      for (const section of sections) {
+        if (section.offsetTop <= markerY) current = section.id;
       }
+      
+      if (atBottom && sections.length > 0) {
+        current = sections[sections.length - 1].id;
+      }
+
+      setActiveSection(current);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -84,23 +75,23 @@ export function Navigation() {
           ))}
         </div>
 
-        {/* Right side: dots + theme toggle */}
         <div className="nav-right">
-          {/* Section dots - only on homepage */}
           {pathname === "/" && (
             <div className="nav-dots">
-              {["now", "explore", "accolades", "piano", "connect"].map((section) => (
-                <a
-                  key={section}
-                  href={`#${section}`}
-                  className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
-                  title={section === "piano" ? "Off the Keys" : section.charAt(0).toUpperCase() + section.slice(1)}
-                />
-              ))}
+              {["now", "explore", "accolades", "piano", "connect"].map((section) => {
+                const title = section === "piano" ? "Off the Keys" : section.charAt(0).toUpperCase() + section.slice(1);
+                return (
+                  <a
+                    key={section}
+                    href={`#${section}`}
+                    className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
+                    title={title}
+                  />
+                );
+              })}
             </div>
           )}
           
-          {/* Theme toggle */}
           {mounted && (
             <button
               onClick={toggleTheme}

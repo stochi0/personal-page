@@ -1,8 +1,3 @@
-// ============================================
-// WORK EXPERIENCE
-// Edit this file to update your work history
-// ============================================
-
 export type WorkItem = {
   title: string;
   company: string;
@@ -11,10 +6,6 @@ export type WorkItem = {
   description: string[];
   link?: string;
 };
-
-// ============================================
-// INDUSTRY EXPERIENCE
-// ============================================
 
 export const industry: WorkItem[] = [
   {
@@ -60,10 +51,6 @@ export const industry: WorkItem[] = [
   },
 ];
 
-// ============================================
-// RESEARCH EXPERIENCE
-// ============================================
-
 export const research: WorkItem[] = [
   {
     title: "Research (selected collaborations & independent work)",
@@ -86,10 +73,6 @@ export const research: WorkItem[] = [
   },
 ];
 
-// ============================================
-// ACADEMIA & COMMUNITY
-// ============================================
-
 export const academia: WorkItem[] = [
   {
     title: "Teaching Assistant, Advanced Algorithms and Complexity",
@@ -110,7 +93,6 @@ export const academia: WorkItem[] = [
   },
 ];
 
-// Page metadata
 export const workPageMeta = {
   title: "Work",
   description: "Professional work experience and research positions",
