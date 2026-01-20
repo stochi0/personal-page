@@ -124,6 +124,8 @@ export default function Home() {
           <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="social-link">Twitter</a>
           <span className="social-divider">·</span>
           <a href={social.github} target="_blank" rel="noopener noreferrer" className="social-link">GitHub</a>
+          <span className="social-divider">·</span>
+          <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">LinkedIn</a>
         </div>
       </section>
 
