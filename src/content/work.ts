@@ -53,7 +53,7 @@ export const industry: WorkItem[] = [
 
 export const research: WorkItem[] = [
   {
-    title: "Research (selected collaborations & independent work)",
+    title: "Research Mentee (selected collaborations & independent work)",
     company: "Massachusetts Institute of Technology · Tsinghua University · University of Amsterdam",
     date: "09/2024–01/2025",
     description: [
