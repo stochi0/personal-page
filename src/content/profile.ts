@@ -37,5 +37,4 @@ export const social = {
   email: "ayushbodade1@gmail.com",
   twitter: "https://x.com/stochi0",
   github: "https://github.com/stochi0",
-  linkedin: "https://www.linkedin.com/in/ayushbodade",
 };
