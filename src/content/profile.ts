@@ -34,7 +34,7 @@ export const now = {
 };
 
 export const social = {
-  email: "ayushbodade1@gmail.com",
+  email: "heystochi@gmail.com",
   twitter: "https://x.com/stochi0",
   github: "https://github.com/stochi0",
 };
