@@ -116,7 +116,7 @@ export default function Home() {
       <section id="connect" className="section" style={{ textAlign: 'center' }}>
         <h2 className="section-title" style={{ textAlign: 'center' }}>Connect</h2>
         <p className="body-text" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        Moving Homo sapiens forward. Always up for interesting conversations.
+        Always up for interesting conversations. You’ll find me on Twitter, or by email.
         </p>
         <div className="social-links">
           <a href={`mailto:${social.email}`} className="social-link">Email</a>
