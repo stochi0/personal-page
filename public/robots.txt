@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ayushbodade.vercel.app/sitemap.xml
+# Replace with your actual production domain above if it's not ayushbodade.vercel.app 
