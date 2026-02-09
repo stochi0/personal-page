@@ -3,7 +3,7 @@ import { profile } from "@/content";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata(
-    "Blog",
+    "Writings",
     "Thoughts, insights, and stories from Ayush",
     profile.name
 );
@@ -13,9 +13,9 @@ export default function Blog() {
         <div className="main-container">
             {/* Page Title */}
             <header className="section" style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                <h1 style={{ fontSize: '2.5rem' }}>Blog</h1>
+                <h1 style={{ fontSize: '2.5rem' }}>Writings</h1>
                 <p className="tagline" style={{ marginTop: '1rem' }}>
-                    Thoughts, insights, and stories
+                    Collected thoughts and quiet observations
                 </p>
             </header>
 
@@ -23,7 +23,9 @@ export default function Blog() {
 
             {/* Coming Soon Section */}
             <section className="section" style={{ textAlign: 'center', padding: '4rem 0' }}>
-                <h2 className="section-title" style={{ fontSize: '1.5rem' }}>Coming soon</h2>
+                <p className="section-title" style={{ fontSize: '1.1rem', opacity: 0.7 }}>
+                    In quiet preparation
+                </p>
             </section>
 
             <div className="star">✦</div>
