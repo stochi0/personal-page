@@ -15,7 +15,7 @@ export const dynamicParams = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const mod = await import(`@/content/writings/${slug}.mdx`);
+  const mod = await import(`@/content/writings/${slug}/index.mdx`);
   const meta = (mod as { metadata?: { title: string; description?: string } }).metadata;
   if (!meta?.title) return {};
   return createMetadata(meta.title, meta.description ?? "", profile.name);
@@ -33,7 +33,7 @@ function formatPostDate(dateStr?: string) {
 
 export default async function WritingPage({ params }: Props) {
   const { slug } = await params;
-  const mod = await import(`@/content/writings/${slug}.mdx`);
+  const mod = await import(`@/content/writings/${slug}/index.mdx`);
   const { default: Content } = mod;
   const meta = (mod as { metadata?: { date?: string } }).metadata;
   const dateFormatted = formatPostDate(meta?.date);

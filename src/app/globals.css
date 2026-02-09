@@ -1293,6 +1293,18 @@ section[id] {
   font-size: 1.05em;
 }
 
+.writing-image-wrap {
+  display: block;
+  margin: 1.5rem 0;
+}
+
+.writing-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
 .writing-article {
   margin-bottom: 2rem;
 }

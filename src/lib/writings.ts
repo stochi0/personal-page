@@ -1,11 +1,26 @@
-import { readdirSync } from "fs";
+import { readdirSync, existsSync } from "fs";
 import path from "path";
 
 const WRITINGS_DIR = path.join(process.cwd(), "src", "content", "writings");
 
+/** Entry point for each post; the folder name is the slug. */
+const POST_ENTRY = "index.mdx";
+
+/**
+ * Writings are organized as one folder per post:
+ *   writings/
+ *     weight-tying/
+ *       index.mdx      ← post content
+ *       *.png, *.jpg   ← images (use relative paths in MDX, e.g. ![](./figure.png) with import)
+ */
 export function getWritingSlugs(): string[] {
-  const names = readdirSync(WRITINGS_DIR);
-  return names.filter((n) => n.endsWith(".mdx")).map((n) => n.replace(/\.mdx$/, "")).sort();
+  const entries = readdirSync(WRITINGS_DIR, { withFileTypes: true });
+  const slugs = entries
+    .filter((e) => e.isDirectory() && !e.name.startsWith("."))
+    .filter((e) => existsSync(path.join(WRITINGS_DIR, e.name, POST_ENTRY)))
+    .map((e) => e.name)
+    .sort();
+  return slugs;
 }
 
 export type WritingMeta = {
@@ -18,7 +33,7 @@ export async function getAllWritingsMeta(): Promise<{ slug: string; metadata: Wr
   const slugs = getWritingSlugs();
   const entries = await Promise.all(
     slugs.map(async (slug) => {
-      const mod = await import(`@/content/writings/${slug}.mdx`);
+      const mod = await import(`@/content/writings/${slug}/${POST_ENTRY}`);
       const metadata = (mod as { metadata?: WritingMeta }).metadata ?? { title: slug };
       return { slug, metadata };
     })

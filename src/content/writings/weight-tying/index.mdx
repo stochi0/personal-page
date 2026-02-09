@@ -4,6 +4,11 @@ export const metadata = {
   date: "2025-02-09",
 };
 
+import forwardPassPipeline from "./forward-pass-tokens-to-logits.png";
+import projectionToLogits from "./projection-H-Et-to-logits.png";
+import gradientFlowIntoE from "./gradient-flow-into-embedding-E.png";
+import outerProductUpdate from "./outer-product-update-per-position.png";
+
 # Weight-Tying: The Small, Gentle Read–Write Symmetry in Language Models
 
 **TL;DR —** A language model at every step asks one simple question — *given the numerical representation of the context so far, what is the probability of each vocabulary token being next?* This writing unfolds that question cleanly: symbols first, forward & backward passes next, then the split of gradients that makes a single embedding table both reader and writer.
@@ -57,6 +62,8 @@ These primitives suffice to write the forward and backward equations compactly a
 
 ## Forward pass
 
+<img src={forwardPassPipeline.src} alt="Forward pass pipeline: raw text → tokenizer → embeddings + position → transformer → logits (H E^T + b) → softmax → sample" />
+
 1. **Embed + add position**
    $$
    X_{b,t,:} = E_{X_{\text{ids}_{b,t}},:} + P_{t,:},\qquad X\in\mathbb{R}^{B\times T\times D}.
@@ -77,6 +84,8 @@ These primitives suffice to write the forward and backward equations compactly a
 
    *Why:* each hidden $h\in\mathbb{R}^D$ scores every vocabulary row by inner product with that row; tying uses the same rows that produced embeddings.
 
+<img src={projectionToLogits.src} alt="Projection matrix multiplication: hidden states H × E^T → logits Z (Z = H E^T + b)" />
+
 4. **Softmax → probabilities**
    $$
    p_{b,t,j}=\frac{\exp(Z_{b,t,j})}{\sum_{k=1}^V\exp(Z_{b,t,k})}.
@@ -94,6 +103,8 @@ These are the only forward equations required; they arise directly from the desi
 ## Backward pass — the two distinct contributions into $E$ (chain rule)
 
 Because $E$ appears in two roles — **as a lookup for inputs** and **as the transpose used to compute logits** — the gradient $\frac{\partial \ell}{\partial E}$ decomposes into two additive pieces.
+
+<img src={gradientFlowIntoE.src} alt="Gradient flow into embedding matrix E: input-side (sparse) and output-side (dense) contributions sum to ∂ℓ/∂E" />
 
 ### 1. Immediate quantity from softmax + CE (logit residuals)
 
@@ -156,6 +167,8 @@ Fix a single position $(b,t)$. Let $h=H_{b,t,:}\in\mathbb{R}^D$, $z=Z_{b,t,:}\in
   $$
   \dfrac{\partial \ell_{b,t}}{\partial h} = \sum_{v=1}^V (p_v-\mathbf{1}_{v=y})E_{v,:}^\top = E^\top (p - e_y).
   $$
+
+<img src={outerProductUpdate.src} alt="Outer product update per position: residuals Δ and hidden state h produce the output-side update to E" />
 
 Summing these per-position contributions across $(b,t)$ recovers the tensor equations above. This shows how softmax residuals produce outer-product updates on $E$ and how they also feed back into the model via $h$.
 

@@ -37,6 +37,12 @@ const components: MDXComponents = {
   ),
   strong: ({ children }) => <strong className="writing-strong">{children}</strong>,
   em: ({ children }) => <em>{children}</em>,
+  img: (props) => (
+    <span className="writing-image-wrap">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img {...props} alt={props.alt ?? ""} className="writing-image" />
+    </span>
+  ),
 };
 
 export function useMDXComponents(provided: MDXComponents): MDXComponents {
