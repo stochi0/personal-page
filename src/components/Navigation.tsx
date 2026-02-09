@@ -8,6 +8,7 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Navigation() {
@@ -34,12 +35,12 @@ export function Navigation() {
       const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
       const markerY = window.scrollY + 200;
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-      
+
       let current = "";
       for (const section of sections) {
         if (section.offsetTop <= markerY) current = section.id;
       }
-      
+
       if (atBottom && sections.length > 0) {
         current = sections[sections.length - 1].id;
       }
@@ -91,7 +92,7 @@ export function Navigation() {
               })}
             </div>
           )}
-          
+
           {mounted && (
             <button
               onClick={toggleTheme}
