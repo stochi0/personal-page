@@ -2,7 +2,7 @@ import type { MDXComponents } from "mdx/types";
 
 /**
  * MDX component overrides so blog content matches the site's
- * elegant, old-money typography and theme (Cormorant, accent, borders).
+ * elegant typography and theme (Cormorant, accent, borders).
  */
 const components: MDXComponents = {
   h1: ({ children }) => (
