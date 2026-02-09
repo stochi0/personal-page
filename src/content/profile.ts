@@ -26,7 +26,7 @@ Keep moving forward.
 };
 
 export const now = {
-  current: `I'm open to remote roles in this space. If that sounds cool, say hi. In a different vein, a few months back, I traveled solo through 11 cities in China, Macau, and Hong Kong. Oh, and I love hotpot.`,
+  current: `In a different vein, a few months back, I traveled solo through 11 cities in China, Macau, and Hong Kong. Oh, and I love hotpot.`,
   previous: [
     { name: "QX Labs", link: "/work" },
     { name: "Unsiloed AI", link: "/work", badge: "YC F25" },
