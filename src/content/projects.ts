@@ -16,7 +16,7 @@ export const projectCategories: ProjectCategory[] = [
     name: "ML & Deep Learning",
     projects: [
       {
-        title: "YunTun: Distributed RL Post-Training for Tool Use (Qwen3-0.6B)",
+        title: "YunTun: Distributed RL Post-Training for Tool Use (Qwen3-0.6B) (In Progress)",
         tech: "PyTorch, FSDP2, Tensor Parallelism, Pipeline Parallelism (1F1B), SGLang, GRPO, AMP (BF16/FP16)",
         description: [
           "Implemented a custom 3D-parallel training stack from scratch (FSDP2 + custom TP + PP) for RL fine-tuning Qwen3-0.6B for tool use, including column/row sharding, vocab-parallel embeddings, and explicit gradient synchronization.",
