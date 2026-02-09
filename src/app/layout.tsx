@@ -3,6 +3,7 @@ import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Navigation, ScrollToTop } from "../components/Navigation";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({

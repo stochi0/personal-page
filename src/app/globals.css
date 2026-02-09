@@ -1181,6 +1181,177 @@ section[id] {
 }
 
 /* ========================================
+   WRITINGS / BLOG PROSE (old-money style)
+   ======================================== */
+
+.writing-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.writing-heading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.writing-heading:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.writing-subheading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.writing-body {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.writing-body:last-child {
+  margin-bottom: 0;
+}
+
+.writing-strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.writing-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0 1.5rem;
+}
+
+.writing-list-ordered {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+.writing-list-item {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.writing-list-ordered .writing-list-item {
+  margin-bottom: 0.6rem;
+}
+
+.writing-blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 0 0.75rem 1.25rem;
+  border-left: 2px solid var(--accent);
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.writing-hr {
+  border: none;
+  height: 1px;
+  background: var(--border-color);
+  margin: 2.5rem 0;
+}
+
+/* KaTeX math in writings */
+.writing-math-block {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.25rem 0;
+  padding: 0.5rem 0;
+}
+
+.writing-math-block .katex-display {
+  margin: 0;
+  padding: 0 0.25rem;
+}
+
+.writing-body .katex {
+  font-size: 1.05em;
+}
+
+.writing-article {
+  margin-bottom: 2rem;
+}
+
+.writing-post-date {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+/* Writings index list entries */
+.writing-entry-link {
+  display: block;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.writing-entry-link:hover {
+  padding-left: 0.5rem;
+  border-color: var(--accent);
+}
+
+.writing-entry-title {
+  display: block;
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  transition: color 0.2s ease;
+}
+
+.writing-entry-link:hover .writing-entry-title {
+  color: var(--accent);
+}
+
+.writing-entry-desc {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+.writing-entry-date {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+/* ========================================
    TAILWIND THEME OVERRIDES
    ======================================== */
 

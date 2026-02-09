@@ -56,6 +56,10 @@ export default function Home() {
             <span className="explore-link-title">Projects</span>
             <span className="explore-link-desc">— things I&apos;ve built</span>
           </Link>
+          <Link href="/writings" className="explore-link">
+            <span className="explore-link-title">Writings</span>
+            <span className="explore-link-desc">— essays & notes</span>
+          </Link>
         </div>
       </section>
 
