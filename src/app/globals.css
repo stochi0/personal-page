@@ -838,6 +838,11 @@ html.light .craft-card-featured {
   border-bottom: 1px solid var(--border-color);
 }
 
+/* Writing entries use .writing-entry-link for their border; avoid double line */
+.item-list li:has(.writing-entry-link) {
+  border-bottom: none;
+}
+
 .item-list li:last-child {
   border-bottom: none;
 }
