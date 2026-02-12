@@ -53,13 +53,12 @@ export const industry: WorkItem[] = [
 
 export const research: WorkItem[] = [
   {
-    title: "Research Mentee (selected collaborations & independent work)",
-    company: "Massachusetts Institute of Technology · Tsinghua University · University of Amsterdam",
+    title: "Research Mentee (independent work)",
+    company: "Massachusetts Institute of Technology · Tsinghua University",
     date: "09/2024–01/2025",
     description: [
-      "MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from an MIT postdoctoral researcher.",
-      "Tsinghua: Literature reviews in 3D reconstruction and generation.",
-      "UvA: Collaborated with the Parallel Computing Systems Lab, focusing on multi-modal models.",
+      "MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from a postdoctoral researcher.",
+      "Tsinghua: Informal collaboration on literature reviews in 3D reconstruction and generation.",
     ],
   },
   {
