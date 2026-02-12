@@ -16,13 +16,13 @@ export const projectCategories: ProjectCategory[] = [
     name: "ML & Deep Learning",
     projects: [
       {
-        title: "YunTun: Distributed RL Post-Training for Tool Use (Qwen3-0.6B) (In Progress)",
-        tech: "PyTorch, FSDP2, Tensor Parallelism, Pipeline Parallelism (1F1B), SGLang, GRPO, AMP (BF16/FP16)",
+        title: "Weigou: Minimal 4D-Parallel LLaMA Training (SmolLM-360M)",
+        tech: "PyTorch, 4D Parallelism (TP/CP/PP/DP), Custom Ring Attention, Pipeline Parallelism (1F1B/AFAB), Flash Attention, SafeTensors, SLURM",
         description: [
-          "Implemented a custom 3D-parallel training stack from scratch (FSDP2 + custom TP + PP) for RL fine-tuning Qwen3-0.6B for tool use, including column/row sharding, vocab-parallel embeddings, and explicit gradient synchronization.",
-          "Integrated SGLang-based rollout server with native token logprobs for GRPO optimization.",
+          "Built a lean 4D-parallel training stack from scratch, including tensor, context, pipeline, and data parallelism with a unified process group manager over a DP×PP×CP×TP grid, plus bucketed gradient synchronization across CP+DP ranks.",
+          "Implemented Megatron/Pictron-style tensor parallel layers (column/row/vocab sharding), ring-attention based context parallelism with RoPE slicing, and a pipeline engine (1F1B/AFAB) for LLaMA-like models, wired into a config/CLI + SLURM workflow for multi-node experiments.",
         ],
-        link: "https://github.com/stochi0/yuntun",
+        link: "https://github.com/stochi0/weigou",
         linkText: "GitHub →",
       },
       {
