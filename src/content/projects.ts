@@ -16,6 +16,16 @@ export const projectCategories: ProjectCategory[] = [
     name: "ML & Deep Learning",
     projects: [
       {
+        title: "Yuntun: Qwen3-0.6B with Megatron-Style Tensor Parallelism",
+        tech: "PyTorch, Megatron-Style TP (Column/Row/Vocab Sharding), FineWeb Streaming, HuggingFace Parity, RoPE/GQA/RMSNorm/QK-Norm",
+        description: [
+          "Built a minimal Qwen3-style causal LM from scratch with pre-training on FineWeb (streaming, sample-10BT), with gradient accumulation, checkpointing",
+          "Implemented Megatron-style tensor-parallel layers (column/row linear, vocab-parallel embedding and LM head with custom autograd), RoPE and GQA in the decoder",
+        ],
+        link: "https://github.com/stochi0/yuntun",
+        linkText: "GitHub →",
+      },
+      {
         title: "Weigou: Minimal 4D-Parallel LLaMA Training (SmolLM-360M)",
         tech: "PyTorch, 4D Parallelism (TP/CP/PP/DP), Custom Ring Attention, Pipeline Parallelism (1F1B/AFAB), Flash Attention, SLURM",
         description: [
