@@ -84,7 +84,7 @@ export const academia: WorkItem[] = [
   },
   {
     title: "Coordinator",
-    company: "IEEE CS Student Chapter, S.P.I.T.",
+    company: "IEEE CS Student Chapter",
     date: "11/2022–12/2023",
     description: [
       "Coordinated events, meetings, conferences, hackathons, and competitions to ensure smooth operations.",
