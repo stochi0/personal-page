@@ -65,9 +65,9 @@ export default function Home() {
 
       <div className="star">✦</div>
 
-      {/* Accolades - Elegant achievements */}
-      <section id="accolades" className="section">
-        <h2 className="section-title">Accolades</h2>
+      {/* Highlights - Elegant achievements */}
+      <section id="highlights" className="section">
+        <h2 className="section-title">Highlights</h2>
         
         <div className="accolades-grid">
           {achievements.map((item, i) => (

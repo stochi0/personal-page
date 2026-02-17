@@ -79,7 +79,7 @@ export function Navigation() {
         <div className="nav-right">
           {pathname === "/" && (
             <div className="nav-dots">
-              {["now", "explore", "accolades", "piano", "connect"].map((section) => {
+              {["now", "explore", "highlights", "piano", "connect"].map((section) => {
                 const title = section === "piano" ? "Off the Keys" : section.charAt(0).toUpperCase() + section.slice(1);
                 return (
                   <a
