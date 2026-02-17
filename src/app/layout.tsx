@@ -3,6 +3,7 @@ import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Navigation, ScrollToTop } from "../components/Navigation";
+import { profile } from "@/content/profile";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 
@@ -18,33 +19,33 @@ export const metadata: Metadata = {
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000'),
   title: {
-    default: "Ayush",
-    template: "%s | Ayush",
+    default: profile.title,
+    template: `%s | ${profile.name}`,
   },
-  description: "AI, Agents, RL, Vision. Research & Engineering.",
+  description: profile.metaDescription,
   keywords: ["AI", "Machine Learning", "Ayush", "stochi0", "Portfolio", "Software Engineer", "Research"],
-  authors: [{ name: "Ayush" }],
-  creator: "Ayush",
-  publisher: "Ayush",
+  authors: [{ name: profile.name }],
+  creator: profile.name,
+  publisher: profile.name,
   formatDetection: {
     email: true,
     address: true,
     telephone: true,
   },
   openGraph: {
-    title: "Ayush - AI Engineer and Researcher",
-    description: "AI, Agents, RL, Vision. Research & Engineering.",
+    title: profile.title,
+    description: profile.metaDescription,
     url: process.env.NEXT_PUBLIC_VERCEL_URL
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
       : 'http://localhost:3000',
-    siteName: "Ayush",
+    siteName: profile.name,
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ayush - AI Engineer and Researcher",
-    description: "AI, Agents, RL, Vision. Research & Engineering.",
+    title: profile.title,
+    description: profile.metaDescription,
   },
   robots: {
     index: true,
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  applicationName: "Ayush",
+  applicationName: profile.name,
   referrer: "origin-when-cross-origin",
   category: "technology",
 };

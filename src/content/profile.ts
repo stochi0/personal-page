@@ -4,6 +4,8 @@ export const profile = {
   
   title: "Ayush",
   description: "AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.",
+  /** Used for page metadata / OG / Twitter (from bio) */
+  metaDescription: "I like Post-Training, Agents, RL and Model Architectures.",
   bio: ["I like {Post-Training}, {Agents}, {RL} and {Model Architectures}."],
   heroQuotes: [
     `胜则生，败则死。

@@ -4,7 +4,7 @@ import { profile, now, social, achievements, programSelections, pianoAchievement
 import { renderHighlights, renderBold } from "@/lib/text-utils";
 import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = createMetadata(profile.title, profile.description);
+export const metadata: Metadata = createMetadata(profile.title, profile.metaDescription);
 
 export default function Home() {
   return (
