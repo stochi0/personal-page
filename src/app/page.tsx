@@ -1,21 +1,38 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { profile, now, social, achievements, programSelections, pianoAchievements } from "@/content";
+import {
+  profile,
+  now,
+  social,
+  achievements,
+  programSelections,
+  pianoAchievements,
+} from "@/content";
 import { renderHighlights, renderBold } from "@/lib/text-utils";
 import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = createMetadata(profile.title, profile.metaDescription);
+export const metadata: Metadata = createMetadata(
+  profile.title,
+  profile.metaDescription,
+);
 
 export default function Home() {
   return (
     <div className="main-container">
       {/* Hero - Personal Introduction */}
-      <header className="section" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+      <header
+        className="section"
+        style={{ textAlign: "center", marginBottom: "1rem" }}
+      >
         <p className="hero-greeting">Hey, I&apos;m</p>
-        <h1 style={{ fontSize: '2.5rem' }}>{profile.name}</h1>
+        <h1 style={{ fontSize: "2.5rem" }}>{profile.name}</h1>
         <p className="hero-aka">aka {profile.aka}</p>
         {profile.bio.map((paragraph, i) => (
-          <p key={i} className="tagline" style={{ marginTop: i === 0 ? '1.5rem' : '1rem' }}>
+          <p
+            key={i}
+            className="tagline"
+            style={{ marginTop: i === 0 ? "1.5rem" : "1rem" }}
+          >
             {renderHighlights(paragraph)}
           </p>
         ))}
@@ -26,18 +43,16 @@ export default function Home() {
       {/* Now - What I'm up to */}
       <section id="now" className="section">
         {/* <h2 className="section-title">Now</h2> */}
-        <p className="body-text">
-          {renderBold(now.current)}
-        </p>
-        <p className="body-text" style={{ marginTop: '1.5rem' }}>
-          Previously shipped AI at{' '}
+        <p className="body-text">{renderBold(now.current)}</p>
+        <p className="body-text" style={{ marginTop: "1.5rem" }}>
+          Previously shipped AI at{" "}
           {now.previous.map((item, i) => (
             <span key={item.name}>
               <Link href={item.link} className="inline-link">
                 {item.name}
               </Link>
               {item.badge && ` (${item.badge})`}
-              {i < now.previous.length - 1 && ' and '}
+              {i < now.previous.length - 1 && " and "}
             </span>
           ))}
           .
@@ -68,14 +83,16 @@ export default function Home() {
       {/* Highlights - Elegant achievements */}
       <section id="highlights" className="section">
         <h2 className="section-title">Highlights</h2>
-        
+
         <div className="accolades-grid">
           {achievements.map((item, i) => (
             <div key={i} className="accolade-item">
               <span className="accolade-year">{item.year}</span>
               <div className="accolade-content">
                 <span className="accolade-title">{item.title}</span>
-                {item.detail && <span className="accolade-detail">{item.detail}</span>}
+                {item.detail && (
+                  <span className="accolade-detail">{item.detail}</span>
+                )}
               </div>
             </div>
           ))}
@@ -84,7 +101,9 @@ export default function Home() {
         {/* Program Selections */}
         <div className="programs-section">
           <p className="programs-intro">
-            Selected for <span className="highlight">7 international programs</span> in China, 2025
+            Selected for{" "}
+            <span className="highlight">7 international programs</span> in
+            China, 2025
           </p>
           <div className="programs-list">
             {programSelections.map((program, i) => (
@@ -100,15 +119,21 @@ export default function Home() {
       {/* Off the Keys - Piano */}
       <section id="piano" className="section">
         <h2 className="section-title">Off the Keys</h2>
-        <p className="body-text" style={{ marginBottom: '2rem', fontStyle: 'italic' }}>
-          Before I wrote code, I played music. The piano has been my companion since childhood.
+        <p
+          className="body-text"
+          style={{ marginBottom: "2rem", fontStyle: "italic" }}
+        >
+          Before I wrote code, I played music. The piano has been my companion
+          since childhood.
         </p>
-        
+
         <div className="piano-list">
           {pianoAchievements.map((item, i) => (
             <div key={i} className="piano-item">
               <span className="piano-title">{item.title}</span>
-              {item.context && <span className="piano-context">— {item.context}</span>}
+              {item.context && (
+                <span className="piano-context">— {item.context}</span>
+              )}
             </div>
           ))}
         </div>
@@ -117,19 +142,39 @@ export default function Home() {
       <div className="star">✦</div>
 
       {/* Connect - Simple & elegant */}
-      <section id="connect" className="section" style={{ textAlign: 'center' }}>
-        <h2 className="section-title" style={{ textAlign: 'center' }}>Connect</h2>
-        <p className="body-text" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        Always up for interesting conversations. You’ll find me on Twitter, or by email.
+      <section id="connect" className="section" style={{ textAlign: "center" }}>
+        <h2 className="section-title" style={{ textAlign: "center" }}>
+          Connect
+        </h2>
+        <p
+          className="body-text"
+          style={{ textAlign: "center", marginBottom: "2rem" }}
+        >
+          Always up for interesting conversations. You’ll find me on Twitter, or
+          by email.
         </p>
         <div className="social-links">
-          <a href={`mailto:${social.email}`} className="social-link">Email</a>
+          <a href={`mailto:${social.email}`} className="social-link">
+            Email
+          </a>
           <span className="social-divider">·</span>
-          <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="social-link">Twitter</a>
+          <a
+            href={social.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+          >
+            Twitter
+          </a>
           <span className="social-divider">·</span>
-          <a href={social.github} target="_blank" rel="noopener noreferrer" className="social-link">GitHub</a>
-          <span className="social-divider">·</span>
-          <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">LinkedIn</a>
+          <a
+            href={social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+          >
+            GitHub
+          </a>
         </div>
       </section>
 
@@ -137,10 +182,14 @@ export default function Home() {
 
       {/* Inspirational Quotes */}
       {profile.heroQuotes.length > 0 && (
-        <section className="section" style={{ marginTop: '2rem' }}>
+        <section className="section" style={{ marginTop: "2rem" }}>
           <div className="hero-quotes">
             {profile.heroQuotes.map((quote, i) => (
-              <p key={i} className="footer-quote hero-quote" style={{ whiteSpace: "pre-line" }}>
+              <p
+                key={i}
+                className="footer-quote hero-quote"
+                style={{ whiteSpace: "pre-line" }}
+              >
                 {quote}
               </p>
             ))}

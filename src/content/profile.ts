@@ -1,12 +1,16 @@
 export const profile = {
   name: "Ayush",
   aka: "stochi0",
-  
+
   title: "Ayush",
-  description: "AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.",
+  description:
+    "AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.",
   /** Used for page metadata / OG / Twitter (from bio) */
-  metaDescription: "I like Post-Training, Agents, RL and Model Architectures.",
-  bio: ["I like {Post-Training}, {Agents}, {RL} and {Model Architectures}."],
+  metaDescription:
+    "I like Post-Training, Agents, RL, ModelArchitectures and ML Systems.",
+  bio: [
+    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
+  ],
   heroQuotes: [
     `胜则生，败则死。
 不战，何来胜利？
@@ -39,5 +43,4 @@ export const social = {
   email: "heystochi@gmail.com",
   twitter: "https://x.com/stochi0",
   github: "https://github.com/stochi0",
-  linkedin: "https://www.linkedin.com/in/ayushbodade",
 };
