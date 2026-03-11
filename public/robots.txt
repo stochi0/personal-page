@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://stochi.vercel.app/sitemap.xml
+# Replace with your actual production domain above if it's not stochi.vercel.app 
