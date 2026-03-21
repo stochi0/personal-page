@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 /**
  * Renders text with {highlighted} sections wrapped in span.highlight
