@@ -1,0 +1,377 @@
+export const metadata = {
+  title: "Sparse Signal Loop",
+  description: "An exploratory diary of sparse-feedback experiments: judge sparsity, working memory, skill files, and the awkward places where the metrics disagree.",
+  date: "2026-04-11",
+};
+
+import pilotVsSeriousBest from "./pilot-vs-serious-best.png";
+import phase0SeriousHeatmaps from "./phase0-serious-heatmaps.png";
+import phase1Phase2SeriousBars from "./phase1-phase2-serious-bars.png";
+import miniSweJudgeGapSerious from "./mini-swe-judge-gap-serious.png";
+import efficiencyFrontierSerious from "./efficiency-frontier-serious.png";
+
+# Sparse Signal Loop
+
+There is a very particular kind of optimism that agent work seems to attract.
+
+It goes something like this: perhaps the model is already mostly capable, and what looks like a reasoning failure is actually a *management* failure. Maybe the signal is too mushy. Maybe the loop is too forgetful. Maybe the model needs a better place to keep state than a chat transcript that keeps swelling until nobody, least of all the model, wants to read it. If that is true, then changing the harness should not be a cosmetic intervention. It should produce qualitatively different behavior.
+
+The motivating question was simple:
+
+> The single high-leverage question is, whether limiting judge feedback to a single violated criterion, instead of giving a total score, changes the quality of the refinement strategy an RLM develops, and whether an RLM harness extracts more value from that sparse feedback than vanilla iterative refinement.
+
+I like this question because it is sharp enough to kill its own framing. If sparse feedback helps both harnesses equally, the feedback format is doing the work. If RLM helps specifically under sparse feedback, then the harness is doing something mechanistically different. If neither happens, then a surprisingly large amount of agent-flavored rhetoric collapses into "we changed the prompt and hoped."
+
+These experiments do **not** yet answer that question in the strongest RL sense. What they do, and quite usefully, is answer the prompt-time version of it. They are evaluations, not training runs. They ask a humbler question first: before we do any real learning, how much does behavior move if we change the shape of judge feedback, the location of working memory, or the persistence mechanism for process notes?
+
+That matters more than it sounds. If these prompt-only interventions already swing outcomes a lot, then the harness really is part of the object we are studying. If they do not, then the "manager" in the mismanaged geniuses story might be less mysterious than advertised.
+
+There are really two layers of evidence here.
+
+- First there were the pilots: 70 cell summaries across `openai/gpt-4.1-mini` and `z-ai/glm-4.7-flash`, run on April 7, 2026.
+- Then there was a cleaner rerun: 32 more cells, this time on `z-ai/glm-4.7` with `z-ai/glm-4.7-flash` as judge.
+
+I started with the aggregate run summaries and then dropped into the raw rollout logs whenever the coarse picture looked a bit too neat. It often did.
+
+## What Was Actually Built
+
+The experiment scaffold is quite disciplined about what changes across phases.
+
+At the base level, the study defines a very plain 2x2:
+
+- harness: `chat` vs `rlm`
+- judge feedback: dense total-score feedback vs sparse single-criterion feedback
+
+That becomes Phase 0.
+
+Phase 1 adds a deliberately modest intervention: a structured checklist / hypothesis log / failure log, and the only real question is *where that notebook lives*.
+
+- For chat harnesses, it lives in assistant messages.
+- For RLM, it is either kept in those same assistant messages as an ablation or persisted in files in the workspace / sandbox.
+
+Phase 2 asks a slightly more ambitious question: can *procedure* persist, not just scratchwork?
+
+- Chat gets `chat_no_file` and `chat_system_reinject`.
+- RLM gets a skill-file arm, where the model is asked to update a persistent process note after bad judge calls.
+
+That last part is implemented quite literally. In the chat baseline, a tagged block of process notes can be pulled out of one turn and reinserted at the start of the next. In the RLM setting, the persistent memory is just an actual text file. This is not metaphorical memory. It is a file.
+
+The two benchmark families are also importantly different.
+
+- **LongBench-Pro (LBP)** is long-context question answering, retrieval, and clustering. The chat harness revises answers in conversation; the RLM harness works through a REPL over the materialized long context. Primary reward here is the judge, but the runs also log task metrics like accuracy, F1, NDCG, pairwise accuracy, and SubEM.
+- **Mini SWE Agent Plus** is code repair inside sandboxes. Here the primary reward is actual task solve rate from the test harness. The judge is only an in-loop helper. This distinction turns out to matter a lot.
+
+There is also a small but important wrinkle in the later phases. The long-context benchmark is narrowed to a harder clustering slice at 32k context, and the coding benchmark is narrowed to a single Django slice. So Phase 1 and Phase 2 are not just "Phase 0 plus memory"; they are also happening on a narrower, harder slice. That is good experimental hygiene, but it means one should not read the phases as a single clean time-series.
+
+<div style={{textAlign: "center"}}>
+  <img src={pilotVsSeriousBest.src} alt="Pilot versus rerun comparison" width="900" />
+  <p><em>The cleaner rerun usually beat the pilots, though not by a dramatic or uniform margin. This comparison also mixes model families, so I take it as orientation rather than proof.</em></p>
+</div>
+
+## Phase 0: The Actual 2x2
+
+Phase 0 is the central question in its cleanest form, so it is where I would start even if there were ten more phases.
+
+<div style={{textAlign: "center"}}>
+  <img src={phase0SeriousHeatmaps.src} alt="Phase 0 heatmaps" width="820" />
+  <p><em>Primary reward on the cleaner rerun. Same 2x2, two very different benchmark families.</em></p>
+</div>
+
+The first thing to say is that the answer is not a theorem. It is benchmark-shaped.
+
+### LongBench-Pro
+
+On the full Phase 0 LongBench-Pro run, the plain chat loop won comfortably.
+
+- `chat__total_score`: **0.9667** reward / judge YES, **0.6396** average task metric
+- `chat__single_criterion`: **0.8667** reward, **0.6525** average task metric
+- `rlm__single_criterion`: **0.7000** reward, **0.5351** average task metric
+- `rlm__total_score`: **0.6667** reward, **0.4368** average task metric
+
+If one wanted a quick headline, it would be: on long-context tasks, a plain iterative chat loop with dense rubric feedback was simply harder to beat than the fancier harness.
+
+But the more interesting detail is that the dense chat arm was not just *better*; it was also *faster*. In the raw rollouts, it averaged **3.63 turns** and about **149,192 tokens per rollout**, whereas sparse chat averaged **6.10 turns** and about **495,834 tokens per rollout**. So the denser signal was, in practice, the cheaper one, because the loop converged earlier.
+
+There is also a small splinter in these numbers that I do not think should be ignored. The dense-chat arm reached 29 judge acceptances out of 30 rollouts, but its task metric was still only 0.6396. Looking at the raw rows, two `T3.2 Single-Hop Fact QA` examples were judge-accepted with `task_metric_reward = 0.0`; the model answered simply `[Answer] D` or `[Answer] C`, which the judge accepted, while the benchmark metric did not. That is not a scandal. It is just a reminder that "the judge" and "the benchmark" are not the same object, even when the scoreboard tries to make them look like one.
+
+And that, already, is a useful result: sparse feedback did *not* unlock some hidden RLM advantage here. If anything, the loop with the smallest conceptual overhead won.
+
+### Mini SWE Agent Plus
+
+Mini SWE is more annoying, in the productive sense.
+
+- `chat__single_criterion`: **0.5000** solved, judge YES **0.6333**
+- `chat__total_score`: **0.4333** solved, judge YES **0.3333**
+- `rlm__single_criterion`: **0.5333** solved, judge YES **0.7333**
+- `rlm__total_score`: **0.5667** solved, judge YES **0.8667**
+
+So the cross-over goes in opposite directions:
+
+- Chat preferred **sparse** feedback.
+- RLM preferred **dense** feedback.
+
+This is almost comically uncooperative if what you wanted was a clean one-line conclusion. But as a measurement, it is actually quite informative. It suggests that "feedback sparsity" is not a standalone variable with a universal sign. It interacts with the task and with the loop.
+
+My rough reading is this:
+
+- For chat-on-code-repair, one crisp complaint may be enough. The loop is already structurally simple, so dense rubric lines mostly add more surface area to overfit.
+- For RLM-on-code-repair, dense feedback may be acting as a more useful local search landscape. The harness has more degrees of freedom, and the extra rubric structure gives it more to grab onto.
+
+That is still just a read, not a proof. But it is at least compatible with the data, which is more than can be said for many armchair theories of agent behavior.
+
+## Phase 1: Where Should the Notebook Live?
+
+Phase 1 is one of those interventions that sounds almost too modest to matter. The model is told to maintain:
+
+- a short checklist
+- a one- or two-line hypothesis log
+- a one-line "what failed last time"
+
+The only real variable is whether those notes live in chat or in files.
+
+This is, in a very literal sense, a test of external working memory. Not memory in the grand cognitive sense. Just a notebook.
+
+<div style={{textAlign: "center"}}>
+  <img src={phase1Phase2SeriousBars.src} alt="Phase 1 and Phase 2 interventions" width="980" />
+  <p><em>Phase 1 and Phase 2 on the cleaner rerun. The later LongBench-Pro phases are on a harder clustering slice, so compare within-phase, not across all phases.</em></p>
+</div>
+
+### Mini SWE Phase 1
+
+The cleanest result in Phase 1 is that the simplest arm won again.
+
+- `chat__total_score__mem_chat`: **0.7000** solved
+- `chat__single_criterion__mem_chat`: **0.6333**
+- `rlm__total_score__mem_repl_files`: **0.5667**
+- `rlm__single_criterion__mem_chat`: **0.5667**
+- `rlm__single_criterion__mem_repl_files`: **0.4667**
+- `rlm__total_score__mem_chat`: **0.4667**
+
+So: yes, the notebook helps a bit relative to Phase 0, but no, putting it in files does not obviously save the RLM. In fact, file-backed notes were sometimes worse than chat-backed notes.
+
+What *did* happen is slightly more awkward. The RLM arms often looked better to the judge than to the tests. On the dense-feedback arms, judge YES rose to **0.9000**, but solved rate sat at **0.4667** and **0.5667**. In raw-count terms, that means a large pile of "judge says yes, tests say no."
+
+That gap matters because it changes how one should interpret Phase 1. If the question is "can a better notebook help the model look more coherent to an LLM judge?", then maybe yes. If the question is "does it help the agent actually fix code?", the answer is much weaker.
+
+### LongBench-Pro Phase 1
+
+Here the result is harsher.
+
+- `chat__total_score__mem_chat`: **0.4000**
+- `chat__single_criterion__mem_chat`: **0.3000**
+- `rlm__total_score__mem_chat`: **0.2000**
+- `rlm__total_score__mem_repl_files`: **0.2000**
+- `rlm__single_criterion__mem_chat`: **0.1000**
+- `rlm__single_criterion__mem_repl_files`: **0.1000**
+
+Because this is the Phase 1 slice, we are now on five clustering examples at 32k, two rollouts each. So I would not try to squeeze universal truths out of the second decimal place here. But the direction is not subtle. On this slice, persistent notes in files did not rescue the RLM at all.
+
+The charitable interpretation is that the hard part on this LBP slice is not remembering the last failed guess. It is decomposing the clustering problem quickly enough that the next guess is materially better. A notebook does not automatically give you that abstraction.
+
+This is the first place where the broader "mismanaged geniuses" intuition started to feel useful to me. The problem is not "more state good." The problem is: what is the right decomposition language? A checklist stored in the wrong abstraction is just a longer way of being confused.
+
+## Phase 2: Does Procedure Persist?
+
+Phase 2 is the closest thing here to a harness-native continual-learning question.
+
+Not continual learning in the parametric sense. No weights are being updated. No cross-episode competence is being internalized. But there *is* an attempt to preserve reusable procedure:
+
+- what kinds of judge failures to look for
+- what to check before submitting
+- what habits reduce wasted tool calls
+
+The setup is careful about this. The prompts explicitly ban task spoilers and gold spans. The skill file is supposed to contain *procedure only*.
+
+That is exactly why the results are interesting. If the procedure channel helps, it means the loop can accumulate useful meta-behavior without being handed answers.
+
+### Mini SWE Phase 2
+
+This is where the numbers become a little mischievous.
+
+On actual solved rate, the best Phase 2 Mini SWE cells were both chat arms:
+
+- `chat__single_criterion__chat_no_file`: **0.6333**
+- `chat__total_score__chat_system_reinject`: **0.6333**
+
+The RLM skill-file arms did not beat them:
+
+- `rlm__single_criterion__rlm_skill_file`: **0.5333**
+- `rlm__total_score__rlm_skill_file`: **0.5667**
+
+So if the hoped-for story was "sparse signal plus RLM plus a skill file produces a qualitatively better refinement regime," the answer here is no, not yet.
+
+And then there is the judge.
+
+<div style={{textAlign: "center"}}>
+  <img src={miniSweJudgeGapSerious.src} alt="Judge gap on Mini SWE" width="1100" />
+  <p><em>On Mini SWE, especially for the RLM arms, the in-loop judge is often substantially more optimistic than the test harness.</em></p>
+</div>
+
+The densest skill-file arm, `rlm__total_score__rlm_skill_file`, was judged correct on **29 out of 30** rollouts, for a judge YES rate of **0.9667**. But it only actually solved **17 out of 30**, i.e. **0.5667**. That is **12 judge-yes / test-no false positives** in a single cell.
+
+I do not think one can look at that and say "the skill file worked" without immediately asking "worked at what?"
+
+It may well have helped the model learn how to produce the kind of diff-and-explanation bundle the judge likes. That is not nothing. But it is not the same as learning a better repair policy. In this setting, the skill file seems at least partly capable of preserving *judge-facing procedure* rather than *task-facing procedure*.
+
+One caveat: the sparse reinjection chat arm on Mini SWE was also contaminated by **8 sandbox startup errors**. Its **0.4333** should therefore be read with more suspicion than the other Phase 2 cells. This is exactly the kind of thing raw rollout inspection is useful for; the top-line summary alone makes it look like a clean behavioral loss.
+
+### LongBench-Pro Phase 2
+
+LongBench-Pro Phase 2 is, to me, more encouraging for lightweight memory than for explicit file-backed skills.
+
+- `chat__single_criterion__chat_system_reinject`: **0.6000**
+- `chat__total_score__chat_no_file`: **0.5000**
+- `chat__total_score__chat_system_reinject`: **0.4000**
+- `chat__single_criterion__chat_no_file`: **0.3000**
+- `rlm__single_criterion__rlm_skill_file`: **0.3000**
+- `rlm__total_score__rlm_skill_file`: **0.2000**
+
+The best arm here is the chat loop with sparse feedback and system reinjection. Not the file. Not the heavier harness. Just a weak carry-over mechanism that re-exposes a tagged process block on the next turn.
+
+That result made me pause a bit, because it is almost the opposite of the durable skill-file intuition. But perhaps it should not be so surprising. Reinjection is opinionated. It forces the persistent state to be short, local, and immediately legible to the next step. A free-form skill file has more expressive power, but also more ways to become vague, bloated, or merely ceremonial.
+
+Again: the question is not whether memory exists. The question is what language that memory is written in.
+
+## Efficiency Is Part Of The Result
+
+There is another way to read these runs that the reward tables hide a bit.
+
+On some cells, the harness that loses on absolute reward still wins on cost. On others, the winner is just better across the board. That distinction matters because agent work has a bad habit of grading itself only on "best answer eventually," even when the scaffold quietly multiplies latency and token burn.
+
+I am using two simple quantities from the run artifacts:
+
+- **total tokens**, which here is the mean input-plus-output tokens per rollout
+- **mean rollout time**, computed from `rollout_time_ms_sum / num_rollouts`
+
+Those are not perfect cost measures, but they are good enough to show that absolute reward is not the whole story.
+
+<div style={{textAlign: "center"}}>
+  <img src={efficiencyFrontierSerious.src} alt="Efficiency frontier" width="980" />
+  <p><em>The tradeoff is benchmark-specific: on LongBench-Pro the RLM arms are often cheaper but worse; on Mini SWE the best chat arms usually dominate on quality and latency together.</em></p>
+</div>
+
+### LongBench-Pro efficiency
+
+On the full Phase 0 LongBench-Pro run, chat won on absolute quality, but not on speed.
+
+- `chat__total_score` got **0.9667** reward using about **149,192 tokens per rollout** and **32.2 minutes** mean rollout time.
+- `rlm__single_criterion` only reached **0.7000**, but did so with about **106,936 tokens** and **7.0 minutes**.
+- `rlm__total_score` reached **0.6667** with about **119,868 tokens** and **4.8 minutes**.
+
+So the absolute winner was dense chat, but the efficiency picture is mixed. Measured as reward per 100k tokens, `rlm__single_criterion` was actually a hair ahead of dense chat (**0.6546** vs **0.6479**). Measured as reward per rollout-hour, `rlm__total_score` was far ahead (**8.28** versus **1.80**), simply because the REPL loop terminated so much faster.
+
+That is an important caveat to the plain "chat wins" reading. On LongBench-Pro, the RLM harness was often a *cheap under-shooter*, not an obviously wasteful one.
+
+The same basic tension survives on the hard Phase 2 slice. The best chat arm, `chat__single_criterion__chat_system_reinject`, reached **0.6000** but needed about **980,901 tokens** and **125.2 minutes** per rollout. `rlm__single_criterion__rlm_skill_file` only reached **0.3000**, but did so at **659,205 tokens** and **16.0 minutes**. So if the goal is best absolute answer, chat still wins. If the goal is getting a middling answer cheaply, the RLM harness is not dead at all.
+
+### Mini SWE efficiency
+
+Mini SWE is much less kind to the RLM story.
+
+In Phase 0, `rlm__total_score` was the best raw solver at **0.5667**, but it still needed about **1,864,276 tokens per rollout** and **46.0 minutes** mean rollout time. The chat sparse arm was slightly worse at **0.5000**, used more tokens (**2,250,750**), but was also much faster at **26.4 minutes**. So even there, the tradeoff is muddy rather than clean.
+
+Then Phase 1 happens, and the simple chat notebook arm becomes hard to ignore:
+
+- `chat__total_score__mem_chat`: **0.7000**, **1,455,311 tokens**, **13.7 minutes**
+- `rlm__total_score__mem_repl_files`: **0.5667**, **1,399,685 tokens**, **16.3 minutes**
+- `rlm__total_score__mem_chat`: **0.4667**, **1,451,797 tokens**, **24.5 minutes**
+
+That is the kind of result I trust more than any rhetoric. The winning chat arm is not only better in reward; it is also faster than every RLM arm and roughly comparable or better in token use. By Phase 2, the same broad pattern remains: the best Mini SWE chat cells dominate the quality/latency frontier, while the RLM skill-file cells often spend more time and still trail on actual solves.
+
+So the short version is this:
+
+- On **LBP**, absolute quality and efficiency pull in different directions.
+- On **Mini SWE**, the best chat cells are usually just better overall.
+
+## So What Did The Repo Actually Learn?
+
+The most honest answer is: it learned that sparse signal is not a magic solvent, and that "more scaffold" is not the same thing as "better management."
+
+I would compress the empirical takeaways like this.
+
+1. **The central Phase 0 question did not resolve into a simple RLM win.** On LongBench-Pro, chat plus dense feedback was best by a wide margin. On Mini SWE, chat liked sparse feedback while RLM liked dense feedback.
+2. **Judge format and true task success can diverge in uncomfortable ways.** On LongBench-Pro, judge success and task metrics were already not perfectly aligned; on Mini SWE, the judge could become wildly optimistic, especially for RLM skill-file arms.
+3. **Working memory location mattered less than I expected.** Moving notes from chat into files did not reliably help. In some places it did nothing. In some places it looked worse.
+4. **Procedure persistence helped most when it stayed small and nearby.** The best Phase 2 LongBench-Pro arm was system reinjection, not a persistent skill file. That is a point in favor of constrained carry-over over unconstrained diaries.
+5. **Efficiency changes the interpretation.** On LongBench-Pro, RLM often lost on absolute reward but remained competitive or better on reward-per-token and reward-per-time. On Mini SWE, by contrast, the best chat cells were usually better on all three axes.
+6. **The outputs folder justifies its own messiness.** The pilots were noisy, the serious rerun was cleaner, and the raw rows often told a more interesting story than the summary tables did.
+
+## MGH, Continual Learning, And The Limits Of Notebook Optimism
+
+I think these experiments fit surprisingly well between two broader ideas that have been circulating in this area, though not in the triumphant way one might first expect.
+
+The mismanaged geniuses hypothesis argues that current models are underused because our scaffolds are clumsy. These runs support *part* of that claim. Small changes to management do matter. A different judge format can swing Phase 0 Mini SWE chat from **0.4333** to **0.5000**. System reinjection can move Phase 2 LongBench-Pro from **0.3000** to **0.6000**. The manager is not decorative.
+
+But these runs also push against a lazy version of MGH, namely the version where every extra layer of scaffold is presumed to unlock more latent intelligence. That is not what happened here. Often the heavier harness did worse. Often the durable file did not help. Sometimes the simplest chat loop was both *better* and *cheaper* because it converged faster.
+
+This is why the idea of the **space of decompositions** matters so much. The crucial question is not whether the model can store more notes. It is whether the harness induces the right decomposition of the problem. A bad notebook is still bad management.
+
+A different but related point is that harness memory does not automatically scale into genuine continual learning. Retrieval can become the bottleneck; persistence can accumulate junk as easily as skill; external memory can plateau because the model underneath never changed.
+
+[Ilija Lichkovski](https://x.com/carnot_cyclist) makes a closely related distinction in a thread on [defining continual learning for LLMs](https://x.com/carnot_cyclist/status/2041479655035679163): growing harness-side memory (skill trees, banks of notes) can show diminishing returns or even hurt when the object under the harness is still a fixed parametric model, whereas updating weights changes how much *useful* computation can live in a single forward pass and is where compounding is supposed to show up—if you can solve the harder parametric continual-learning problem.
+
+Phase 2 feels like a tiny, almost toy-sized version of that argument. A skill file does not automatically compound into better performance. If the feedback surface is misaligned, durable process memory can stabilize the wrong habits. In Mini SWE, the clearest example is the dense RLM skill-file arm: **29/30** judge acceptances, **17/30** real solves. That is not continual learning. That is durable overfitting to the wrong critic.
+
+So I end up with a more skeptical version of the original optimism.
+
+Yes, management matters.
+
+No, persistence alone is not management.
+
+And no, one should not confuse "the model learned a reusable procedure" with "the model got better at the task" unless the reward surface itself is trustworthy.
+
+## Caveats
+
+There are several ways this experimental setup could mislead us if we read it too triumphantly.
+
+First, this is still mostly a **prompting** study, not an RL study. The motivating question is about what refinement strategy an RLM *develops*. These runs tell us whether the scaffold changes behavior at inference time under fixed models. That is useful, but it is not yet evidence about learned decomposition.
+
+Second, the comparisons are not perfectly apples-to-apples. On LongBench-Pro, the chat harness sees the whole context directly in the conversation, whereas the RLM harness has to work through a copied `context.txt` in the REPL. That means the RLM arm is not just "the same task with more tools"; it is also solving a slightly different interface problem.
+
+Third, the later phases are on **different slices**. LongBench-Pro Phase 1 and Phase 2 are on a harder clustering slice at 32k context; Mini SWE Phase 1 and Phase 2 are narrowed to a single Django slice. This makes within-phase comparisons much cleaner than across-phase comparisons.
+
+Fourth, the sample counts are not large enough to support chest-thumping. The serious LongBench-Pro Phase 1 and Phase 2 runs are only **10 rollouts per cell**. That is enough to see directionality, not enough to declare subtle effects settled.
+
+Fifth, the judge is a moving part in the experiment rather than an oracle above it. On Mini SWE especially, it can be wrong in the optimistic direction. That means some of the apparent "learning" in the loop may really be adaptation to judge taste.
+
+Sixth, infrastructure noise is real. The Mini SWE sparse-reinject chat arm in Phase 2 had **8 sandbox startup failures**. That does not invalidate the run, but it does mean not every low score is a pure behavioral fact about the model.
+
+And finally, the skill-file intervention in Phase 2 is not really continual learning in the strong sense. It is durable *external* process memory within an episode family. Nothing is being internalized into weights, and nothing here proves cross-task accumulation of skill.
+
+## If We Wanted RLMs To Truly Shine
+
+I do think this experimental setup is slightly harder on RLMs than the strongest possible RLM setting would be. Not unfairly hard, exactly. Just not optimized for the kinds of advantages RLMs are supposed to have.
+
+If I wanted to build a better proving ground for them, I would change at least five things.
+
+1. **Match the budget, not just the turn count.** Fixed `max_turns` is not a fair compute budget across chat and REPL loops. I would compare under matched token budgets, matched wall-clock budgets, and matched dollar budgets.
+2. **Give RLM-native tasks more room to be RLM-native.** LongBench-Pro is decomposable, but the current setup does not strongly encourage the chunking, batching, and reusable retrieval subroutines that make a recursive harness interesting.
+3. **Reward the decomposition, not only the final answer.** Especially for RLMs, intermediate evidence quality matters: did the model search the right chunks, keep the right notes, avoid repeated dead ends, or build a useful skill file? Right now those behaviors only matter indirectly through the final verdict.
+4. **Train the harness rather than only prompt it.** A lot of the current results feel like untrained scaffold sensitivity. That is valuable, but RLMs are really making a stronger claim: not just that they *can* externalize state, but that they can learn how to externalize and reuse it well.
+5. **Use tasks with repeated structure and real horizon.** RLMs should benefit most when there are many subproblems, when local failures can be logged and avoided, and when one good abstraction can pay off several times.
+
+My suspicion is that a better RLM benchmark would look less like "chat, but with a REPL" and more like "a problem where decomposition itself is the scarce resource." Something like long-context retrieval with explicit chunk scheduling, or coding tasks with repeated diagnosis-and-repair motifs, or even multi-instance curricula where the same style of failure recurs often enough that a skill file can actually amortize.
+
+In other words: if the goal is to let the RLM shine, the right question is not "how do we add more persistence?" It is "what environment makes good decomposition legible, learnable, and worth paying for?"
+
+## What I Would Try Next
+
+The nice thing is that the current results already suggest the next experiments.
+
+1. **Run the actual RL version of Phase 0.** The real question is about what strategies an RLM *develops*. The current study mostly measures prompt-time scaffold sensitivity. That is useful, but it is still the prelude.
+2. **Make judge disagreement a first-class metric on Mini SWE.** Right now the big story is hidden unless you inspect the raw rollout logs. I would track judge-yes / test-no explicitly, per cell, and probably optimize against it.
+3. **Use benchmark metrics more aggressively on LBP.** The `[Answer] D` / `[Answer] C` cases are warning lights. If the judge and the task metric diverge, the report should treat that divergence as a result, not a footnote.
+4. **Constrain the persistent memory object harder.** The skill file may simply be too unconstrained. I would try a tiny schema: maybe three fields only, something like `failure_pattern`, `next_check`, `don't_do_this_again`.
+5. **Try cross-task carry-over, not just within-task persistence.** Phase 2 is really episodic self-repair. The more interesting continual-learning question is whether procedure learned on one task helps on the next one without merely bloating the harness.
+6. **Price the interventions properly.** Some of the best-performing chat arms were also cheaper. On LBP Phase 0, dense chat did better and used far fewer mean tokens per rollout than sparse chat. That kind of Pareto win should become the baseline to beat.
+
+## Final Word
+
+This line of experimentation isn't grandiose. It's quite simple. Change the signal. Change where the notes live. Change whether process can persist. Then inspect the logs closely enough that you cannot flatter yourself.
+
+The answer, so far, is not that sparse feedback suddenly reveals the superiority of RLMs. It is not that a skill file quietly solves harness-level continual learning. It is not even that persistence is obviously good.
+
+The answer is more awkward, and therefore more useful.
+
+The loop matters. The signal matters. The *language* and *structure* of state persistence matters. But these things do not help monotonically, and they do not help equally across tasks. Sometimes the clever mechanism wins. Sometimes the plain chat loop wins. Sometimes the judge gets fooled. Sometimes the benchmark metric disagrees. And sometimes, which is perhaps the healthiest outcome for a study like this, the experiment tells you that the story you wanted was a little too clean.
+
