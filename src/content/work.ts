@@ -54,10 +54,10 @@ export const industry: WorkItem[] = [
 export const research: WorkItem[] = [
   {
     title: "Research Mentee (independent work)",
-    company: "Massachusetts Institute of Technology · Tsinghua University",
+    company: "Independent research · Tsinghua University",
     date: "09/2024–01/2025",
     description: [
-      "MIT: Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics); informal mentorship from a postdoctoral researcher.",
+      "Replicated and extended parts of the Canonical Representation Hypothesis (CRH) work (delayed generalization + representation dynamics).",
       "Tsinghua: Informal collaboration on literature reviews in 3D reconstruction and generation.",
     ],
   },
