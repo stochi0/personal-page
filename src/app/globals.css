@@ -49,7 +49,8 @@ html {
 }
 
 body {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', 'Times New Roman', serif;
+  font-family:
+    var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: 18px;
@@ -58,7 +59,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: 0.01em;
-  transition: background-color 0.4s ease, color 0.3s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.3s ease;
 }
 
 /* ========================================
@@ -308,7 +311,7 @@ html.light .nav-scrolled {
 }
 
 .explore-link-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -417,7 +420,7 @@ html.light .craft-card-featured {
 }
 
 .craft-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -692,7 +695,7 @@ html.light .craft-card-featured {
     gap: 2rem;
     align-items: stretch;
   }
-  
+
   .hero-quote {
     text-align: left;
   }
@@ -944,7 +947,7 @@ html.light .craft-card-featured {
 }
 
 .accolade-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -1016,7 +1019,7 @@ html.light .craft-card-featured {
 }
 
 .program-name {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1rem;
   color: var(--text-secondary);
   transition: color 0.2s ease;
@@ -1055,7 +1058,7 @@ html.light .craft-card-featured {
 }
 
 .piano-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -1073,19 +1076,19 @@ html.light .craft-card-featured {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .accolade-year {
     min-width: auto;
   }
-  
+
   .program-name {
     font-size: 0.95rem;
   }
-  
+
   .program-item {
     padding: 0.75rem 0;
   }
-  
+
   .piano-item {
     flex-direction: column;
     align-items: flex-start;
@@ -1095,7 +1098,7 @@ html.light .craft-card-featured {
 
 /* Headings */
 h1 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 3.5rem;
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -1104,7 +1107,7 @@ h1 {
 }
 
 h2 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -1114,7 +1117,7 @@ h2 {
 }
 
 h3 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -1133,50 +1136,49 @@ section[id] {
   .nav-container {
     padding: 16px 20px;
   }
-  
+
   .nav-scrolled {
     padding: 12px 20px;
   }
-  
+
   .nav-links {
     gap: 1.5rem;
   }
-  
+
   .nav-link {
     font-size: 0.7rem;
     letter-spacing: 0.12em;
   }
-  
+
   .nav-dots {
     display: none;
   }
-  
+
   .nav-theme-toggle {
     width: 28px;
     height: 28px;
     font-size: 0.8rem;
   }
-  
+
   .main-container {
     padding: 100px 20px 60px;
   }
-  
+
   .notes-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .work-header {
     flex-direction: column;
   }
-  
+
   .scroll-to-top {
     bottom: 16px;
     left: 16px;
     width: 36px;
     height: 36px;
   }
-  
 }
 
 @media (max-width: 480px) {
@@ -1190,7 +1192,7 @@ section[id] {
    ======================================== */
 
 .writing-title {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -1200,7 +1202,7 @@ section[id] {
 }
 
 .writing-heading {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -1217,7 +1219,7 @@ section[id] {
 }
 
 .writing-subheading {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -1298,6 +1300,14 @@ section[id] {
   font-size: 1.05em;
 }
 
+/* KaTeX Typewriter (\texttt, \mathtt) matches CM tt — visually taller than Roman */
+.writing-article .katex .texttt,
+.writing-article .katex .mathtt,
+.writing-body .katex .texttt,
+.writing-body .katex .mathtt {
+  font-size: 0.9em;
+}
+
 .writing-image-wrap {
   display: block;
   margin: 1.5rem 0;
@@ -1339,7 +1349,7 @@ section[id] {
 
 .writing-entry-title {
   display: block;
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--text-primary);
