@@ -14,81 +14,113 @@ import efficiencyFrontierSerious from "./efficiency-frontier-serious.png";
 
 There is a very particular kind of optimism that agent work seems to attract.
 
-It goes something like this: perhaps the model is already mostly capable, and what looks like a reasoning failure is actually a *management* failure. Maybe the signal is too mushy. Maybe the loop is too forgetful. Maybe the model needs a better place to keep state than a chat transcript that keeps swelling until nobody, least of all the model, wants to read it. If that is true, then changing the harness should not be a cosmetic intervention. It should produce qualitatively different behavior.
+It goes something like this: perhaps the model is already mostly capable, and what looks like a reasoning failure is actually a *management* failure. Maybe the signal is too mushy. Maybe the loop is too forgetful. Maybe the model needs a better place to keep state than a chat transcript that keeps swelling until nobody, least of all the model, wants to read it.
 
-The motivating question was simple:
+If that is true, then changing the harness should not be a cosmetic intervention. It should produce qualitatively different behavior.
 
-> The single high-leverage question is, whether limiting judge feedback to a single violated criterion, instead of giving a total score, changes the quality of the refinement strategy an RLM develops, and whether an RLM harness extracts more value from that sparse feedback than vanilla iterative refinement.
+**I tested this directly.** The core question is simple: **Does sparse feedback (one violated criterion) help an RLM more than dense feedback (a total score)?** More precisely, does limiting the judge to a single complaint change the refinement strategy an RLM develops, and does that harness extract more value from sparsity than vanilla iterative refinement?
 
-I like this question because it is sharp enough to kill its own framing. If sparse feedback helps both harnesses equally, the feedback format is doing the work. If RLM helps specifically under sparse feedback, then the harness is doing something mechanistically different. If neither happens, then a surprisingly large amount of agent-flavored rhetoric collapses into "we changed the prompt and hoped."
+I like this question because it is sharp enough to kill its own framing. If sparse feedback helps both harnesses equally, the feedback format is doing the work. If RLM helps specifically under sparse feedback, then the harness is doing something mechanistically different. If neither happens, then a surprising amount of agent-flavored rhetoric collapses into "we changed the prompt and hoped."
 
-These experiments do **not** yet answer that question in the strongest RL sense. What they do, and quite usefully, is answer the prompt-time version of it. They are evaluations, not training runs. They ask a humbler question first: before we do any real learning, how much does behavior move if we change the shape of judge feedback, the location of working memory, or the persistence mechanism for process notes?
+These experiments do **not** yet answer that question in the strongest RL sense. What they do, and quite usefully, is answer the prompt-time version of it. Before any weights are updated, how much does behavior move if we change the shape of judge feedback, the location of working memory, or the persistence mechanism for process notes?
 
 That matters more than it sounds. If these prompt-only interventions already swing outcomes a lot, then the harness really is part of the object we are studying. If they do not, then the "manager" in the mismanaged geniuses story might be less mysterious than advertised.
 
-There are really two layers of evidence here.
+## Flow (how to read this note)
 
-- First there were the pilots: 70 cell summaries across `openai/gpt-4.1-mini` and `z-ai/glm-4.7-flash`, run on April 7, 2026.
-- Then there was a cleaner rerun: 32 more cells, this time on `z-ai/glm-4.7` with `z-ai/glm-4.7-flash` as judge.
+Quick path:
 
-I started with the aggregate run summaries and then dropped into the raw rollout logs whenever the coarse picture looked a bit too neat. It often did.
+1. [The Setup: What I Actually Built](#flow-setup)
+2. [Phase 0: The Core 2x2](#flow-phase-0)
+3. [Phase 1: Where Should the Notebook Live?](#flow-phase-1)
+4. [Phase 2: Does Procedure Persist?](#flow-phase-2)
+5. [Efficiency Is Part Of The Result](#flow-efficiency)
+6. [So What does this lead to?](#flow-takeaways)
+7. [Caveats](#flow-caveats)
+8. [What I Would Try Next](#flow-next)
+9. [Final Word](#flow-final)
 
-## What Was Actually Built
+<a id="flow-setup"></a>
+## The Setup: What I Actually Built
 
-The experiment scaffold is quite disciplined about what changes across phases.
+The experiment scaffold is disciplined about what changes across phases.
 
-At the base level, the study defines a very plain 2x2:
+At the base, we have a plain 2×2:
 
-- harness: `chat` vs `rlm`
-- judge feedback: dense total-score feedback vs sparse single-criterion feedback
+- **harness**: `chat` vs `rlm`
+- **judge feedback**: dense total-score feedback vs sparse single-criterion feedback
 
-That becomes Phase 0.
+That is **Phase 0**. Everything else is a perturbation on this core.
 
-Phase 1 adds a deliberately modest intervention: a structured checklist / hypothesis log / failure log, and the only real question is *where that notebook lives*.
-
+**Phase 1** adds a modest intervention: a structured checklist / hypothesis log / failure log. The only variable is *where that notebook lives*:
 - For chat harnesses, it lives in assistant messages.
-- For RLM, it is either kept in those same assistant messages as an ablation or persisted in files in the workspace / sandbox.
+- For RLM, it is either kept in those same assistant messages as an ablation or persisted in files in the workspace.
 
-Phase 2 asks a slightly more ambitious question: can *procedure* persist, not just scratchwork?
+**Phase 2** asks whether *procedure* can persist, not just scratchwork:
+- Chat gets `chat_no_file` and `chat_system_reinject` (where tagged process blocks get reinserted at the start of the next turn).
+- RLM gets a skill-file arm, where the model updates a persistent process note after bad judge calls. This is literal memory: an actual text file in the sandbox.
 
-- Chat gets `chat_no_file` and `chat_system_reinject`.
-- RLM gets a skill-file arm, where the model is asked to update a persistent process note after bad judge calls.
+The two benchmark families are importantly different:
 
-That last part is implemented quite literally. In the chat baseline, a tagged block of process notes can be pulled out of one turn and reinserted at the start of the next. In the RLM setting, the persistent memory is just an actual text file. This is not metaphorical memory. It is a file.
-
-The two benchmark families are also importantly different.
-
-- **LongBench-Pro (LBP)** is long-context question answering, retrieval, and clustering. The chat harness revises answers in conversation; the RLM harness works through a REPL over the materialized long context. Primary reward here is the judge, but the runs also log task metrics like accuracy, F1, NDCG, pairwise accuracy, and SubEM.
+- **LongBench-Pro (LBP)** is long-context question answering, retrieval, and clustering. The chat harness revises answers in conversation; the RLM harness works through a REPL over the materialized long context. Primary reward here is the judge, but we also log task metrics (accuracy, F1, NDCG, etc.).
 - **Mini SWE Agent Plus** is code repair inside sandboxes. Here the primary reward is actual task solve rate from the test harness. The judge is only an in-loop helper. This distinction turns out to matter a lot.
 
-There is also a small but important wrinkle in the later phases. The long-context benchmark is narrowed to a harder clustering slice at 32k context, and the coding benchmark is narrowed to a single Django slice. So Phase 1 and Phase 2 are not just "Phase 0 plus memory"; they are also happening on a narrower, harder slice. That is good experimental hygiene, but it means one should not read the phases as a single clean time-series.
+**A wrinkle:** Phases 1 and 2 run on narrower, harder slices (LBP clustering at 32k; Mini SWE narrowed to Django). So read these as independent experiments, not a time-series.
 
 <div style={{textAlign: "center"}}>
   <img src={pilotVsSeriousBest.src} alt="Pilot versus rerun comparison" width="900" />
   <p><em>The cleaner rerun usually beat the pilots, though not by a dramatic or uniform margin. This comparison also mixes model families, so I take it as orientation rather than proof.</em></p>
 </div>
 
-## Phase 0: The Actual 2x2
+<a id="flow-phase-0"></a>
+## Phase 0: The Core 2×2
 
-Phase 0 is the central question in its cleanest form, so it is where I would start even if there were ten more phases.
+Phase 0 is the central question in its cleanest form.
 
 <div style={{textAlign: "center"}}>
   <img src={phase0SeriousHeatmaps.src} alt="Phase 0 heatmaps" width="820" />
-  <p><em>Primary reward on the cleaner rerun. Same 2x2, two very different benchmark families.</em></p>
+  <p><em>Primary reward on the cleaner rerun. Same 2×2, two very different benchmark families.</em></p>
 </div>
 
-The first thing to say is that the answer is not a theorem. It is benchmark-shaped.
+The answer is not a theorem. It is benchmark-shaped.
 
 ### LongBench-Pro
 
 On the full Phase 0 LongBench-Pro run, the plain chat loop won comfortably.
 
-- `chat__total_score`: **0.9667** reward / judge YES, **0.6396** average task metric
-- `chat__single_criterion`: **0.8667** reward, **0.6525** average task metric
-- `rlm__single_criterion`: **0.7000** reward, **0.5351** average task metric
-- `rlm__total_score`: **0.6667** reward, **0.4368** average task metric
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Reward / Judge YES</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Avg task metric</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.9667</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6396</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.8667</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6525</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.7000</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5351</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6667</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4368</strong></td>
+    </tr>
+  </tbody>
+</table>
 
-If one wanted a quick headline, it would be: on long-context tasks, a plain iterative chat loop with dense rubric feedback was simply harder to beat than the fancier harness.
+If you wanted a quick headline: on long-context tasks, a plain iterative chat loop with dense rubric feedback was simply harder to beat than the fancier harness.
 
 But the more interesting detail is that the dense chat arm was not just *better*; it was also *faster*. In the raw rollouts, it averaged **3.63 turns** and about **149,192 tokens per rollout**, whereas sparse chat averaged **6.10 turns** and about **495,834 tokens per rollout**. So the denser signal was, in practice, the cheaper one, because the loop converged earlier.
 
@@ -100,10 +132,37 @@ And that, already, is a useful result: sparse feedback did *not* unlock some hid
 
 Mini SWE is more annoying, in the productive sense.
 
-- `chat__single_criterion`: **0.5000** solved, judge YES **0.6333**
-- `chat__total_score`: **0.4333** solved, judge YES **0.3333**
-- `rlm__single_criterion`: **0.5333** solved, judge YES **0.7333**
-- `rlm__total_score`: **0.5667** solved, judge YES **0.8667**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Judge YES</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5000</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6333</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4333</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.3333</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5333</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.7333</strong></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.8667</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 So the cross-over goes in opposite directions:
 
@@ -119,6 +178,7 @@ My rough reading is this:
 
 That is still just a read, not a proof. But it is at least compatible with the data, which is more than can be said for many armchair theories of agent behavior.
 
+<a id="flow-phase-1"></a>
 ## Phase 1: Where Should the Notebook Live?
 
 Phase 1 is one of those interventions that sounds almost too modest to matter. The model is told to maintain:
@@ -140,12 +200,22 @@ This is, in a very literal sense, a test of external working memory. Not memory 
 
 The cleanest result in Phase 1 is that the simplest arm won again.
 
-- `chat__total_score__mem_chat`: **0.7000** solved
-- `chat__single_criterion__mem_chat`: **0.6333**
-- `rlm__total_score__mem_repl_files`: **0.5667**
-- `rlm__single_criterion__mem_chat`: **0.5667**
-- `rlm__single_criterion__mem_repl_files`: **0.4667**
-- `rlm__total_score__mem_chat`: **0.4667**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.7000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6333</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_repl_files</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__mem_repl_files</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4667</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4667</strong></td></tr>
+  </tbody>
+</table>
 
 So: yes, the notebook helps a bit relative to Phase 0, but no, putting it in files does not obviously save the RLM. In fact, file-backed notes were sometimes worse than chat-backed notes.
 
@@ -157,12 +227,22 @@ That gap matters because it changes how one should interpret Phase 1. If the que
 
 Here the result is harsher.
 
-- `chat__total_score__mem_chat`: **0.4000**
-- `chat__single_criterion__mem_chat`: **0.3000**
-- `rlm__total_score__mem_chat`: **0.2000**
-- `rlm__total_score__mem_repl_files`: **0.2000**
-- `rlm__single_criterion__mem_chat`: **0.1000**
-- `rlm__single_criterion__mem_repl_files`: **0.1000**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Reward</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.3000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.2000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_repl_files</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.2000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.1000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__mem_repl_files</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.1000</strong></td></tr>
+  </tbody>
+</table>
 
 Because this is the Phase 1 slice, we are now on five clustering examples at 32k, two rollouts each. So I would not try to squeeze universal truths out of the second decimal place here. But the direction is not subtle. On this slice, persistent notes in files did not rescue the RLM at all.
 
@@ -170,6 +250,7 @@ The charitable interpretation is that the hard part on this LBP slice is not rem
 
 This is the first place where the broader "mismanaged geniuses" intuition started to feel useful to me. The problem is not "more state good." The problem is: what is the right decomposition language? A checklist stored in the wrong abstraction is just a longer way of being confused.
 
+<a id="flow-phase-2"></a>
 ## Phase 2: Does Procedure Persist?
 
 Phase 2 is the closest thing here to a harness-native continual-learning question.
@@ -190,13 +271,33 @@ This is where the numbers become a little mischievous.
 
 On actual solved rate, the best Phase 2 Mini SWE cells were both chat arms:
 
-- `chat__single_criterion__chat_no_file`: **0.6333**
-- `chat__total_score__chat_system_reinject`: **0.6333**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion__chat_no_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6333</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__chat_system_reinject</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6333</strong></td></tr>
+  </tbody>
+</table>
 
 The RLM skill-file arms did not beat them:
 
-- `rlm__single_criterion__rlm_skill_file`: **0.5333**
-- `rlm__total_score__rlm_skill_file`: **0.5667**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__rlm_skill_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5333</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__rlm_skill_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td></tr>
+  </tbody>
+</table>
 
 So if the hoped-for story was "sparse signal plus RLM plus a skill file produces a qualitatively better refinement regime," the answer here is no, not yet.
 
@@ -219,12 +320,22 @@ One caveat: the sparse reinjection chat arm on Mini SWE was also contaminated by
 
 LongBench-Pro Phase 2 is, to me, more encouraging for lightweight memory than for explicit file-backed skills.
 
-- `chat__single_criterion__chat_system_reinject`: **0.6000**
-- `chat__total_score__chat_no_file`: **0.5000**
-- `chat__total_score__chat_system_reinject`: **0.4000**
-- `chat__single_criterion__chat_no_file`: **0.3000**
-- `rlm__single_criterion__rlm_skill_file`: **0.3000**
-- `rlm__total_score__rlm_skill_file`: **0.2000**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Reward</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion__chat_system_reinject</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__chat_no_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__chat_system_reinject</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion__chat_no_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.3000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion__rlm_skill_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.3000</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__rlm_skill_file</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.2000</strong></td></tr>
+  </tbody>
+</table>
 
 The best arm here is the chat loop with sparse feedback and system reinjection. Not the file. Not the heavier harness. Just a weak carry-over mechanism that re-exposes a tagged process block on the next turn.
 
@@ -232,6 +343,7 @@ That result made me pause a bit, because it is almost the opposite of the durabl
 
 Again: the question is not whether memory exists. The question is what language that memory is written in.
 
+<a id="flow-efficiency"></a>
 ## Efficiency Is Part Of The Result
 
 There is another way to read these runs that the reward tables hide a bit.
@@ -254,9 +366,21 @@ Those are not perfect cost measures, but they are good enough to show that absol
 
 On the full Phase 0 LongBench-Pro run, chat won on absolute quality, but not on speed.
 
-- `chat__total_score` got **0.9667** reward using about **149,192 tokens per rollout** and **32.2 minutes** mean rollout time.
-- `rlm__single_criterion` only reached **0.7000**, but did so with about **106,936 tokens** and **7.0 minutes**.
-- `rlm__total_score` reached **0.6667** with about **119,868 tokens** and **4.8 minutes**.
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Reward</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Tokens / rollout</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Mean rollout time (min)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.9667</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>149,192</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>32.2</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__single_criterion</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.7000</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>106,936</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>7.0</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.6667</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>119,868</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>4.8</strong></td></tr>
+  </tbody>
+</table>
 
 So the absolute winner was dense chat, but the efficiency picture is mixed. Measured as reward per 100k tokens, `rlm__single_criterion` was actually a hair ahead of dense chat (**0.6546** vs **0.6479**). Measured as reward per rollout-hour, `rlm__total_score` was far ahead (**8.28** versus **1.80**), simply because the REPL loop terminated so much faster.
 
@@ -268,13 +392,40 @@ The same basic tension survives on the hard Phase 2 slice. The best chat arm, `c
 
 Mini SWE is much less kind to the RLM story.
 
-In Phase 0, `rlm__total_score` was the best raw solver at **0.5667**, but it still needed about **1,864,276 tokens per rollout** and **46.0 minutes** mean rollout time. The chat sparse arm was slightly worse at **0.5000**, used more tokens (**2,250,750**), but was also much faster at **26.4 minutes**. So even there, the tradeoff is muddy rather than clean.
+In Phase 0, the tradeoff was still muddy rather than clean:
+
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Tokens / rollout</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Mean rollout time (min)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>1,864,276</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>46.0</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__single_criterion</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5000</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>2,250,750</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>26.4</strong></td></tr>
+  </tbody>
+</table>
 
 Then Phase 1 happens, and the simple chat notebook arm becomes hard to ignore:
 
-- `chat__total_score__mem_chat`: **0.7000**, **1,455,311 tokens**, **13.7 minutes**
-- `rlm__total_score__mem_repl_files`: **0.5667**, **1,399,685 tokens**, **16.3 minutes**
-- `rlm__total_score__mem_chat`: **0.4667**, **1,451,797 tokens**, **24.5 minutes**
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Arm</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Solved rate</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Tokens / rollout</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>Mean rollout time (min)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>chat__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.7000</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>1,455,311</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>13.7</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_repl_files</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.5667</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>1,399,685</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>16.3</strong></td></tr>
+    <tr><td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>rlm__total_score__mem_chat</code></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>0.4667</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>1,451,797</strong></td><td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}><strong>24.5</strong></td></tr>
+  </tbody>
+</table>
 
 That is the kind of result I trust more than any rhetoric. The winning chat arm is not only better in reward; it is also faster than every RLM arm and roughly comparable or better in token use. By Phase 2, the same broad pattern remains: the best Mini SWE chat cells dominate the quality/latency frontier, while the RLM skill-file cells often spend more time and still trail on actual solves.
 
@@ -283,7 +434,8 @@ So the short version is this:
 - On **LBP**, absolute quality and efficiency pull in different directions.
 - On **Mini SWE**, the best chat cells are usually just better overall.
 
-## So What Did The Repo Actually Learn?
+<a id="flow-takeaways"></a>
+## So What does this lead to?
 
 The most honest answer is: it learned that sparse signal is not a magic solvent, and that "more scaffold" is not the same thing as "better management."
 
@@ -308,7 +460,7 @@ This is why the idea of the **space of decompositions** matters so much. The cru
 
 A different but related point is that harness memory does not automatically scale into genuine continual learning. Retrieval can become the bottleneck; persistence can accumulate junk as easily as skill; external memory can plateau because the model underneath never changed.
 
-[Ilija Lichkovski](https://x.com/carnot_cyclist) opens a useful framing in a thread on [defining continual learning for LLMs](https://x.com/carnot_cyclist/status/2041479655035679163). In a reply there, [@willccbb](https://x.com/willccbb) [states the contrast more bluntly](https://x.com/willccbb/status/2041625336576929931): with harness-based memory, growing a skill tree can show diminishing returns or even hurt performance, because the parametric model underneath is unchanged; parametric knowledge, by contrast, changes how much useful “intelligence” fits in a forward pass and is where compounding has more headroom—if you can solve continual learning in weights.
+[Ilija Lichkovski](https://x.com/carnot_cyclist) opens a useful framing in a thread on [defining continual learning for LLMs](https://x.com/carnot_cyclist/status/2041479655035679163). In a reply there, [@willccbb](https://x.com/willccbb) [states the contrast more bluntly](https://x.com/willccbb/status/2041625336576929931): with harness-based memory, growing a skill tree can show diminishing returns or even hurt performance, because the parametric model underneath is unchanged; parametric knowledge, by contrast, changes how much useful "intelligence" fits in a forward pass and is where compounding has more headroom—if you can solve continual learning in weights.
 
 Phase 2 feels like a tiny, almost toy-sized version of that argument. A skill file does not automatically compound into better performance. If the feedback surface is misaligned, durable process memory can stabilize the wrong habits. In Mini SWE, the clearest example is the dense RLM skill-file arm: **29/30** judge acceptances, **17/30** real solves. That is not continual learning. That is durable overfitting to the wrong critic.
 
@@ -320,6 +472,7 @@ No, persistence alone is not management.
 
 And no, one should not confuse "the model learned a reusable procedure" with "the model got better at the task" unless the reward surface itself is trustworthy.
 
+<a id="flow-caveats"></a>
 ## Caveats
 
 There are several ways this experimental setup could mislead us if we read it too triumphantly.
@@ -338,7 +491,7 @@ Sixth, infrastructure noise is real. The Mini SWE sparse-reinject chat arm in Ph
 
 And finally, the skill-file intervention in Phase 2 is not really continual learning in the strong sense. It is durable *external* process memory within an episode family. Nothing is being internalized into weights, and nothing here proves cross-task accumulation of skill.
 
-## If We Wanted RLMs To Truly Shine
+## If I Wanted RLMs To Truly Shine
 
 I do think this experimental setup is slightly harder on RLMs than the strongest possible RLM setting would be. Not unfairly hard, exactly. Just not optimized for the kinds of advantages RLMs are supposed to have.
 
@@ -354,6 +507,7 @@ My suspicion is that a better RLM benchmark would look less like "chat, but with
 
 In other words: if the goal is to let the RLM shine, the right question is not "how do we add more persistence?" It is "what environment makes good decomposition legible, learnable, and worth paying for?"
 
+<a id="flow-next"></a>
 ## What I Would Try Next
 
 The nice thing is that the current results already suggest the next experiments.
@@ -365,6 +519,7 @@ The nice thing is that the current results already suggest the next experiments.
 5. **Try cross-task carry-over, not just within-task persistence.** Phase 2 is really episodic self-repair. The more interesting continual-learning question is whether procedure learned on one task helps on the next one without merely bloating the harness.
 6. **Price the interventions properly.** Some of the best-performing chat arms were also cheaper. On LBP Phase 0, dense chat did better and used far fewer mean tokens per rollout than sparse chat. That kind of Pareto win should become the baseline to beat.
 
+<a id="flow-final"></a>
 ## Final Word
 
 This line of experimentation isn't grandiose. It's quite simple. Change the signal. Change where the notes live. Change whether process can persist. Then inspect the logs closely enough that you cannot flatter yourself.
@@ -374,7 +529,6 @@ The answer, so far, is not that sparse feedback suddenly reveals the superiority
 The answer is more awkward, and therefore more useful.
 
 The signal matters. The *language* and *structure* of state persistence matters. But these things do not help monotonically, and they do not help equally across tasks. And sometimes, which is perhaps the healthiest outcome for a study like this, the experiment tells you that the story you wanted was a little too clean.
-
 
 ## Credits
 
