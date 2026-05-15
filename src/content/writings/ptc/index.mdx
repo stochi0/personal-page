@@ -8,8 +8,6 @@ export const metadata = {
 
 # Programmatic Tool Calling Environments
 
-## From Tool Use To Tool Synthesis
-
 Most agent environments begin from the same arrangement: there is a task, there is a model, and there is a set of tools. The model calls those tools, observes their outputs, and eventually returns an answer.
 
 This arrangement is useful, and it has taught us a great deal. But it also hides a more basic question. The question is not merely whether a model can use a tool. The deeper question is whether a model can decide what tool ought to exist for it to tackle the task at hand.
@@ -37,9 +35,8 @@ That is the whole design principle.
 
 Expose observability, not strategy.
 
----
-
 ## The Boundary
+
 
 The important boundary is between observing the environment and being handed cognition by the environment.
 
@@ -97,9 +94,8 @@ Hidden evaluator:
 
 If the model builds a checker, that is programmatic reasoning. If the environment exposes the true grader, that is no longer the same experiment. The model may build epistemology; it should not be handed authority.
 
----
-
 ## From Tool Use To Tool Synthesis
+
 
 Ordinary tool use has a simple structure:
 
@@ -122,9 +118,8 @@ A chat transcript is a poor place to store operational state. It mixes assumptio
 
 A programmable workspace gives the model a different kind of surface. It can write files, build small libraries, cache observations, create test cases, maintain state outside the prompt, and turn repeated confusion into a reusable procedure. The REPL is only the execution surface; the workspace is the real object.
 
----
-
 ## Why GraphWalks Is A Useful First Toy, But Not The Destination
+
 
 GraphWalks is a good place to begin because it is clean. There is a hidden graph, the model receives an operation, the model must return a set of nodes or a path-like answer, and the environment can expose primitive access to the graph.
 
@@ -154,9 +149,8 @@ Inspect what it builds.
 
 That practice can then be lifted into harder environments. GraphWalks is the microscope, not the specimen.
 
----
-
 ## The Design Pattern
+
 
 The useful pattern is simple. First, choose a hidden state: a graph, a database, a symbolic machine, a policy book, a codebase, a world model, a conversation state, or a constraint system.
 
@@ -172,9 +166,8 @@ This is the design practice I want to use for more complex environments. The poi
 
 A good PTC environment should be generous enough that the model can observe the world, but restrained enough that it has to build the method.
 
----
-
 ## Single-Turn Does Not Mean Simple
+
 
 At first, PTC sounds naturally multi-turn. Web agents, SWE agents, Tau-style customer service tasks, operating system tasks, and long-horizon workflows all seem to fit the paradigm naturally.
 
@@ -198,9 +191,8 @@ The first is the microscope. The second is the stress test.
 
 If a model cannot build useful computation in the single-turn case, adding multi-turn persistence will not make the problem more principled. It will just make the failure harder to read.
 
----
-
 ## Toward More Serious Environments
+
 
 GraphWalks gives the cleanest small case, but the same pattern should scale. The more serious environments are the ones where the model must build an operating layer, not just a solver.
 
@@ -224,9 +216,8 @@ The model then has to invent the experimental method. Not merely solve the puzzl
 
 That is the kind of environment where PTC becomes more than a harness detail.
 
----
-
 ## What I Want To Measure
+
 
 Final reward is necessary, but it is not sufficient. For PTC, the important evidence is in the trajectory.
 
@@ -242,9 +233,8 @@ The score says whether the model won. The trajectory says what it became in orde
 
 That is the measurement I care about.
 
----
-
 ## Why This Matters For RL
+
 
 For RL, PTC environments enlarge the behavioral space. A standard tool-use environment can reward the model for selecting useful actions, but a PTC environment can reward, or at least reveal, deeper intermediate behaviors: tool construction, self-verification, state management, debugging, search, abstraction, and experimentation.
 
@@ -262,9 +252,8 @@ If the environment gives a tool menu, the model learns to select. If the environ
 
 Those are not the same capability.
 
----
-
 ## The Caution
+
 
 There is a cheap version of this idea: give the model a large number of tools, call it PTC, and declare the environment agentic.
 
@@ -291,9 +280,8 @@ The question is not whether the model wrote code. The question is whether the co
 
 That is the standard I want these environments to meet.
 
----
-
 ## Current Direction
+
 
 The immediate plan is to use GraphWalks as the small design probe, not as the final claim.
 
@@ -328,9 +316,8 @@ The goal is not to produce a large benchmark immediately. The goal is to develop
 
 That is the thing I want to make legible.
 
----
-
 ## Final Word
+
 
 The next interesting RL environments for agents should not only test whether models can use tools. They should test whether models can build tools.
 
