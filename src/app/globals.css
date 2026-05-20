@@ -1228,9 +1228,8 @@ section[id] {
 }
 
 .writing-body {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: inherit;
+  color: inherit;
   margin-bottom: 1.25rem;
 }
 
@@ -1255,9 +1254,8 @@ section[id] {
 }
 
 .writing-list-item {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: inherit;
+  color: inherit;
   margin-bottom: 0.5rem;
   padding-left: 0.5rem;
 }
@@ -1270,10 +1268,9 @@ section[id] {
   margin: 1.5rem 0;
   padding: 0.75rem 0 0.75rem 1.25rem;
   border-left: 2px solid var(--accent);
-  color: var(--text-secondary);
+  color: inherit;
   font-style: italic;
-  font-size: 1.05rem;
-  line-height: 1.75;
+  line-height: inherit;
 }
 
 .writing-hr {
@@ -1309,14 +1306,12 @@ section[id] {
 }
 
 .writing-pre {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: var(--text-secondary);
+  font: inherit;
+  letter-spacing: inherit;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.9rem;
   margin: 1rem 0 1.25rem;
   overflow-x: auto;
   white-space: pre-wrap;
@@ -1324,33 +1319,31 @@ section[id] {
 }
 
 .writing-pre code {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
   background: none;
   border: none;
   padding: 0;
 }
 
 .writing-inline-code {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.88em;
+  font: inherit;
+  letter-spacing: inherit;
   color: var(--text-primary);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 0.2em;
-  padding: 0.08em 0.35em;
+  padding: 0.02em 0.25em;
 }
 
 .writing-article table code {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.88em;
+  font: inherit;
+  letter-spacing: inherit;
   color: var(--text-primary);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 0.2em;
-  padding: 0.08em 0.3em;
+  padding: 0.02em 0.25em;
 }
 
 .writing-image-wrap {
@@ -1367,6 +1360,9 @@ section[id] {
 
 .writing-article {
   margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
 }
 
 .writing-post-date {
