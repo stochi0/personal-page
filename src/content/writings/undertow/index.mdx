@@ -87,77 +87,64 @@ FuncBenchGen's world is mostly **functional**: functions consume values and prod
 
 Undertow's world is **environmental**: the agent interacts with a hidden state through tools. Observations are partial, actions can change the world, stale observations can become invalid, and the model must maintain an operational record of what is true now. Undertow is built around memory, state tracking, planning, verification, retry logic, and controlling a partially observed environment.
 
-The difference is not just "FuncBenchGen has DAGs and Undertow has two task families." The deeper difference is:
-
-> **FuncBenchGen evaluates multi-step tool-call sequencing. Here we evaluate tool-mediated control under hidden mutable state, and asks whether PTC is the right interface for that control problem.**
+The difference is not just "FuncBenchGen has DAGs and Undertow has two task families." The deeper difference is: FuncBenchGen evaluates multi-step tool-call sequencing. Here we evaluate tool-mediated control under hidden mutable state, and asks whether PTC is the right interface for that control problem.
 
 <table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
   <thead>
     <tr>
       <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Axis</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>FuncBenchGen</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Undertow `hidden_dag`</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Undertow `repair_chain`</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>`hidden_dag`</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>`repair_chain`</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Main object of study</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Multi-step function calling</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden dataflow under PTC vs standard</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden mutable state under PTC vs standard</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>World type</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Pure function-dependency DAG</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Deterministic function DAG</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stateful environment with machines, tools, locations, repair stages</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>State changes?</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Not really; values are produced through calls</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Mostly value-table growth</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Yes; repairs change machine state, location matters, observations can go stale</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Agent goal</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Compute target variable</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Compute target variable</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Repair objects and submit repaired ids</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden information</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Dependency graph, correct call path, values</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>True value table and solution order</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Machine stages, valid observation versions, correct repair sequence</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Main difficulty</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Correct call ordering and value propagation</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Dataflow discipline plus interface comparison</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>State tracking, stale observations, action sequencing, final answer contract</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Distractors</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Irrelevant functions, especially connected irrelevant nodes</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Connected/disconnected distractor functions</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Distractor tools, irrelevant actions, stale or invalid operations</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Best local strategy</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Infer dependency path</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Build topological executor</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Build repair ledger / state tracker</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Why PTC matters</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Not central to paper</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Tests whether workspace helps dataflow tracking</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Tests whether workspace helps operate a changing hidden world</td>
     </tr>
     <tr>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Failure types</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Wrong function, wrong value, missed calls, distractor path</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Unknown refs, repeated calls, incorrect values, premature submit</td>
       <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stale refs, violated constraints, wrong tool, wrong location, answer-shape failure</td>
     </tr>
