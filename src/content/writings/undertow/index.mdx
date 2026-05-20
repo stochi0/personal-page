@@ -170,8 +170,6 @@ Undertow is built from four components.
 
 **Third**, it has two interaction modes. The standard mode exposes native tools through the usual tool-call loop. The PTC mode exposes a persistent Python workspace and a small `ptc` package that routes calls to the same primitive tools. The tools are not stronger in PTC mode. The model simply gets a programmable surface from which to organize them.
 
-**Fourth**, it has trace-level auditing. Every call records the tool name, arguments, observation, state delta, consumed budget, and failure code. This lets Undertow report success, but also progress, wasted calls, repeated calls, stale references, incorrect values, distractor actions, premature submissions, and budget exhaustion.
-
 <a id="flow-formalization"></a>
 ## Formalization
 
