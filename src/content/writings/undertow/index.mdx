@@ -368,7 +368,7 @@ The challenge is dataflow discipline:
 
 </WritingDisclosure>
 
-### What goes wrong
+### Potential Issues
 
 * **Inputs must match exactly.** The environment checks `kwargs[input] == true_value`. Calling `core_1(v1=596, v4=999)` fails with `incorrect_value` even if `v4` was computed earlier and the model mis-typed it.
 * **Call order matters.** Calling `core_1` before `core_3` or `core_4` fails with `unknown_state_reference` because `v4` is not yet in the ledger.
@@ -518,7 +518,7 @@ The `observation_version` update is the important state edge. Reusing an old ver
 
 </WritingDisclosure>
 
-### What goes wrong
+### Potential Issues
 
 * **Wrong location.** `apply_tool` fails if the agent is not at the machine's bay.
 * **Wrong tool for stage.** Tools must match the hidden sequence exactly; the wrong tool returns `violated_constraint`.
