@@ -26,15 +26,15 @@ The current version has two task families. `hidden_dag` tests hidden dataflow: t
 
 The first diagnostic run is useful, but it is not yet the final comparative claim. PTC agents solved `hidden_dag` at high reliability and made substantial progress on `repair_chain`; however, the initial standard-vs-PTC comparison exposed a harness state-serialization bug in standard mode. That bug has since been fixed, so the next clean run should replace the diagnostic tables.
 
-The early lesson is therefore not "PTC wins." The better claim is: Undertow is already doing what a trace-first synthetic framework should do. It makes state-tracking failures visible, separates interface errors from world-model errors, and gives us a controlled way to ask when a programmable workspace becomes a genuine agentic advantage.
+The early lesson is therefore not "PTC wins." The current experiment setup makes state-tracking failures visible, separates interface errors from world-model errors, and gives us a controlled way to ask when a programmable workspace becomes a genuine agentic advantage.
 
 
 ## Flow (how to read this note)
 
 1. [Why this should be a framework, not just a benchmark](#flow-framework)
 2. [The question Undertow is built to ask](#flow-question)
-3. [The FuncBenchGen lesson](#flow-funcbenchgen)
-4. [Undertow as a synthetic benchmark framework](#flow-components)
+3. [The lesson](#flow-funcbenchgen)
+4. [Undertow as a synthetic benchmark experiment](#flow-components)
 5. [Formalization](#flow-formalization)
 6. [The two interaction modes](#flow-modes)
 7. [Task family I: hidden_dag](#flow-hidden-dag)
@@ -46,18 +46,12 @@ The early lesson is therefore not "PTC wins." The better claim is: Undertow is a
 13. [hidden_dag results, cautiously stated](#flow-hidden-dag-results)
 14. [repair_chain results, cautiously stated](#flow-repair-chain-results)
 15. [Why this is interesting for PTC](#flow-ptc)
-16. [What to fix next](#flow-next)
-17. [What Undertow is not](#flow-not)
-18. [Closing](#flow-closing)
+16. [Closing](#flow-closing)
 
 <a id="flow-framework"></a>
 ## Why this should be a framework, not just a benchmark
 
-There is a temptation, especially when results begin to look interesting, to present a system like Undertow as a benchmark. That is not wrong, but it is incomplete. A single benchmark is a fixed measuring stick. Undertow is closer to a small machine for making measuring sticks.
-
-The distinction matters.
-
-A fixed benchmark gives us a score. A benchmark framework gives us a laboratory. It lets us vary the number of hidden dependencies, the depth of the dependency chain, the number of distractors, the amount of partial observability, the rate of stale observations, the strictness of the budget, and the interface through which the agent acts. It also lets us inspect not only whether the model reached the answer, but how it failed when it did not.
+It lets us vary the number of hidden dependencies, the depth of the dependency chain, the number of distractors, the amount of partial observability, the rate of stale observations, the strictness of the budget, and the interface through which the agent acts. It also lets us inspect not only whether the model reached the answer, but how it failed when it did not.
 
 That is the right framing for Undertow. The point is not to claim that two synthetic task families exhaust the agent problem. They do not. The point is to build a controlled setting where the difference between ordinary tool calling and programmatic tool calling can be isolated rather than merely asserted.
 
@@ -72,7 +66,7 @@ That question cannot be answered cleanly with a single hand-written task. It nee
 
 The broad conversation about agents often bundles several capabilities together: tool selection, code generation, planning, memory, search, recovery, verification, and final answer formatting. Bundling them is natural in product settings, but it is a problem for evaluation. When an agent fails, we need to know what failed.
 
-Did it choose the wrong tool? Did it call the right tool with the wrong arguments? Did it forget a value it had already discovered? Did it reuse an observation after the world had changed? Did it complete the hidden state transition but submit the answer in the wrong shape? These are different failures. A serious benchmark framework should not collapse them into one number.
+Did it choose the wrong tool? Did it call the right tool with the wrong arguments? Did it forget a value it had already discovered? Did it reuse an observation after the world had changed? Did it complete the hidden state transition but submit the answer in the wrong shape? These are different failures.
 
 Undertow isolates a specific capability: the ability to build and use a local control layer around external tools.
 
@@ -81,11 +75,11 @@ A normal tool-calling agent receives a tool schema, makes a call, reads the obse
 That difference is the object of study.
 
 <a id="flow-funcbenchgen"></a>
-## The FuncBenchGen lesson
+## The lesson
 
 FuncBenchGen is the nearest intellectual reference point. It frames multi-step function calling as traversal over a hidden function-dependency DAG. The model receives generated functions, input variables, and a target variable, but not the graph itself. It must infer the correct call sequence from the public function schemas and compute the target value.
 
-The important idea is not merely "use a DAG." The important idea is experimental discipline. FuncBenchGen is synthetic, contamination-free, and controllable. It can vary required function count, dependency depth, irrelevant function count, and whether distractors are connected to the solution path. Because the tasks are generated, the benchmark is less exposed to memorization. Because the graph structure is controlled, the benchmark can say which difficulty factor caused the degradation.
+For me personally, the important idea was not merely that it uses DAG to make a more difficult benchmark. It is the experimental discipline (which frankly for me, has become the most brutually important lesson, even more so in the past 1 week). FuncBenchGen is synthetic, contamination-free, and controllable. It can vary required function count, dependency depth, irrelevant function count, and whether distractors are connected to the solution path. Because the tasks are generated, the benchmark is less exposed to memorization. Because the graph structure is controlled, the benchmark can say which difficulty factor caused the degradation.
 
 ### Core difference
 
@@ -170,7 +164,7 @@ The difference is not just "FuncBenchGen has DAGs and Undertow has two task fami
   </tbody>
 </table>
 
-Undertow borrows FuncBenchGen's discipline, not merely its DAG idea. FuncBenchGen shows how to make function-calling evaluation synthetic, contamination-free, controllable, and trace-auditable. Undertow keeps that style but changes the target capability. Rather than only asking whether a model can traverse a hidden function-dependency graph, Undertow asks whether a model can maintain and update an external-world state model through primitive tools, and whether a programmable workspace improves that process.
+Undertow asks whether a model can maintain and update an external-world state model through primitive tools, and whether a programmable workspace improves that process.
 
 To move furthur I ask what happens when the task is not only hidden dataflow, but hidden mutable state.
 
@@ -179,7 +173,7 @@ In `repair_chain`, the world changes. Machines move through repair stages. Obser
 This is where programmatic tool calling becomes most natural. A local workspace is not just a convenience; it is the place where the model can maintain the operating record that the environment itself will not hand it for free.
 
 <a id="flow-components"></a>
-## Undertow as a synthetic benchmark framework
+## Undertow as a synthetic benchmark experiment
 
 Undertow is built from four components.
 
@@ -187,11 +181,9 @@ Undertow is built from four components.
 
 **Second**, it has a public interface. The agent never receives the hidden state directly. It receives tool schemas, public identifiers, and a target description. All contact with the world must happen through primitive tools.
 
-**Third**, it has multiple interaction modes. The standard mode exposes native tools through the usual tool-call loop. The PTC mode exposes a persistent Python workspace and a small `ptc` package that routes calls to the same primitive tools. The tools are not stronger in PTC mode. The model simply gets a programmable surface from which to organize them.
+**Third**, it has two interaction modes. The standard mode exposes native tools through the usual tool-call loop. The PTC mode exposes a persistent Python workspace and a small `ptc` package that routes calls to the same primitive tools. The tools are not stronger in PTC mode. The model simply gets a programmable surface from which to organize them.
 
 **Fourth**, it has trace-level auditing. Every call records the tool name, arguments, observation, state delta, consumed budget, and failure code. This lets Undertow report success, but also progress, wasted calls, repeated calls, stale references, incorrect values, distractor actions, premature submissions, and budget exhaustion.
-
-That last point is central. A benchmark framework should produce evidence, not just a leaderboard cell.
 
 <a id="flow-formalization"></a>
 ## Formalization
@@ -241,8 +233,6 @@ This is a strict contract. The agent may write a local verifier, maintain a ledg
 
 <a id="flow-modes"></a>
 ## The two interaction modes
-
-The comparison is meaningful only if both modes solve the same generated tasks against the same hidden checker.
 
 ### Standard mode
 
@@ -371,7 +361,7 @@ A successful function call returns:
 }
 ```
 
-### How a model solves it
+### How a model could potentially solve it
 
 The model keeps a ledger of known values, starting from `initial_values`. At each step it finds a function whose inputs are all already known, calls it with the exact integer values from the ledger, and stores the returned value under the returned variable name. When the target variable appears in the ledger, it submits.
 
@@ -543,7 +533,7 @@ From inspections across all tools, a solver builds a map from `(part, stage)` to
 * `(part_1, stage 0) → tool_0`
 * `(part_1, stage 1) → tool_1`
 
-### How a model solves it
+### How a model could potentially solve it
 
 **Phase A: discover the repair plan by inspecting every tool once.**
 
@@ -784,15 +774,15 @@ The multiplier matters. A budget that fits only an oracle-perfect trace mostly m
 
 The first run compared standard and PTC modes across the generated grid using Qwen3.6-35B-A3B and GLM-5. The normalized result set contains 307 episodes, with most cells containing 40 episodes. One PTC `repair_chain` slice for GLM-5 is incomplete and should be treated as directional.
 
-The headline pattern was strong for PTC. On `hidden_dag`, PTC agents built the expected local machinery: a value table, a queue of callable functions, and a simple execution loop. They solved the task at high reliability. On `repair_chain`, PTC agents often completed the hidden repair transitions, but many failed the final reward because they submitted prose or an incorrectly shaped final answer rather than the required structured object.
+The headline pattern was strong for PTC. On `hidden_dag`, PTC agents built the expected local machinery: a value table, a queue of callable functions, and a simple execution loop. They solved the task at high reliability. On `repair_chain`, PTC agents often completed the hidden repair transitions, but many failed the final reward because they submitted prose or an incorrect submission format.
 
-That is a real interface failure, but it is not the same as failing to operate the hidden world. In a benchmark framework, the distinction matters.
+That was a bug in the environment (has been fixed post-run), but it is not the same as failing to operate the hidden world.
 
 The more important event was that the standard comparison exposed a harness bug. Standard mode reconstructed the environment from a serialized snapshot between native tool calls, but the snapshot preserved only generic episode bookkeeping. It did not preserve family-specific mutable hidden state, such as the known value table in `hidden_dag` or the current location and repair stages in `repair_chain`.
 
 PTC mostly avoided this issue because its primitive tools were served through a live RPC-backed session. Standard mode did not. A standard agent could compute `v1`, then make the next call in an environment that had forgotten `v1`. It could move to `bay_0`, then apply a tool in an environment whose `current_location` had reset.
 
-That means the pre-fix standard-vs-PTC numbers are diagnostic, not publication-grade.
+That means the pre-fix standard-vs-PTC numbers are diagnostic.
 
 <div style={{textAlign: "center"}}>
   <img src={headlineComparison.src} alt="Headline comparison of standard vs PTC success rates" width="900" />
@@ -802,15 +792,13 @@ That means the pre-fix standard-vs-PTC numbers are diagnostic, not publication-g
 <a id="flow-diagnostic-lessons"></a>
 ## What the diagnostic run still shows
 
-The diagnostic run is not useless just because the standard harness had a bug. In fact, it shows why trace-first evaluation matters.
+The diagnostic run is not useless just because the standard harness had a bug. In fact, it shows why looking at trajectories is good (thanks to Alex & Florian).
 
 **First**, PTC agents appear to convert `hidden_dag` into the intended local-state problem. The best traces look less like improvised conversation and more like small executors. They parse the public spec, maintain known values, call functions when inputs are available, and submit the target.
 
-**Second**, `repair_chain` shows a useful separation between progress and reward. Several PTC agents made the right state transitions but failed final submission formatting. Reward is the legal judgment of the benchmark. Progress is the audit trail. A benchmark framework should preserve both.
+**Second**, `repair_chain` shows a useful separation between progress and reward. Several PTC agents made the right state transitions but failed final submission formatting (has been fixed).
 
-**Third**, the standard traces revealed a plausible behavioral contrast: standard agents often responded to uncertainty by repeating tools, refreshing observations, or trying nearby schemas rather than maintaining an explicit ledger. That pattern is exactly what Undertow is meant to measure after the harness fix.
-
-**Fourth**, the harness bug itself is an evaluation result of a different kind. It shows that hidden mutable state is easy to mishandle, not only for models but for benchmark infrastructure. A trace-audited framework can catch that before the bug hardens into a leaderboard claim.
+**Third**, the standard traces revealed a plausible behavioral contrast: standard agents often responded to uncertainty by repeating tools, refreshing observations, or trying nearby schemas rather than maintaining an explicit ledger.
 
 <a id="flow-hidden-dag-results"></a>
 ## hidden_dag results, cautiously stated
@@ -926,8 +914,6 @@ Before the restore fix, these numbers should not be interpreted as pure model fa
 
 PTC `repair_chain` failures were different. They were dominated by repeated calls and premature submit, with much lower constraint-violation pressure. The agent was still inefficient, but it was inefficient around a working plan rather than lost before the plan.
 
-This distinction should be reflected directly in the essay. A final answer-shape error is not harmless. In deployment, an interface error can still break the system. But for benchmark design, it is diagnostically useful. It tells us that the next fix is not necessarily "make the model better at repair," but "make the finish contract explicit and test whether the repaired state is being submitted in the expected shape."
-
 <div style={{textAlign: "center"}}>
   <img src={repairChainHeatmap.src} alt="repair_chain success heatmap by configuration" width="900" />
   <p><em>repair_chain is the family where mutable state, stale observations, and final-interface contracts become visible.</em></p>
@@ -954,56 +940,11 @@ In `hidden_dag`, the state machine is a value table. In `repair_chain`, it is a 
 
 This is where PTC differs from ordinary tool use. The model is not merely choosing the next action. It is building the apparatus that chooses actions: a parser, a cache, a planner, a checker, a retry policy, and a final submission constructor.
 
-That is also why Undertow should remain synthetic for now. Synthetic tasks let us vary exactly the dimensions that should matter to this claim:
-
-* longer dependency depth;
-* more connected distractors;
-* more objects;
-* more repair stages;
-* higher staleness rate;
-* stricter budgets;
-* noisier observations;
-* more brittle final contracts.
-
-A realistic benchmark can tell us whether an agent works in a particular world. A synthetic framework can tell us which property of the world broke it.
-
-<a id="flow-next"></a>
-## What to fix next
-
-The next version should make three changes before stronger claims are made.
-
-**First**, rerun the standard comparison after the snapshot fix. Family-specific mutable hidden state must be serialized and restored correctly in both task families. Without that, the mode comparison is confounded.
-
-**Second**, make the final answer contract explicit in the PTC prompt and public task spec. The prompt should show the required final shapes:
-
-`finish({"value": 1234})`
-
-for `hidden_dag`, and:
-
-`finish({"repaired": ["machine_0", "machine_1"]})`
-
-for `repair_chain`.
-
-**Third**, rerun the full grid after those fixes. The clean rerun should answer the real question: when the same hidden state is preserved correctly in both modes, how much does a programmable workspace improve reliability, efficiency, and recovery?
-
-<a id="flow-not"></a>
-## What Undertow is not
-
-Undertow is not a claim that synthetic tasks are sufficient for agent evaluation. They are not. Real environments have messy semantics, long tails, human constraints, and objective functions that are harder to formalize.
-
-Undertow is not a claim that PTC always beats standard tool calling. It should not. If a task is short, stateless, and obvious, a programmable workspace may add little or even introduce overhead.
-
-Undertow is not a benchmark of coding ability alone. The hidden state remains outside the workspace. The model cannot solve the task by local computation alone. It must use the environment tools, and the reward checker remains external.
-
-The snapshot fix and clean rerun are necessary before the standard-vs-PTC comparison should be treated as a result.
-
 <a id="flow-closing"></a>
 ## Closing
 
 The old habit in tool-use benchmarks is to ask whether the model reached the answer. Undertow keeps that question, but it is more interested in the account book: what the agent knew, what it changed, what it repeated, what it used too early, what it forgot, and what it submitted.
 
-Undertow gives a controlled way to generate worlds, vary difficulty, audit traces, and locate failure. For programmatic tool calling, that is the more valuable instrument.
+Undertow gives a controlled way to generate worlds, vary difficulty, audit traces, and locate failure for programmatic tool calling.
 
-Programmatic tool calling is interesting only when the program becomes more than syntax. It must become a ledger, a planner, a verifier, a memory, and a disciplined interface to a world the model cannot inspect directly.
-
-The cautious conclusion is enough for now: PTC appears promising when hidden tool-use tasks can be turned into explicit local state machines, but the clean comparative claim should wait for the fixed rerun.
+Programmatic tool calling is interesting only when program becomes a ledger, a planner, a verifier, a memory, and a disciplined interface to a world the model cannot inspect directly.
