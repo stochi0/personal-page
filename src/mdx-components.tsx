@@ -37,6 +37,24 @@ const components: MDXComponents = {
   ),
   strong: ({ children }) => <strong className="writing-strong">{children}</strong>,
   em: ({ children }) => <em>{children}</em>,
+  pre: ({ children, ...props }) => (
+    <pre className="writing-pre" {...props}>{children}</pre>
+  ),
+  code: ({ className, children, ...props }) => {
+    const isInline = !className;
+    if (isInline) {
+      return (
+        <code className="writing-inline-code" {...props}>
+          {children}
+        </code>
+      );
+    }
+    return (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
   img: (props) => (
     <span className="writing-image-wrap">
       {/* eslint-disable-next-line @next/next/no-img-element */}
