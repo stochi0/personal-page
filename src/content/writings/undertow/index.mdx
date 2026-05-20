@@ -292,22 +292,32 @@ The hypothesis is that this interface changes what the model can reliably build:
 <a id="flow-hidden-dag"></a>
 ## Task family I: hidden_dag
 
-`hidden_dag` is the bridge task family — Undertow's dataflow family, intentionally close to FuncBenchGen in skeleton but evaluated under standard vs PTC interfaces.
+`hidden_dag` is the cleanest family. It is closest to FuncBenchGen and serves as a bridge from ordinary function-calling evaluation into Undertow.
 
 FuncBenchGen asks: "Can the model infer and execute the right function sequence?" Undertow `hidden_dag` asks: "Given the same kind of hidden dataflow problem, does a persistent programmable workspace make the model more reliable than ordinary tool calling?"
 
-The generator creates deterministic functions over integer variables. The public spec includes initial variable values, generated function names, input variables, output variables, JSON schemas, and a target variable. The hidden state contains the true value table and the ground-truth solution order.
+The generator creates a set of deterministic functions over integer variables. The public spec includes:
 
-A small public spec might look like this:
+* **initial variable values**
+* **target variable**
+* **generated function names**
+* **each function's input variables**
+* **each function's output variable**
+* **JSON tool schemas**
+
+The hidden state contains the true value table and the ground-truth solution order. The model does not see that table. It must produce values by calling functions with correct already-known inputs.
+
+A small public spec might look like this (`seed=3`, `n_core=5`, `depth=3`):
 
 ```json
 {
   "family": "hidden_dag",
   "initial_values": {
-    "v0": 964,
-    "source_5": 494
+    "v0": 343,
+    "source_3": 706,
+    "source_4": 478
   },
-  "target": "v5",
+  "target": "v3",
   "functions": [
     {
       "name": "core_0",
@@ -316,49 +326,162 @@ A small public spec might look like this:
       "description": "Transforms v0 into v1."
     },
     {
+      "name": "core_3",
+      "inputs": ["source_3"],
+      "output": "v4",
+      "description": "Transforms source_3 into v4."
+    },
+    {
       "name": "core_4",
-      "inputs": ["v4", "v6", "v8"],
+      "inputs": ["source_4"],
       "output": "v5",
-      "description": "Combines v4, v6, v8 into v5."
+      "description": "Transforms source_4 into v5."
+    },
+    {
+      "name": "core_1",
+      "inputs": ["v1", "v4"],
+      "output": "v2",
+      "description": "Combines v1, v4 into v2."
+    },
+    {
+      "name": "core_2",
+      "inputs": ["v2", "v5"],
+      "output": "v3",
+      "description": "Combines v2, v5 into v3."
+    },
+    {
+      "name": "connected_distractor_0",
+      "inputs": ["v2"],
+      "output": "d_connected_0",
+      "description": "Produces a type-compatible but irrelevant value from v2."
     }
   ]
 }
 ```
 
-A successful function call returns the newly established variable and value:
+This is a dependency DAG: `v0 → v1`, parallel branches `source_3 → v4` and `source_4 → v5`, then merges `v1 + v4 → v2` and `v2 + v5 → v3`.
+
+A successful function call returns:
 
 ```json
 {
   "ok": true,
   "variable": "v1",
-  "value": 6761
+  "value": 596
 }
 ```
 
-The agent must call functions only when their inputs are known, store returned values under the right variable names, avoid distractors, and submit the target value after it has been computed.
+### How a model solves it
 
-The main difficulty knobs are:
+The model keeps a ledger of known values, starting from `initial_values`. At each step it finds a function whose inputs are all already known, calls it with the exact integer values from the ledger, and stores the returned value under the returned variable name. When the target variable appears in the ledger, it submits.
 
-* `n_core`: number of required functions.
-* `depth`: longest required dependency path.
-* `n_connected_distractors`: irrelevant functions connected to known or core variables.
-* `n_disconnected_distractors`: irrelevant functions outside the solution path.
-* `observation_mode`: whether observations merely return the latest value or restate known values.
+For the example above, a successful trace looks like this:
 
-The ideal PTC solution is simple. Parse the function list, keep a `known_values` dictionary, repeatedly find callable functions, call them, cache their outputs, and submit the target. This is not a profound algorithm. It is a small topological executor. But that is precisely the point: PTC can turn a multi-turn state-tracking problem into a local execution loop.
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left", width: "4rem" }}>Step</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Action</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>1</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Initialize <code>known_values = {"{v0: 343, source_3: 706, source_4: 478}"}</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Only starting values are known</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>2</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>core_0(v0=343)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>{"{variable: \"v1\", value: 596}"}</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>3</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>core_3(source_3=706)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>{"{variable: \"v4\", value: 1189}"}</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>4</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>core_4(source_4=478)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>{"{variable: \"v5\", value: 9293}"}</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>5</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>core_1(v1=596, v4=1189)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>{"{variable: \"v2\", value: 5630}"}</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>6</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>core_2(v2=5630, v5=9293)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>{"{variable: \"v3\", value: 4481}"}</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>7</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>submit(value=4481)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Target <code>v3</code> = 4481</td>
+    </tr>
+  </tbody>
+</table>
 
-`hidden_dag` is not Undertow's most original contribution, but it is strategically useful. It anchors the framework against a known design pattern and gives a clean first family where PTC should help by building a value ledger.
+Steps 3 and 4 can run in either order because they are independent branches. Step 5 cannot run until both `v1` and `v4` exist. Step 6 cannot run until both `v2` and `v5` exist.
+
+The core algorithm is a topological executor:
+
+```python
+known = dict(task["initial_values"])
+while target not in known:
+    for fn in functions:
+        if all(inp in known for inp in fn["inputs"]):
+            result = call(fn["name"], **{inp: known[inp] for inp in fn["inputs"]})
+            known[result["variable"]] = result["value"]
+submit(value=known[target])
+```
+
+The main challenge is not schema syntax. The schemas are straightforward. The challenge is dataflow discipline:
+
+* **Callable inputs** — call only functions whose inputs are known
+* **Exact values** — pass the exact known integer for each input, not a guess
+* **Ledger updates** — extract the returned value and store it under the returned variable name
+* **Distractor avoidance** — avoid connected distractors that consume budget without advancing the target
+* **Target submit** — submit the target value only after computing it
+
+### What goes wrong
+
+* **Inputs must match exactly.** The environment checks `kwargs[input] == true_value`. Calling `core_1(v1=596, v4=999)` fails with `incorrect_value` even if `v4` was computed earlier and the model mis-typed it.
+* **Call order matters.** Calling `core_1` before `core_3` or `core_4` fails with `unknown_state_reference` because `v4` is not yet in the ledger.
+* **Distractors are callable but wasteful.** `connected_distractor_0(v2=5630)` may return `ok: true` but is classified as a `distractor_action`.
+* **Noisy mode** (used in medium and hard configs) can return a fake `{ok: true, value: ...}` on wrong inputs instead of an error, polluting the ledger with incorrect values.
+* **Minimal observation mode** returns only the new variable per call, not a reminder of everything known. The model must track state itself across turns.
+
+The difficulty knobs are:
+
+* **`n_core`** — number of required functions
+* **`depth`** — longest required dependency path
+* **`n_connected_distractors`** — irrelevant functions connected to known or core variables
+* **`n_disconnected_distractors`** — irrelevant functions outside the solution path
+* **`observation_mode`** — whether the environment returns only the new observation or reminds the model of known values
+
+### Why this is interesting for PTC
+
+Because the ideal PTC strategy is almost embarrassingly simple, and that is the point. A PTC agent can parse the public function list, maintain a `known_values` dictionary, repeatedly find functions whose inputs are available, call them, and cache outputs.
+
+This is not a deep algorithm. It is a small topological executor. But writing that executor turns a multi-turn memory problem into a local state-management problem.
+
+Standard tool-calling agents can solve these tasks too, especially when the DAG is small. But they are more exposed to context-level slips: using the whole observation object as an integer, calling a child before its parent, forgetting a returned value, or substituting an earlier value with a similar name.
+
+`hidden_dag` is therefore Undertow's accounting ledger: exact, dry, and unforgiving. It tests whether PTC helps with controlled dataflow tracking.
 
 <a id="flow-repair-chain"></a>
 ## Task family II: repair_chain
 
-`repair_chain` is the stateful family and the better test of its purpose.
+`repair_chain` is the more stateful family and the better test of Undertow's purpose.
 
 FuncBenchGen functions are black-box computations: the model calls a function with values, receives outputs, and moves closer or farther from the target variable. Even when models fail by propagating stale or incorrect values, the underlying task is still a dataflow problem. `repair_chain` turns that weakness into the environment itself.
 
 The model is not just computing a value. It is controlling a hidden state machine.
 
-The world contains broken machines, tools, locations, and hidden repair stages. A machine has fields like:
+The world contains broken machines, tools, locations, and hidden repair stages. Each machine has fields like:
 
 ```json
 {
@@ -371,55 +494,220 @@ The world contains broken machines, tools, locations, and hidden repair stages. 
 }
 ```
 
-The public spec lists machine ids, bay ids, tool ids, and operation schemas. The agent can call:
+The public spec includes:
 
-* `scan_object(object_id)`
-* `inspect_tool(tool_id)`
-* `move_to(location)`
-* `apply_tool(tool_id, object_id, observation_version)`
-* `test_object(object_id, observation_version)`
-* `submit(answer)`
+* **machine ids**
+* **bay ids**
+* **available tool ids**
+* **operation schemas**
 
-Tool inspection makes the task inferable:
+It does not reveal the hidden required-tool sequence per machine. A typical public spec looks like:
+
+```json
+{
+  "objects": ["machine_0", "machine_1"],
+  "locations": ["bay_0", "bay_1", "bay_2"],
+  "tools_available": ["tool_0", "tool_1", "tool_2", "tool_3", "tool_4", "tool_5", "distractor_tool_0"],
+  "target": "repair all critical machines"
+}
+```
+
+The model can call:
+
+* **`scan_object(object_id)`** — read machine state
+* **`inspect_tool(tool_id)`** — discover compatible parts and stages
+* **`move_to(location)`** — position the agent at a bay
+* **`apply_tool(tool_id, object_id, observation_version)`** — advance repair stage
+* **`test_object(object_id, observation_version)`** — confirm a machine is repaired
+* **`submit(repaired=[...])`** — finish when all critical machines pass
+
+The tool inspection response is what makes the task publicly inferable:
 
 ```json
 {
   "ok": true,
-  "tool_id": "tool_3",
+  "tool_id": "tool_0",
   "kind": "repair",
-  "compatible_parts": ["part_0", "part_2"],
+  "compatible_parts": ["part_0", "part_1"],
   "compatible_stages_by_part": {
-    "part_0": [1],
-    "part_2": [0, 2]
+    "part_0": [0],
+    "part_1": [0]
   }
 }
 ```
 
-A competent solver can inspect tools, scan machines, build a map from `(part, stage)` to `tool_id`, move to each machine, apply the correct stage tools, update observation versions after every state-changing action, test repaired machines, and submit the repaired ids.
+From inspections across all tools, a solver builds a map from `(part, stage)` to `tool_id`. For `seed=12` with two machines and two repair steps, that map is:
 
-The main difficulty knobs are:
+* `(part_0, stage 0) → tool_0`
+* `(part_0, stage 1) → tool_3`
+* `(part_1, stage 0) → tool_0`
+* `(part_1, stage 1) → tool_1`
 
-* `n_objects`: number of machines to repair.
-* `n_repair_steps`: sequential repair stages per machine.
-* `n_tools`: number of real tools.
-* `n_distractor_tools`: number of useless tools.
-* `staleness_rate`: whether object observations become stale after repair actions.
-* `partial_observation_rate`: whether scans hide fields such as part or location.
+### How a model solves it
 
-This task is not just a DAG of values. It is a mutable state machine. A standard tool-calling agent has to keep several tables in conversation: which machine is in which bay, which part it has, which tool repairs which stage, what the current stage is, which observation version is current, where the agent is located, and which machines have already been tested.
+**Phase A: discover the repair plan by inspecting every tool once.**
 
-The PTC agent can instead build a repair ledger — not merely `known_values[var] = value`, but a live operational record:
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left", width: "4rem" }}>Step</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Action</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>1–7</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>inspect_tool</code> for each tool in <code>tools_available</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Build <code>(part, stage) → tool_id</code> map; skip distractors (<code>kind=distractor</code>)</td>
+    </tr>
+  </tbody>
+</table>
+
+**Phase B: repair each machine.**
+
+<p><em>machine_0</em></p>
+
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left", width: "4rem" }}>Step</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Action</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>8</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>scan_object(object_id="machine_0")</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>part=part_0</code>, <code>location=bay_0</code>, <code>repair_stage=0</code>, <code>observation_version=0</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>9</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>move_to(location="bay_0")</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Must be at the machine's bay to apply tools</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>10</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>apply_tool(object_id="machine_0", tool_id="tool_0", observation_version=0)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stage 0 → 1; version bumps to 1</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>11</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>apply_tool(object_id="machine_0", tool_id="tool_3", observation_version=1)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stage 1 → repaired; version bumps to 2</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>12</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>test_object(object_id="machine_0", observation_version=2)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Confirms repaired</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>machine_1</em> (same pattern)</p>
+
+<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left", width: "4rem" }}>Step</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Action</th>
+      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>13</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>scan_object(object_id="machine_1")</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>part=part_1</code>, <code>location=bay_0</code></td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>14</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>move_to(location="bay_0")</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Already there if <code>machine_0</code> was in the same bay</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>15</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>apply_tool(..., tool_id="tool_0", observation_version=0)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stage 0 → 1</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>16</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>apply_tool(..., tool_id="tool_1", observation_version=1)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Stage 1 → repaired</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>17</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>test_object(..., observation_version=2)</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Confirms repaired</td>
+    </tr>
+    <tr>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>18</td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>submit(repaired=["machine_0", "machine_1"])</code></td>
+      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>—</td>
+    </tr>
+  </tbody>
+</table>
+
+The per-machine loop repeats for every object:
+
+```python
+scan machine → note part, location, repair_stage, observation_version
+move_to(location)
+for stage in current_stage .. n_repair_steps-1:
+    tool = stage_tool_map[(part, stage)]
+    apply_tool(machine, tool, observation_version)
+    observation_version = response.observation_version
+test_object(machine, observation_version)
+```
+
+The `observation_version` must be updated after every successful `apply_tool` when staleness is enabled. Reusing an old version causes `stale_state_reference`.
+
+### What goes wrong
+
+* **Wrong location.** `apply_tool` fails if the agent is not at the machine's bay.
+* **Wrong tool for stage.** Tools must match the hidden sequence exactly; the wrong tool returns `violated_constraint`.
+* **Stale observation_version.** After each repair step (when `staleness_rate > 0`), the version increments. Reusing an old version fails with `stale_state_reference`.
+* **Distractor tools.** `distractor_tool_*` always fails with `distractor_action`.
+* **Partial scans.** When `partial_observation_rate > 0`, `scan_object` may hide `part` or `location`, requiring extra discovery.
+* **Premature submit.** Listing machines as repaired before finishing all stages fails with `premature_submit`.
+
+The difficulty knobs are:
+
+* **`n_objects`** — number of machines to repair
+* **`n_repair_steps`** — number of sequential repair stages per machine
+* **`n_tools`** — number of real tools
+* **`n_distractor_tools`** — number of useless tools
+* **`staleness_rate`** — whether object observations become stale after repair actions
+* **`partial_observation_rate`** — whether scans hide fields such as part or location
+
+### Why this is interesting for PTC
+
+This task is not just a DAG of values. It is a mutable state machine.
+
+A standard tool-calling model has to keep several tables in its head:
+
+* **machine → bay** — which machine is in which bay
+* **machine → part** — which machine has which part
+* **(part, stage) → tool** — which tool repairs which stage for that part
+* **repair stage** — what the current repair stage is
+* **observation version** — what the current observation version is
+* **agent location** — where the agent is currently located
+* **tested machines** — which machines have already been tested
+
+Each successful repair action changes state. If observations become stale, an old `observation_version` can no longer be safely reused. A model that fails to update its local view can make calls that are syntactically reasonable but semantically invalid.
+
+The PTC version gives the model a better affordance. It can write a small repair ledger:
 
 ```python
 machines = {}
 stage_tool = {}
 current_location = None
-completed = set()
 ```
 
-The model must track where each machine is, what part it has, what stage it is on, what observation version is current, what tools work for which stage, and what has already been tested. It can update that ledger after every observation. It can assert that a tool exists for the current `(part, stage)` pair. It can refresh stale observations. It can group repairs by location. It can stop retrying after a constraint violation.
+It can log every call. It can assert that a stage exists before applying a tool. It can update the observation version after every successful `apply_tool`. It can group machines by location to avoid unnecessary moves. It can stop retrying a tool after a constraint violation.
 
-This is the kind of problem Undertow is for: not whether Python is magic, but whether the model can use code as an operating record for a hidden world.
+This is the kind of work PTC is supposed to make possible. The benchmark is not checking whether Python is magic. It is checking whether the model uses a programmable workspace to become a more reliable agent.
 
 <a id="flow-metrics"></a>
 ## Metrics and failure taxonomy
