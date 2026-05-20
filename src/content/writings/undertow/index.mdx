@@ -269,9 +269,7 @@ The hypothesis is that this interface changes what the model can reliably build:
 <a id="flow-hidden-dag"></a>
 ## Task family I: hidden_dag
 
-`hidden_dag` is the cleanest family. It is closest to FuncBenchGen and serves as a bridge from ordinary function-calling evaluation into Undertow.
-
-FuncBenchGen asks: "Can the model infer and execute the right function sequence?" Undertow `hidden_dag` asks: "Given the same kind of hidden dataflow problem, does a persistent programmable workspace make the model more reliable than ordinary tool calling?"
+It asks: "Given the DAG like hidden dataflow problem, does a persistent programmable workspace make the model more reliable than ordinary tool calling?"
 
 The generator creates a set of deterministic functions over integer variables. The public spec includes:
 
@@ -454,7 +452,7 @@ Standard tool-calling agents can solve these tasks too, especially when the DAG 
 
 `repair_chain` is the more stateful family and the better test of Undertow's purpose.
 
-FuncBenchGen functions are black-box computations: the model calls a function with values, receives outputs, and moves closer or farther from the target variable. Even when models fail by propagating stale or incorrect values, the underlying task is still a dataflow problem. `repair_chain` turns that weakness into the environment itself.
+In `hidden_dag` functions are black-box computations: the model calls a function with values, receives outputs, and moves closer or farther from the target variable. Even when models fail by propagating stale or incorrect values, the underlying task is still a dataflow problem. `repair_chain` turns that weakness into the environment itself.
 
 The model is not just computing a value. It is controlling a hidden state machine.
 
