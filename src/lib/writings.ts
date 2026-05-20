@@ -27,8 +27,6 @@ export type WritingMeta = {
   title: string;
   description?: string;
   date?: string;
-  /** If true, post is reachable at /writings/[slug] but omitted from the writings index. */
-  unlisted?: boolean;
 };
 
 export async function getAllWritingsMeta(): Promise<{ slug: string; metadata: WritingMeta }[]> {
@@ -40,9 +38,7 @@ export async function getAllWritingsMeta(): Promise<{ slug: string; metadata: Wr
       return { slug, metadata };
     })
   );
-  return entries
-    .filter(({ metadata }) => !metadata.unlisted)
-    .sort((a, b) => {
+  return entries.sort((a, b) => {
     const dA = a.metadata.date ?? "";
     const dB = b.metadata.date ?? "";
     return dB.localeCompare(dA);
