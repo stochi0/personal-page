@@ -79,7 +79,7 @@ That difference is the object of study.
 
 FuncBenchGen is the nearest intellectual reference point. It frames multi-step function calling as traversal over a hidden function-dependency DAG. The model receives generated functions, input variables, and a target variable, but not the graph itself. It must infer the correct call sequence from the public function schemas and compute the target value.
 
-For me personally, the important idea was not merely that it uses DAG to make a more difficult benchmark. It is the experimental discipline (which frankly for me, has become the most brutually important lesson, even more so in the past 1 week). FuncBenchGen is synthetic, contamination-free, and controllable. It can vary required function count, dependency depth, irrelevant function count, and whether distractors are connected to the solution path. Because the tasks are generated, the benchmark is less exposed to memorization. Because the graph structure is controlled, the benchmark can say which difficulty factor caused the degradation.
+For me personally, the important idea was not merely that it uses DAG to make a more difficult benchmark. It is the experimental discipline (which frankly for me, has become the most brutually important lesson, even more so in the past 1 week). FuncBenchGen is synthetic, contamination-free, and controllable. It can vary required function count, dependency depth, irrelevant function count, and whether distractors are connected to the solution path.
 
 ### Core difference
 
@@ -87,7 +87,7 @@ FuncBenchGen's world is mostly **functional**: functions consume values and prod
 
 Undertow's world is **environmental**: the agent interacts with a hidden state through tools. Observations are partial, actions can change the world, stale observations can become invalid, and the model must maintain an operational record of what is true now. Undertow is built around memory, state tracking, planning, verification, retry logic, and controlling a partially observed environment.
 
-The difference is not just "FuncBenchGen has DAGs and Undertow has two task families." The deeper difference is: FuncBenchGen evaluates multi-step tool-call sequencing. Here we evaluate tool-mediated control under hidden mutable state, and asks whether PTC is the right interface for that control problem.
+The deeper difference is: FuncBenchGen evaluates multi-step tool-call sequencing. Here we evaluate tool-mediated control under hidden mutable state, and asks whether PTC is the right interface for that control problem.
 
 <table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
   <thead>
