@@ -89,6 +89,8 @@ Undertow's world is **environmental**: the agent interacts with a hidden state t
 
 The deeper difference is: FuncBenchGen evaluates multi-step tool-call sequencing. Here we evaluate tool-mediated control under hidden mutable state, and asks whether PTC is the right interface for that control problem.
 
+<WritingDisclosure title="Core difference table">
+
 <table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
   <thead>
     <tr>
@@ -150,6 +152,8 @@ The deeper difference is: FuncBenchGen evaluates multi-step tool-call sequencing
     </tr>
   </tbody>
 </table>
+
+</WritingDisclosure>
 
 Undertow asks whether a model can maintain and update an external-world state model through primitive tools, and whether a programmable workspace improves that process.
 
@@ -344,7 +348,7 @@ A successful function call returns:
 }
 ```
 
-### How a model could potentially solve it
+<WritingDisclosure title="How a model could potentially solve it">
 
 The model keeps a ledger of known values, starting from `initial_values`. At each step it finds a function whose inputs are all already known, calls it with the exact integer values from the ledger, and stores the returned value under the returned variable name. When the target variable appears in the ledger, it submits.
 
@@ -418,6 +422,8 @@ The main challenge is not schema syntax. The schemas are straightforward. The ch
 * **Ledger updates** — extract the returned value and store it under the returned variable name
 * **Distractor avoidance** — avoid connected distractors that consume budget without advancing the target
 * **Target submit** — submit the target value only after computing it
+
+</WritingDisclosure>
 
 ### What goes wrong
 
@@ -516,7 +522,7 @@ From inspections across all tools, a solver builds a map from `(part, stage)` to
 * `(part_1, stage 0) → tool_0`
 * `(part_1, stage 1) → tool_1`
 
-### How a model could potentially solve it
+<WritingDisclosure title="How a model could potentially solve it">
 
 **Phase A: discover the repair plan by inspecting every tool once.**
 
@@ -635,6 +641,8 @@ test_object(machine, observation_version)
 ```
 
 The `observation_version` must be updated after every successful `apply_tool` when staleness is enabled. Reusing an old version causes `stale_state_reference`.
+
+</WritingDisclosure>
 
 ### What goes wrong
 
@@ -811,6 +819,8 @@ The `repair_chain` result is more subtle and more interesting than `hidden_dag`,
 
 `repair_chain` is the more important family for Undertow's long-term purpose because it stresses mutable state. If one reads only final reward, `repair_chain` looks like a failure for everyone. That is technically true under the reward function, but it is not the whole story.
 
+<WritingDisclosure title="Pre-fix diagnostic aggregate table">
+
 <table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
   <thead>
     <tr>
@@ -874,6 +884,8 @@ The `repair_chain` result is more subtle and more interesting than `hidden_dag`,
 </table>
 
 <p><em>Pre-fix diagnostic aggregates. Standard-mode progress and comparative claims should be replaced after the snapshot fix.</em></p>
+
+</WritingDisclosure>
 
 PTC reached `progress_score = 1.0` on average. That means the PTC agents generally completed the repair state transitions even though final reward stayed zero. They inspected tools, built stage maps from public inspection data, moved to the right bay, applied the stage-appropriate tool sequence, updated observation versions, and reached repaired states.
 

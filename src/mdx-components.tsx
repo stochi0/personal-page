@@ -1,10 +1,28 @@
 import type { MDXComponents } from "mdx/types";
+import type { ReactNode } from "react";
+
+type WritingDisclosureProps = {
+  title: string;
+  children: ReactNode;
+};
+
+function WritingDisclosure({ title, children }: WritingDisclosureProps) {
+  return (
+    <details className="writing-disclosure">
+      <summary className="writing-disclosure-summary">
+        <span>{title}</span>
+      </summary>
+      <div className="writing-disclosure-content">{children}</div>
+    </details>
+  );
+}
 
 /**
  * MDX component overrides so blog content matches the site's
  * elegant typography and theme (Cormorant, accent, borders).
  */
 const components: MDXComponents = {
+  WritingDisclosure,
   h1: ({ children }) => (
     <h1 className="writing-title">{children}</h1>
   ),
