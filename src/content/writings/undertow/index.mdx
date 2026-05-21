@@ -16,195 +16,109 @@ import progressVsSuccess from "./02_progress_vs_success.png";
 
 # Undertow: A Synthetic Benchmark Experiment for Programmatic Tool Calling
 
-*A preliminary benchmark-design note about generated hidden worlds, mutable state, and when a programmable workspace might help tool-using agents.*
+*A small experiment in building controllable hidden tool-use worlds, and using traces to understand where agents fail.*
 
 ## TL;DR
 
-Undertow is a small synthetic benchmark experiment built around one question:
+I built Undertow because I wanted a simple environment where I could ask a narrow question:
 
-> Can we generate hidden, stateful tool-use worlds where a programmable workspace should matter, and measure where agents fail?
+> When an agent has to control a hidden, stateful world through primitive tools, does having a programmable workspace help it keep track of what is going on?
 
-The current version has two generated task families. In `hidden_dag`, the agent gets initial values, generated function schemas, and a target variable. It does not get the true value table or the solution order, so it must discover a valid execution order by calling functions and tracking returned values. In `repair_chain`, the agent gets machine ids, tool ids, bay ids, and primitive operation schemas. It does not get the repair plan, so it must inspect tools, scan machines, move between bays, apply stage-specific repairs, track stale observation versions, test repaired machines, and submit repaired ids.
+This is not meant to be a realistic task. It is meant to be a controlled task. The point is to know exactly what the agent is given, exactly what is hidden, exactly what actions it can take, and exactly why it succeeds or fails.
 
-The benchmark is synthetic on purpose. The goal is not realism by surface detail; it is controllability. We can vary graph size, dependency depth, distractors, number of machines, repair depth, stale state, partial observations, and budget pressure while keeping the hidden checker exact. That makes it possible to ask which parts of tool use break: planning, value propagation, state tracking, recovery, final answer shape, or budget discipline.
+Undertow currently has two task families:
 
-The current results should be read as diagnostic evidence, not as proof that programmatic tool calling wins. Some PTC traces look like the intended local state-machine strategy: a value table for `hidden_dag`, a repair ledger for `repair_chain`. But the run is small, and the first standard-vs-PTC comparison was affected by harness and final-answer-contract issues. The useful conclusion for now is that Undertow makes these failures visible and gives a controlled way to rerun the comparison.
+* `hidden_dag`: the agent gets initial values, generated function schemas, and a target variable. It has to call functions in a valid dependency order and submit the target value.
+* `repair_chain`: the agent gets machine ids, tool ids, bay ids, and primitive operation schemas. It has to inspect tools, scan machines, move to the right bay, apply the right repair tool at each stage, track stale observation versions, test repaired machines, and submit the repaired ids.
 
-## Flow
+The main claim is intentionally modest. The first result is not "PTC wins." The result is that this benchmark makes hidden-state failures visible. It tells me whether an agent failed because it forgot a value, called a function too early, used the wrong repair tool, reused a stale observation, repeated calls, ran out of budget, or repaired the world but submitted the wrong answer shape.
 
-1. [Why build this](#flow-why)
-2. [Relationship to FuncBenchGen](#flow-funcbenchgen)
-3. [Benchmark setup](#flow-setup)
-4. [Task family I: hidden_dag](#flow-hidden-dag)
-5. [Task family II: repair_chain](#flow-repair-chain)
-6. [What PTC changes](#flow-ptc-change)
-7. [Metrics and knobs](#flow-metrics-grid)
-8. [Preliminary diagnostics](#flow-diagnostic)
-9. [Closing](#flow-closing)
+That is the thing I think is worth building: a small synthetic benchmark that lets us hillclimb programmatic tool calling behavior with trace-level feedback.
 
-<a id="flow-why"></a>
-## Why build this
+## What I Am Trying To Learn
 
-Tool-use evaluations often collapse many behaviors into one score. A model might fail because it picked the wrong tool, called a child function before its parent, forgot a value, reused a stale observation, moved the world into the right state but submitted the wrong JSON shape, or simply ran out of budget. A single success rate usually cannot distinguish those cases.
+The motivating intuition is that ordinary tool calling and programmatic tool calling are not very different on short tasks. If a task is "call one API and report the result," a Python workspace should not matter much.
 
-Undertow tries to make the failure surface explicit. It creates hidden environments where the agent only sees public identifiers, public tool schemas, and observations returned from primitive tools. The hidden state and reward checker remain protected. The benchmark records the trace and labels failures mechanically.
+The workspace should matter when the agent has to build and maintain state over many tool calls. For example:
 
-That gives the experiment a narrower purpose than "evaluate agents" in general:
+* a table of values it has already computed,
+* a queue of functions whose inputs are now available,
+* a map from machine to location,
+* a map from `(part, repair_stage)` to tool,
+* the current observation version for each machine,
+* and a final answer object that has to match the checker.
 
-* Define generated tool-use worlds with hidden structure.
-* Expose only primitive public operations.
-* Vary difficulty through explicit knobs.
-* Score with a hidden checker.
-* Audit traces by failure type, progress, and wasted calls.
-* Compare ordinary tool calling with a programmable workspace only after the harness is clean.
+This led to the benchmark question:
 
-The main hypothesis is conditional:
+> Can I generate tasks where the correct strategy is to build a small local state machine around primitive tools?
 
-> A programmable workspace should help when the task can be turned into a local state machine whose updates depend on external tools.
+If yes, then PTC has a natural thing to be good at: writing that state machine down in code. If no, then the benchmark is not actually testing what I want it to test.
 
-In `hidden_dag`, that local state machine is a table of known values and pending functions. In `repair_chain`, it is a repair ledger containing machine state, tool-stage compatibility, current location, observation versions, tested machines, and final repaired ids.
+So the current version of Undertow is best understood as an environment-design experiment. It is trying to make the benchmark problem crisp before making a strong claim about which interface is better.
 
-That hypothesis is not yet a result. Undertow is the first pass at an environment where it can be tested.
+## Why Synthetic At All
 
-<a id="flow-funcbenchgen"></a>
-## Relationship to FuncBenchGen
+The feedback I got was right: if a benchmark is very synthetic, the burden is on me to explain it very clearly.
 
-FuncBenchGen is the closest reference point. It argues that synthetic function-calling benchmarks can be useful when they are contamination-resistant, generated at evaluation time, and precise about which capability they test. Its core task casts multi-step function calling as traversal over a hidden function-dependency DAG: the model receives generated functions, known input variables, and a target variable, but not the dependency graph itself. Difficulty is controlled through graph size, dependency depth, and distractor functions.
+The reason to make Undertow synthetic is controllability. In a real tool-use task, many things vary at once: API surface, domain knowledge, prompt wording, hidden data, model prior knowledge, and final answer format. In Undertow, I can generate a world from a seed and vary one thing at a time.
 
-The important lesson is not that every benchmark should be synthetic. It is that a synthetic benchmark has to earn its keep by making the task formal and the knobs meaningful. If the environment is artificial, the reader should still know exactly:
+That lets me ask questions like:
 
-* what the agent sees,
-* what remains hidden,
-* what action changes the world,
-* what counts as success,
-* which knob stresses which capability,
-* and why the result should matter.
+* Does success fall when the dependency chain gets deeper?
+* Do connected distractor functions cause more wasted calls than disconnected distractors?
+* Does stale state break agents even when the correct next action is obvious?
+* Does the workspace help because the agent writes a real ledger, or does it just make different mistakes?
+* Once the agent discovers the general strategy, do bigger generated instances still matter?
 
-Undertow keeps that discipline but changes the object of study.
+That last question is important. If the knobs stop mattering once the agent figures out the strategy, that is a useful negative result. It means the benchmark is mostly testing strategy discovery, not scalable execution. If the knobs continue to matter, then the benchmark is also testing whether the agent can carry out the strategy reliably as bookkeeping pressure increases.
 
-<WritingDisclosure title="FuncBenchGen vs. Undertow">
+This is the same reason I found FuncBenchGen useful as a reference point. FuncBenchGen is also synthetic, but it is clear about the generated object: a hidden function-dependency DAG. The model sees functions and input variables, but not the graph. The task is to compute a target value. The knobs change graph size, depth, and distractors.
 
-<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
-  <thead>
-    <tr>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Axis</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>FuncBenchGen</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Undertow</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>World type</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Functional value computation</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden environment control</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Agent goal</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Compute a target variable</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Compute values or repair hidden mutable state</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden structure</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Function dependency DAG</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Dependency DAG plus stateful repair worlds</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Main capability tested</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Multi-step function-call sequencing and value propagation</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>State tracking, action sequencing, recovery, and final submission discipline</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Why synthetic helps</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Generated functions avoid memorized benchmark items and allow controlled graph changes</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Generated hidden worlds allow controlled changes to state, staleness, distractors, and budget pressure</td>
-    </tr>
-  </tbody>
-</table>
+Undertow borrows that style of benchmark design and asks whether it can be extended from hidden dataflow to hidden mutable state.
 
-</WritingDisclosure>
+## What The Agent Is Given
 
-The short version: FuncBenchGen studies hidden dataflow through generated functions. Undertow asks whether that style of generated benchmark can be extended to hidden mutable state, where the agent must operate a changing world rather than only compute a value.
+The agent is not given the hidden answer. It is also not given a secret oracle. It receives a public task spec and primitive tools.
 
-<a id="flow-setup"></a>
-## Benchmark setup
+In standard mode, the system prompt says the agent is solving an Undertow task with native tools. The user prompt says:
 
-An Undertow task is generated from a seed and a set of family-specific parameters. The generator creates a hidden initial state, a public task specification, primitive tools, a target condition, a hidden reward checker, and a tool-call budget.
+```text
+Discover the target answer using the primitive tools.
+Finish with submit(...).
 
-The agent receives the public task specification. It does not receive the hidden state or the checker. Each step is a tool call. The environment updates hidden state, returns a public observation, and records whether the call produced useful state change or a failure label. The episode ends when the agent submits an answer or exhausts the budget.
+Public task spec:
+{...}
+```
 
-The two interaction modes expose the same underlying task through different control surfaces:
+In PTC mode, the system prompt says the agent is in a programmatic tool-calling environment. It can use Python files under `/workspace`, and it can call the same primitive tools through:
 
-* **Standard mode:** the model uses native tool calls directly through the normal conversation loop.
-* **PTC mode:** the model gets a persistent Python workspace and calls the same primitive tools through a small package.
+```python
+from ptc import task, tools, finish
+```
 
-PTC mode is not an oracle. It does not expose hidden state or reward. It only gives the model a place to write code, store ledgers, parse observations, retry carefully, and construct the final answer.
+The PTC prompt also gives the public task spec. It does not expose hidden state or reward.
 
-<WritingDisclosure title="Undertow task families">
+So yes, the model is told the task family through the public spec. For example, it can see `"family": "hidden_dag"` or `"family": "repair_chain"`. But it is not told the hidden solution:
 
-<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
-  <thead>
-    <tr>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>Axis</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}><code>hidden_dag</code></th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}><code>repair_chain</code></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Agent sees</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Initial values, target variable, function schemas</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Machine ids, bay ids, tool ids, operation schemas</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Hidden state</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>True value table and valid execution order</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Machine parts, locations, repair stages, observation versions, required tool sequence</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Goal</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Compute and submit the target value</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Repair every critical machine and submit repaired ids</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Local strategy</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Build a topological executor over known values</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Build a repair ledger over machines, tools, location, stages, and versions</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Failure pressure</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Unknown references, incorrect values, distractors, repeated calls, premature submit</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Wrong location, wrong tool, stale observation version, repeated calls, final answer shape</td>
-    </tr>
-  </tbody>
-</table>
+* In `hidden_dag`, it sees function inputs and outputs, but not the true value table or the already-computed solution order.
+* In `repair_chain`, it sees machine ids, tool ids, and bay ids, but not each machine's required repair sequence.
 
-</WritingDisclosure>
+This distinction matters. The benchmark is not testing whether the model can guess that there is structure. It is testing whether the model can use the public structure and tool observations to maintain the right state over time.
 
-<a id="flow-hidden-dag"></a>
-## Task family I: hidden_dag
+## Task 1: hidden_dag
 
-`hidden_dag` is the functional baseline. It asks whether an agent can execute a generated dependency graph when it sees function schemas but not the hidden value table or solution order.
+`hidden_dag` is the simpler family. It is basically a generated dataflow puzzle.
 
-The public spec includes:
-
-* initial variable values,
-* a target variable,
-* generated function names,
-* each function's input variables,
-* each function's output variable,
-* and JSON tool schemas.
-
-A small public spec might look like this:
+The agent sees something like:
 
 ```json
 {
   "family": "hidden_dag",
   "initial_values": {
     "v0": 343,
-    "source_3": 706,
-    "source_4": 478
+    "source_3": 706
   },
-  "target": "v3",
+  "target": "v2",
   "functions": [
     {
       "name": "core_0",
@@ -213,22 +127,16 @@ A small public spec might look like this:
       "description": "Transforms v0 into v1."
     },
     {
-      "name": "core_3",
-      "inputs": ["source_3"],
-      "output": "v4",
-      "description": "Transforms source_3 into v4."
-    },
-    {
       "name": "core_1",
-      "inputs": ["v1", "v4"],
+      "inputs": ["v1", "source_3"],
       "output": "v2",
-      "description": "Combines v1, v4 into v2."
+      "description": "Combines v1, source_3 into v2."
     }
   ]
 }
 ```
 
-A successful function call returns only the new observation:
+It can call `core_0` only if it passes the correct current value for `v0`. A successful call returns a new variable:
 
 ```json
 {
@@ -238,311 +146,285 @@ A successful function call returns only the new observation:
 }
 ```
 
-The intended solver is simple but unforgiving:
+Now the agent can call `core_1`, because it knows both `v1` and `source_3`. If it submits the correct value for `v2`, the hidden checker marks the task solved.
+
+The intended strategy is:
 
 ```python
-known = dict(task["initial_values"])
-remaining = list(task["functions"])
+known = dict(initial_values)
+pending = list(functions)
 
 while target not in known:
-    progressed = False
-    for fn in list(remaining):
-        if all(name in known for name in fn["inputs"]):
-            result = call(fn["name"], **{name: known[name] for name in fn["inputs"]})
+    for fn in list(pending):
+        if all(x in known for x in fn["inputs"]):
+            result = call(fn["name"], **{x: known[x] for x in fn["inputs"]})
             known[result["variable"]] = result["value"]
-            remaining.remove(fn)
-            progressed = True
-    assert progressed
+            pending.remove(fn)
 
 submit(value=known[target])
 ```
 
-The difficulty knobs have concrete meanings:
+This is why `hidden_dag` is a good first family. It is not trying to be realistic. It is trying to isolate one boring but important behavior: can the agent maintain a value ledger and execute a dependency graph without losing track?
 
-* `n_core` increases the number of required functions and therefore the amount of value bookkeeping.
-* `depth` increases the longest dependency chain and therefore the cost of one missed value.
-* `n_connected_distractors` adds irrelevant functions that look locally callable because they share variables with the solution graph.
-* `n_disconnected_distractors` adds irrelevant functions outside the solution path.
-* `observation_mode=minimal` removes reminders of previously known values, stressing memory or local state.
-* `invalid_return_mode=noisy` can pollute the ledger with fake values after bad calls.
+The knobs mean:
 
-This family is deliberately close to FuncBenchGen. It gives Undertow a known, dry accounting task before moving to mutable state. If PTC helps here, the mechanism should be legible: the model writes a value table and a callable-function queue. If standard mode solves it just as well, that is also useful information.
+| Knob | What it changes | Why it matters |
+| --- | --- | --- |
+| `n_core` | More required functions | More values to store and pass correctly |
+| `depth` | Longer dependency chain | One forgotten value blocks later calls |
+| `n_connected_distractors` | Irrelevant functions attached to known variables | Tests whether the agent wastes calls on plausible but useless work |
+| `n_disconnected_distractors` | Irrelevant functions outside the solution path | Tests whether the agent can ignore obvious noise |
+| `observation_mode=minimal` | Observations do not restate all known values | Tests whether the agent maintains its own ledger |
+| `invalid_return_mode=noisy` | Bad calls can return fake-looking values | Tests whether the agent pollutes its ledger after mistakes |
 
-<a id="flow-repair-chain"></a>
-## Task family II: repair_chain
+If an agent has the right topological-execution strategy, increasing `n_core` and `depth` should still matter because there are more exact values to carry forward. If it does not matter, then `hidden_dag` is probably too easy for that model/interface pair.
 
-`repair_chain` is the state-control family. The agent is not just computing a value; it is operating a hidden environment whose state changes after actions.
+## Task 2: repair_chain
 
-The public spec includes:
+`repair_chain` is the family that actually motivated Undertow. Here the agent is controlling a hidden mutable world, not just computing a value.
 
-* machine ids,
-* bay ids,
-* available tool ids,
-* the target `"repair all critical machines"`,
-* and operation schemas.
+The public spec looks more like:
 
-It does not reveal the required repair sequence for each machine. The agent must infer enough of the hidden state through tools:
+```json
+{
+  "family": "repair_chain",
+  "objects": ["machine_0", "machine_1"],
+  "locations": ["bay_0", "bay_1"],
+  "tools_available": ["tool_0", "tool_1", "distractor_tool_0"],
+  "target": "repair all critical machines"
+}
+```
 
-* `scan_object(object_id)` reads machine status, repair stage, observation version, and sometimes part/location.
-* `inspect_tool(tool_id)` reveals compatible parts and repair stages.
-* `move_to(location)` changes the agent's current bay.
-* `apply_tool(object_id, tool_id, observation_version)` attempts a state-changing repair action.
-* `test_object(object_id, observation_version)` checks whether a machine is repaired.
-* `submit(repaired=[...])` finishes the task.
+The agent can use these tools:
 
-A tool inspection response can make the hidden plan inferable:
+| Tool | What it does |
+| --- | --- |
+| `scan_object(object_id)` | Reveals the machine's status, repair stage, observation version, and sometimes part/location |
+| `inspect_tool(tool_id)` | Reveals which parts and stages a tool can repair |
+| `move_to(location)` | Moves the agent to a bay |
+| `apply_tool(object_id, tool_id, observation_version)` | Tries to advance a machine by one repair stage |
+| `test_object(object_id, observation_version)` | Checks whether a machine is repaired |
+| `submit(repaired=[...])` | Submits the final repaired machine ids |
+
+A typical observation might be:
 
 ```json
 {
   "ok": true,
-  "tool_id": "tool_0",
-  "kind": "repair",
-  "compatible_parts": ["part_0", "part_1"],
-  "compatible_stages_by_part": {
-    "part_0": [0],
-    "part_1": [0]
-  }
+  "object_id": "machine_0",
+  "status": "broken",
+  "part": "part_0",
+  "location": "bay_1",
+  "repair_stage": 0,
+  "observation_version": 0
 }
 ```
 
-The intended local strategy is a ledger, not a single chain of calls:
+The key detail is `observation_version`. When the agent repairs a machine, the version can change. If the agent later uses the old version, the environment returns `stale_state_reference`. This is a tiny synthetic version of a real state-control problem: what you observed earlier may no longer be valid after you act.
+
+The intended strategy is:
 
 ```python
-stage_tool = inspect_all_tools()
-machines = scan_all_machines()
+tool_map = inspect_all_tools()      # (part, stage) -> tool_id
+machines = scan_all_machines()      # machine_id -> current state
 
 for machine_id, machine in machines.items():
     move_to(machine["location"])
+
     while machine["status"] != "repaired":
-        tool_id = stage_tool[(machine["part"], machine["repair_stage"])]
+        tool_id = tool_map[(machine["part"], machine["repair_stage"])]
         result = apply_tool(
             object_id=machine_id,
             tool_id=tool_id,
             observation_version=machine["observation_version"],
         )
-        machine["repair_stage"] = result["repair_stage"]
-        machine["status"] = result["status"]
-        machine["observation_version"] = result["observation_version"]
+        machine.update(result)
+
     test_object(machine_id, machine["observation_version"])
 
 submit({"repaired": sorted(machines)})
 ```
 
-The difficulty knobs map to state-tracking pressure:
+The knobs mean:
 
-* `n_objects` increases the number of machine records the agent must maintain.
-* `n_repair_steps` increases the length of each mutable state transition chain.
-* `n_tools` increases the search space for stage-compatible tools.
-* `n_distractor_tools` adds tools that are syntactically available but never repair machines.
-* `staleness_rate` makes observation versions become invalid after repair actions.
-* `partial_observation_rate` hides fields such as part or location from scans.
-* `shared_tool_ambiguity` makes tool compatibility less one-to-one.
+| Knob | What it changes | Why it matters |
+| --- | --- | --- |
+| `n_objects` | More machines | More per-object state to track |
+| `n_repair_steps` | More stages per machine | Longer action sequences and more version updates |
+| `n_tools` | More real tools | Larger compatibility map |
+| `n_distractor_tools` | More useless tools | More plausible wrong actions |
+| `staleness_rate` | Whether observations become stale after repairs | Tests whether the agent updates versions after state changes |
+| `partial_observation_rate` | Whether scans hide part/location fields | Tests recovery from incomplete observations |
+| `shared_tool_ambiguity` | More tools share compatible parts/stages | Makes the tool map less obvious |
 
-This is the family that motivates Undertow. A standard tool-calling agent can solve it, but it has to carry several changing tables through the conversation loop. A PTC agent can make those tables explicit. The benchmark is meant to test whether that difference becomes measurable as state, depth, distractors, and stale observations scale.
+This is where I expect PTC to matter more. In standard mode, the agent has to carry the ledger through the conversation. In PTC mode, the agent can write the ledger into code and files.
 
-<a id="flow-ptc-change"></a>
-## What PTC changes
+But this is still a hypothesis. The current results do not yet prove it.
 
-The PTC interface changes the control surface, not the information available to the agent.
+## What PTC Changes
 
-In standard mode, the agent sees schemas, calls tools, reads observations, and chooses the next action through the normal tool-call loop. In PTC mode, the agent uses a persistent Python workspace:
+The two modes get the same public task data and the same primitive environment tools.
+
+The difference is the control surface.
+
+In standard mode, the agent directly calls tools one at a time:
+
+```text
+scan_object(machine_0)
+inspect_tool(tool_0)
+move_to(bay_1)
+apply_tool(machine_0, tool_0, observation_version=0)
+...
+submit(value=None, repaired=["machine_0"])
+```
+
+In PTC mode, the agent can write code around those calls:
 
 ```python
 from ptc import task, tools, finish
 
 spec = task.spec()
-tools.list()
-tools.call("scan_object", object_id="machine_0")
-finish({"repaired": ["machine_0"]})
+machines = {}
+tool_map = {}
+
+for tool_id in spec["tools_available"]:
+    obs = tools.inspect_tool(tool_id=tool_id)
+    # store useful compatibility information
+
+finish({"repaired": repaired_ids})
 ```
 
-The same primitive tools are underneath. Hidden state stays hidden. The checker stays hidden. The advantage, if any, has to come from the agent writing durable local machinery: queues, ledgers, parsers, assertions, retry policies, and final-answer constructors.
+PTC does not make the hidden state visible. It only makes it easier for the agent to build durable local state: caches, ledgers, queues, assertions, logs, and final answer constructors.
 
-That is why the claim should be tested conditionally:
+So the actual claim is:
 
-> PTC should help when the agent can reduce a hidden tool-use task to explicit local state plus controlled external updates.
+> PTC should help if the benchmark requires reliable local state management around external tool calls.
 
-`hidden_dag` is the value-table version of that claim. `repair_chain` is the mutable-world version.
+Undertow is my attempt to build tasks where that claim is testable.
 
-<a id="flow-metrics-grid"></a>
-## Metrics and knobs
+## What The Results Say So Far
 
-Undertow reports both final outcomes and the shape of the trajectory.
+The current results should be treated as preliminary diagnostics, not a final benchmark result.
 
-The core metrics are:
+There are three reasons.
 
-* `success`: whether the submitted answer satisfies the hidden checker.
-* `num_calls`: consumed tool-call budget.
-* `budget`: total allowed tool calls.
-* `progress_score`: family-specific partial progress.
-* `useful_calls`: calls with a non-empty state delta.
-* `wasted_calls`: calls that produced a failure code.
-* `failure_counter`: counts by failure type.
-* `first_failure` and `final_failure`: where the trace first broke and how it ended.
+First, the result set is small. Some newer runs are single-seed stress tests. That is useful for debugging the environment, but not enough to support a broad model/interface conclusion.
 
-The failure taxonomy is mechanical:
+Second, the first standard-vs-PTC comparison exposed a harness bug. Standard mode reconstructed the environment from a serialized snapshot between native tool calls, but the snapshot originally failed to preserve some family-specific hidden state. That meant a standard agent could make a valid call, then have the environment forget a known value or current location on the next call. This has been fixed, but those old numbers should be read as diagnostic.
 
-* `invalid_action`: the tool does not exist or the episode is closed.
-* `schema_error`: arguments do not match the schema.
-* `unknown_state_reference`: the agent referenced an unknown object, tool, or variable.
-* `incorrect_value`: the agent supplied a known variable with the wrong value.
-* `stale_state_reference`: the agent used an obsolete observation version.
-* `violated_constraint`: the action was syntactically valid but violated world constraints.
-* `distractor_action`: the agent used an irrelevant function or distractor tool.
-* `premature_submit`: the submitted answer did not satisfy the target.
-* `budget_exceeded`: the agent tried to continue after consuming its budget.
-* `repeated_call`: the agent repeated an identical call.
-
-<div style={{ textAlign: "center" }}>
-  <img src={failureTaxonomy.src} alt="Failure taxonomy breakdown across task families and modes" width="900" />
-  <p><em>Failure labels turn a score into an audit trail: repeated calls, stale references, violated constraints, distractors, and final-answer errors are different failures.</em></p>
-</div>
-
-Budget is part of the task design. A budget that only admits the oracle path mostly measures whether the model guessed the intended path immediately. A useful synthetic environment should allow discovery, wrong hypotheses, and recovery, while still making waste visible.
-
-<div style={{ textAlign: "center" }}>
-  <img src={budgetExhaustion.src} alt="Budget exhaustion rates before and after calibration" width="900" />
-  <p><em>Budget calibration is a benchmark knob, not a cosmetic setting. It controls how much exploration and recovery the task permits.</em></p>
-</div>
-
-The first grid was intentionally small. It varied `hidden_dag` size, depth, and distractors; varied `repair_chain` objects, repair steps, and distractor tools; used five seeds in the original diagnostic grid; and compared standard mode with PTC mode.
-
-<a id="flow-diagnostic"></a>
-## Preliminary diagnostics
-
-The current result set should not be read as the final PTC comparison. It is useful because it exposed three things the benchmark needs to measure cleanly:
-
-* whether agents convert the public spec into the intended local state machine,
-* whether failures come from hidden-world control or from interface/harness issues,
-* and whether progress diverges from final reward.
-
-The first standard-vs-PTC run also exposed a harness bug. Standard mode reconstructed the environment from a serialized snapshot between native tool calls, but the snapshot originally did not preserve all family-specific mutable hidden state. That matters directly: a standard agent could compute a value and then call the next function in an environment that had forgotten the known-value table, or move to a bay and then apply a tool in an environment whose current location had reset. That issue has since been fixed, so the pre-fix comparison should be replaced before making a strong mode claim.
-
-There was also a final-answer-contract issue in `repair_chain`. Some PTC traces completed the repair transitions but submitted prose instead of the structured answer the checker expected:
+Third, some `repair_chain` PTC runs made real state progress but failed the final answer contract. For example, the agent repaired machines and then submitted prose like:
 
 ```python
 finish("All critical machines have been repaired.")
 ```
 
-The checker expected:
+The checker expected structured ids:
 
 ```python
 finish({"repaired": ["machine_0", "machine_1"]})
 ```
 
+That is still a failure, but it is a different failure from not understanding the repair process. This is exactly why I want the benchmark to report progress and failure type, not just final reward.
 
 <div style={{ textAlign: "center" }}>
   <img src={headlineComparison.src} alt="Preliminary standard vs PTC comparison" width="900" />
-  <p><em>Preliminary headline comparison. This figure is diagnostic, not a final claim that PTC outperforms standard tool calling.</em></p>
+  <p><em>Preliminary headline comparison. This is useful for debugging the benchmark, but it should not be read as evidence that PTC broadly wins.</em></p>
 </div>
 
-### hidden_dag
+## What I Learned From The Traces
 
-The main question for `hidden_dag` is whether the agent performs disciplined dataflow execution: call only functions whose inputs are known, pass exact values, store returned variables, avoid distractors, and submit only after the target is known.
+The main thing I learned is that final success is too coarse for this environment.
 
-Some PTC traces did exactly what the environment was designed to elicit: inspect the public spec, build a value table, maintain a pending queue, and submit the target. Standard agents can also solve this family, and in some current cells do so efficiently. That is why this family should be treated as a calibration task, not as the decisive PTC result.
+Two failed runs can mean very different things:
+
+* The agent never discovers the right state.
+* The agent discovers the right state but repeats calls until the budget runs out.
+* The agent uses stale observation versions after successful repairs.
+* The agent repairs the machines but submits the wrong answer shape.
+* The agent solves the dataflow but wastes calls on connected distractors.
+
+Undertow records these differences.
+
+<div style={{ textAlign: "center" }}>
+  <img src={failureTaxonomy.src} alt="Failure taxonomy breakdown across task families and modes" width="900" />
+  <p><em>The failure taxonomy is the most useful part of the current setup. It separates state errors, interface errors, repeated calls, distractors, and final-answer errors.</em></p>
+</div>
+
+For `hidden_dag`, the useful question is not only "did it solve?" but "did it behave like a topological executor?"
 
 <div style={{ textAlign: "center" }}>
   <img src={hiddenDagHeatmap.src} alt="Preliminary hidden_dag results by configuration" width="900" />
-  <p><em>Preliminary <code>hidden_dag</code> diagnostics. The important behavior is whether the trace follows a valid dataflow executor, not just which mode wins one small run.</em></p>
+  <p><em><code>hidden_dag</code> is a calibration family. It checks whether agents can maintain a value ledger and avoid wasting calls as graph structure changes.</em></p>
 </div>
 
-<div style={{ textAlign: "center" }}>
-  <img src={callEfficiency.src} alt="Call efficiency: useful calls vs wasted calls" width="900" />
-  <p><em>Useful-call rate shows whether budget becomes state progress or disappears into repeated calls, wrong values, and distractors.</em></p>
-</div>
-
-### repair_chain
-
-`repair_chain` is the more important family for Undertow's long-term purpose because it stresses hidden mutable state. The agent has to maintain a record of what is true now, not only what was observed earlier.
-
-The diagnostic traces show why progress and success need to be separated. A run can repair machines and still fail final reward because the final answer shape is wrong. Another run can spend many calls repeating scans, violating location constraints, or applying stale versions without making much state progress. Those are different failures and should not be collapsed into the same story.
-
-<WritingDisclosure title="Preliminary diagnostic aggregate table">
-
-<table style={{ borderCollapse: "collapse", width: "100%", margin: "12px 0", fontSize: "0.92rem" }}>
-  <thead>
-    <tr>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>mode</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>family</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "left" }}>model</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>episodes</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>success</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>avg calls</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>avg progress</th>
-      <th style={{ border: "1px solid #6b7280", padding: "8px 10px", textAlign: "right" }}>budget exhaustion</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>PTC</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>repair_chain</code></td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Qwen3.6-35B-A3B</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>40</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>24.80</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>1.00</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>PTC</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>repair_chain</code></td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>GLM-5</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>27</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>20.44</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>1.00</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>standard</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>repair_chain</code></td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>Qwen3.6-35B-A3B</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>40</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>41.95</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.00</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>45.0%</td>
-    </tr>
-    <tr>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>standard</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}><code>repair_chain</code></td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px" }}>GLM-5</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>40</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.0%</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>53.75</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>0.00</td>
-      <td style={{ border: "1px solid #9ca3af", padding: "8px 10px", textAlign: "right" }}>77.5%</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><em>Pre-fix diagnostic aggregates. These numbers are useful for understanding failure shape, but they should be rerun before making a final standard-vs-PTC claim.</em></p>
-
-</WritingDisclosure>
+For `repair_chain`, the useful question is "did it control the hidden state correctly?"
 
 <div style={{ textAlign: "center" }}>
   <img src={repairChainHeatmap.src} alt="Preliminary repair_chain results by configuration" width="900" />
-  <p><em><code>repair_chain</code> is the mutable-state family: wrong location, wrong stage, stale observation, and final answer shape are all visible in traces.</em></p>
+  <p><em><code>repair_chain</code> is the state-control family. It is where stale observations, wrong locations, wrong tools, and final answer shape become visible.</em></p>
 </div>
 
+Call efficiency and progress make the same point. A benchmark score should not only say whether an agent won. It should say how much of the interaction actually changed the world in the right direction.
+
 <div style={{ textAlign: "center" }}>
-  <img src={callsDistribution.src} alt="Tool-call count distribution by mode and family" width="900" />
-  <p><em>Call counts show how much interaction different strategies spend before submitting, failing, or exhausting budget.</em></p>
+  <img src={callEfficiency.src} alt="Call efficiency across task families and modes" width="900" />
+  <p><em>Useful-call rate asks whether tool calls are becoming progress or disappearing into retries and mistakes.</em></p>
 </div>
 
 <div style={{ textAlign: "center" }}>
   <img src={progressVsSuccess.src} alt="Progress score versus success" width="900" />
-  <p><em>Progress and success should both be reported. A failed final answer can conceal meaningful hidden-state progress.</em></p>
+  <p><em>Progress and success can diverge. That divergence is one of the reasons to build a trace-level benchmark.</em></p>
 </div>
 
-The current evidence is consistent with the benchmark hypothesis in some traces: when a model uses the workspace to build the right local state machine, the behavior becomes more auditable and sometimes more effective. But that is still a hypothesis to rerun cleanly, not the headline conclusion.
+<div style={{ textAlign: "center" }}>
+  <img src={callsDistribution.src} alt="Tool-call count distribution by mode and family" width="900" />
+  <p><em>Call counts show how much budget agents spend before solving, failing, or giving up.</em></p>
+</div>
 
-<a id="flow-closing"></a>
+Budget is also part of the environment design. If the budget only allows the perfect oracle path, then the task mostly tests whether the model immediately guesses the intended algorithm. If the budget is too loose, repeated calls stop mattering. Undertow treats budget as another knob.
+
+<div style={{ textAlign: "center" }}>
+  <img src={budgetExhaustion.src} alt="Budget exhaustion rates before and after calibration" width="900" />
+  <p><em>Budget calibration controls how much exploration and recovery the benchmark permits.</em></p>
+</div>
+
+## Current Takeaway
+
+My current takeaway is not that PTC is better than standard tool calling.
+
+The takeaway is:
+
+> Undertow is a controlled way to generate hidden tool-use worlds where state tracking, recovery, and final answer discipline can be measured separately.
+
+The benchmark is interesting if it can answer questions like:
+
+* Can a model infer the right local strategy from the public spec?
+* Does a programmable workspace make that strategy easier to execute reliably?
+* Which difficulty knobs still matter after the strategy is known?
+* Do failures come from world modeling, stale state, wasted calls, budget pressure, or final answer formatting?
+
+That is the "why" for this project. I want an environment where PTC behavior can be improved and audited, not just a one-number leaderboard.
+
+## What I Would Change Next
+
+The next version should make the benchmark claim cleaner.
+
+First, rerun standard and PTC after the state-serialization and final-answer fixes. The existing plots are useful for explanation, but the comparison should be refreshed before I make a stronger empirical claim.
+
+Second, separate strategy discovery from strategy execution. One condition can tell the model the intended algorithm at a high level. Another can only give the public spec. If the knobs matter even when the strategy is given, then Undertow is testing scalable execution. If they do not, then the hard part is strategy discovery.
+
+Third, make `repair_chain` the center of the story. `hidden_dag` is useful because it connects to FuncBenchGen and tests value bookkeeping, but the real difference from FuncBenchGen is hidden mutable state. That is where stale observations, world transitions, and ledgers become necessary.
+
+Fourth, report trace audits as first-class results. The strongest output of Undertow is not just success rate. It is a breakdown of what went wrong.
+
 ## Closing
 
-Undertow is a synthetic benchmark experiment, not a finished benchmark suite. Its value depends on being precise about the generated task, the hidden state, the public interface, the difficulty knobs, and the failure taxonomy.
+I started with the idea "maybe PTC helps in hidden stateful environments." That was too vague.
 
-The core idea is simple: if an agent is controlling a hidden world through primitive tools, final success is only one part of the story. We should also know what the agent believed, what it changed, what it repeated, what went stale, what violated the world constraints, and whether the final answer matched the checker.
+The clearer version is:
 
-That is the point of Undertow v0: create a controllable environment where those questions can be asked cleanly, then rerun the PTC-vs-standard comparison without pretending that the first diagnostic run already settled it.
+> PTC should help when a tool-use task can be converted into a local state machine, and Undertow is a small synthetic attempt to generate tasks where that statement can be tested.
+
+That is why the environment is synthetic. It lets me say what the agent sees, what is hidden, what the correct strategy looks like, what the knobs change, and what kind of failure happened.
+
+The current experiments are not the final answer. They are the first pass at making the question precise.
