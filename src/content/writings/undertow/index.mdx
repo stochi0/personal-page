@@ -420,17 +420,6 @@ The benchmark is interesting if it can answer questions like:
 * Does a programmable workspace make that strategy easier to execute reliably?
 
 <a id="what-i-would-change-next"></a>
-## What I Would Change Next
-
-The next version should make the benchmark claim cleaner.
-
-First, rerun standard and PTC after the state-serialization and final-answer fixes. The existing plots are useful for explanation, but the comparison should be refreshed before I make a stronger empirical claim.
-
-Second, separate strategy discovery from strategy execution. One condition can tell the model the intended algorithm at a high level. Another can only give the public spec. If the knobs matter even when the strategy is given, then Undertow is testing scalable execution. If they do not, then the hard part is strategy discovery.
-
-Third, make `repair_chain` the center of the story. `hidden_dag` is useful because it connects to FuncBenchGen and tests value bookkeeping, but the real difference from FuncBenchGen is hidden mutable state. That is where stale observations, world transitions, and ledgers become necessary.
-
-Fourth, report trace audits as first-class results. The strongest output of Undertow is not just success rate. It is a breakdown of what went wrong.
 
 ## Closing
 
