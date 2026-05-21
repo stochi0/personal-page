@@ -92,7 +92,7 @@ Undertow borrows that style of benchmark design and asks whether it can be exten
 <a id="what-the-agent-is-given"></a>
 ## What The Agent Is Given
 
-The agent is not given the hidden answer. It is also not given a secret oracle. It receives a public task spec and primitive tools.
+The agent receives a public task spec and primitive tools.
 
 In standard mode, the system prompt says the agent is solving an Undertow task with native tools. The user prompt says:
 
@@ -117,7 +117,7 @@ So yes, the model is told the task family through the public spec. For example, 
 * In `hidden_dag`, it sees function inputs and outputs, but not the true value table or the already-computed solution order.
 * In `repair_chain`, it sees machine ids, tool ids, and bay ids, but not each machine's required repair sequence.
 
-This distinction matters. The benchmark is not testing whether the model can guess that there is structure. It is testing whether the model can use the public structure and tool observations to maintain the right state over time.
+The benchmark is not testing whether the model can guess that there is structure. It is testing whether the model can use the public structure and tool observations to maintain the right state over time.
 
 <a id="task-1-hidden-dag"></a>
 ## Task 1: hidden_dag
