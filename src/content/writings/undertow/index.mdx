@@ -44,8 +44,7 @@ This benchmark makes hidden-state failures visible. It tells me whether an agent
 7. [What the results say so far](#what-the-results-say-so-far)
 8. [What went wrong in the traces](#what-went-wrong-in-the-traces)
 9. [What PTC actually did](#what-ptc-actually-did)
-10. [Current takeaway](#current-takeaway)
-11. [Closing](#closing)
+10. [Closing](#closing)
 
 <a id="motivation"></a>
 ## Motivation
@@ -329,7 +328,7 @@ On `medium`, the benchmark starts to show the distinction I care about. `hidden_
 
 The most useful comparison is `medium` `repair_chain`. DeepSeek Flash solves both seeds in both modes, but standard seed 1 is much tighter: 213 calls, 16 failed calls, reward 1.0. The matching PTC run solves too, but takes 366 calls and 155 failed calls. DeepSeek Pro shows the other side: on seed 0, standard stalls at 0.081 progress, while PTC reaches 1.0 progress and solves, even though it takes 424 calls and 212 failed calls. Qwen is split again. PTC solves seed 0 where standard only reaches 0.6875 progress, but PTC collapses on seed 1 with 0.03125 progress. I would read this as "PTC changes the failure surface," not "PTC is better."
 
-On `hard`, the run becomes more like a stress test than a balanced comparison. The completed `hidden_dag` rows still mostly work, which suggests that dataflow bookkeeping alone is not the hard part for these models. `repair_chain` is different. The standard hard repair-chain runs complete, but barely progress: DeepSeek Flash reaches 0.027 progress, DeepSeek Pro reaches 0.031, and Qwen reaches 0.0059. Those traces are mostly constraint violations and repeated calls. The PTC repair-chain attempts for hard do not have aggregate rows because the Python runner timed out after 600 seconds. That timeout is part of the result: a programmable workspace is not free if the generated program does not control its own runtime.
+On `hard`, the run becomes more like a stress test than a balanced comparison. The completed `hidden_dag` rows still mostly work, which suggests that dataflow bookkeeping alone is not the hard part for these models. `repair_chain` is different. The standard hard repair-chain runs complete, but barely progress: DeepSeek Flash reaches 0.027 progress, DeepSeek Pro reaches 0.031, and Qwen reaches 0.0059. Those traces are mostly constraint violations and repeated calls. The PTC repair-chain attempts for hard do not have aggregate rows because the Python runner timed out after 600 seconds. 
 
 I would not read `v_hard` as a result yet. The aggregate CSVs are empty and there are no raw rows or logs. It is a configured stress target, not evidence.
 
@@ -409,14 +408,17 @@ But PTC also makes a bad local policy fast. If the script retries blindly, carri
 
 The hard repair-chain timeouts are another version of the same point. Those PTC runs did not produce aggregate rows because the Python command timed out after 600 seconds in the sandbox. That is not a normal solved/unsolved benchmark score, but it is still useful information. At larger sizes, the generated local program has to manage its own runtime.
 
-On `hidden_dag`, PTC is less obviously useful. Standard mode already behaves like the intended topological executor. In that family, the workspace mostly creates new ways to make small mistakes: schema calls, repeated calls, and value-ledger pollution. That is a useful calibration result. If the task is already easy to do directly, adding a programmable layer does not automatically help.
+On `hidden_dag`, PTC is less obviously useful. Standard mode already behaves like the intended topological executor. In that family, the workspace mostly creates new ways to make small mistakes: schema calls, repeated calls, and value-ledger pollution If the task is already easy to do directly, adding a programmable layer does not automatically help.
 
-<a id="current-takeaway"></a>
-## Current Takeaway
+<a id="closing"></a>
 
-My current takeaway is not that PTC is better than standard tool calling.
+## Closing
 
-The takeaway is:
+
+
+> PTC should help when a tool-use task can be converted into a local state machine, and Undertow is a small synthetic attempt to generate tasks where that statement can be tested.
+
+
 
 > Undertow is a controlled way to generate hidden tool-use worlds where state tracking, recovery, repeated calls, stale observations, constraint failures, timeouts, and metric disagreement can be measured separately.
 
@@ -424,20 +426,6 @@ The benchmark is interesting if it can answer questions like:
 
 * Can a model infer the right local strategy from the public spec?
 * Does a programmable workspace make that strategy easier to execute reliably?
-
-<a id="closing"></a>
-
-## Closing
-
-I started with the idea "maybe PTC helps in hidden stateful environments." That was too vague.
-
-The clearer version is:
-
-> PTC should help when a tool-use task can be converted into a local state machine, and Undertow is a small synthetic attempt to generate tasks where that statement can be tested.
-
-That is why the environment is synthetic. It lets me say what the agent sees, what is hidden, what the correct strategy looks like, what the knobs change, and what kind of failure happened.
-
-The current experiments are not the final answer. They are a first pass at making the question concrete enough to debug.
 
 ## Credits
 
