@@ -40,12 +40,11 @@ export function EditorialRow({
     >
       <div className="editorial-title-line">
         <h3 className="editorial-title">{title}</h3>
+        {action && <span className="editorial-action-wrap">{action}</span>}
       </div>
-      {(meta || action) && (
+      {meta && (
         <div className="editorial-meta-line">
-          {meta && <span className="editorial-meta">{meta}</span>}
-          {meta && action && <span className="editorial-meta-divider">·</span>}
-          {action && <span className="editorial-action-wrap">{action}</span>}
+          <span className="editorial-meta">{meta}</span>
         </div>
       )}
       {summary && <p className="editorial-summary">{summary}</p>}
