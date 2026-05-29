@@ -2,6 +2,13 @@ import type { HighlightGroup, HighlightItem } from "./types";
 
 export const highlightItems = [
   {
+    title: "Scholarship — Tsinghua HTGR Summer School",
+    category: "scholarships",
+    detail: "Program scholarship",
+    year: "2025",
+    featured: true,
+  },
+  {
     title: "Meta Hacker Cup",
     category: "competitions",
     detail: "Advanced to Round 2 of global competitive programming contest",
@@ -18,8 +25,6 @@ export const highlightItems = [
     category: "programs",
     location: "China",
     year: "2025",
-    detail: "Program scholarship",
-    featured: true,
   },
   {
     title: "Tsinghua Summer School for International Construction",
@@ -80,9 +85,15 @@ export const highlightItems = [
 ] as const satisfies readonly HighlightItem[];
 
 const programItems = highlightItems.filter((item) => item.category === "programs");
+const scholarshipItems = highlightItems.filter((item) => item.category === "scholarships");
 const competitionItems = highlightItems.filter((item) => item.category === "competitions");
 
 export const highlightGroups = [
+  {
+    category: "scholarships",
+    title: "Scholarships",
+    items: scholarshipItems,
+  },
   {
     category: "competitions",
     title: "Competitions",
