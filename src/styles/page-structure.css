@@ -1,0 +1,102 @@
+.page-title-section {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+}
+
+.page-tagline {
+  margin-top: 1rem;
+}
+
+.hero-bio-primary {
+  margin-top: 1.5rem;
+}
+
+.hero-bio {
+  margin-top: 1rem;
+}
+
+.body-text-spaced {
+  margin-top: 1.5rem;
+}
+
+.centered-section,
+.centered-section .section-title,
+.centered-body {
+  text-align: center;
+}
+
+.centered-body {
+  margin-bottom: 2rem;
+}
+
+.social-link-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.piano-intro {
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.hero-quotes-section {
+  margin-top: 2rem;
+}
+
+.hero-quote {
+  white-space: pre-line;
+}
+
+.project-link {
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.project-tech {
+  font-style: italic;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.not-found-title {
+  margin-bottom: 1rem;
+}
+
+.not-found-copy {
+  margin-bottom: 2rem;
+}
+
+.not-found-links {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.connect-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.connect-link:hover {
+  color: var(--accent);
+}

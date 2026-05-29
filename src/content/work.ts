@@ -1,11 +1,6 @@
-export type WorkItem = {
-  title: string;
-  company: string;
-  location?: string;
-  date: string;
-  description: string[];
-  link?: string;
-};
+import type { PageMeta, WorkItem, WorkSection } from "./types";
+
+export type { WorkItem, WorkSection } from "./types";
 
 export const industry: WorkItem[] = [
   {
@@ -92,9 +87,14 @@ export const academia: WorkItem[] = [
   },
 ];
 
+export const workSections = [
+  { title: "Industry", items: industry },
+  { title: "Research", items: research },
+  { title: "Academia & Community", items: academia },
+] as const satisfies readonly WorkSection[];
+
 export const workPageMeta = {
   title: "Work",
   description: "Professional work experience and research positions",
   tagline: "Experience across startups, research labs, and academia.",
-};
-
+} as const satisfies PageMeta;

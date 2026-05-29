@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { DecorativeStar, PageShell, SiteFooter } from "@/components/layout/PageShell";
 import { createMetadata } from "@/lib/metadata";
 import { profile } from "@/content";
+import { formatDisplayDate } from "@/lib/dates";
 import { getWritingSlugs } from "@/lib/writings";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -21,25 +23,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return createMetadata(meta.title, meta.description ?? "", profile.name);
 }
 
-function formatPostDate(dateStr?: string) {
-  if (!dateStr) return null;
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-  } catch {
-    return null;
-  }
-}
-
 export default async function WritingPage({ params }: Props) {
   const { slug } = await params;
   const mod = await import(`@/content/writings/${slug}/index.mdx`);
   const { default: Content } = mod;
   const meta = (mod as { metadata?: { date?: string } }).metadata;
-  const dateFormatted = formatPostDate(meta?.date);
+  const dateFormatted = formatDisplayDate(meta?.date);
 
   return (
-    <div className="main-container">
+    <PageShell>
       <header className="section">
         <Link href="/writings" className="back-link">
           ← Writings
@@ -55,11 +47,8 @@ export default async function WritingPage({ params }: Props) {
         <Content />
       </article>
 
-      <div className="star">✦</div>
-
-      <footer className="footer">
-        <p className="footer-quote">&ldquo;{profile.footerQuote}&rdquo;</p>
-      </footer>
-    </div>
+      <DecorativeStar />
+      <SiteFooter />
+    </PageShell>
   );
 }

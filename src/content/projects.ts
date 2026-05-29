@@ -1,15 +1,6 @@
-export type Project = {
-  title: string;
-  tech: string;
-  description: string[];
-  link?: string;
-  linkText?: string;
-};
+import type { PageMeta, ProjectCategory } from "./types";
 
-export type ProjectCategory = {
-  name: string;
-  projects: Project[];
-};
+export type { Project, ProjectCategory } from "./types";
 
 export const projectCategories: ProjectCategory[] = [
   {
@@ -104,5 +95,4 @@ export const projectsPageMeta = {
   title: "Projects",
   description: "Technical projects and implementations",
   tagline: "Implementations, experiments, and explorations.",
-};
-
+} as const satisfies PageMeta;

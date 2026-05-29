@@ -1,3 +1,5 @@
+import type { Profile, SocialLink } from "./types";
+
 export const profile = {
   name: "stochi",
   aka: "stochi0",
@@ -27,16 +29,16 @@ Keep moving forward.
 ~ Eren Yeager`,
   ],
   footerQuote: "Game Is Game.",
-};
-
-export const now = {
-  interests:
-    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
-  current: `In a different vein, I traveled solo through 11 cities in China, Macau, Hong Kong, and Vietnam. Oh, and I love hotpot.`,
-};
+} as const satisfies Profile;
 
 export const social = {
   email: "heystochi@gmail.com",
   twitter: "https://x.com/stochi0",
   github: "https://github.com/stochi0",
 };
+
+export const socialLinks = [
+  { label: "Email", href: `mailto:${social.email}`, external: false },
+  { label: "Twitter", href: social.twitter, external: true },
+  { label: "GitHub", href: social.github, external: true },
+] as const satisfies readonly SocialLink[];

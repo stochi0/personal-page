@@ -1,5 +1,6 @@
 import { readdirSync, existsSync } from "fs";
 import path from "path";
+import type { WritingMeta } from "@/content";
 
 const WRITINGS_DIR = path.join(process.cwd(), "src", "content", "writings");
 
@@ -22,12 +23,6 @@ export function getWritingSlugs(): string[] {
     .sort();
   return slugs;
 }
-
-export type WritingMeta = {
-  title: string;
-  description?: string;
-  date?: string;
-};
 
 export async function getAllWritingsMeta(): Promise<{ slug: string; metadata: WritingMeta }[]> {
   const slugs = getWritingSlugs();

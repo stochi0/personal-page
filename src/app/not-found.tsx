@@ -1,34 +1,22 @@
 import Link from "next/link";
+import { navItems } from "@/content";
+import { DecorativeStar, PageShell } from "@/components/layout/PageShell";
 
 export default function NotFound() {
   return (
-    <div className="main-container" style={{ textAlign: 'center', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <h1 style={{ marginBottom: '1rem' }}>404</h1>
-      <p className="tagline" style={{ marginBottom: '2rem' }}>The page you seek has wandered off...</p>
-      <div className="star">✦</div>
-      <div
-        className="connect-links"
-        style={{
-          marginTop: '2rem',
-          display: 'flex',
-          gap: '1.5rem',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <Link href="/" className="connect-link">
-          Home
-        </Link>
-        <Link href="/work" className="connect-link">
-          Work
-        </Link>
-        <Link href="/projects" className="connect-link">
-          Projects
-        </Link>
-        <Link href="/writings" className="connect-link">
-          Writings
-        </Link>
+    <PageShell>
+      <div className="not-found">
+        <h1 className="not-found-title">404</h1>
+        <p className="tagline not-found-copy">The page you seek has wandered off...</p>
+        <DecorativeStar />
+        <div className="not-found-links">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="connect-link">
+              {item.label}
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

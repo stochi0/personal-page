@@ -3,13 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/work", label: "Work" },
-  { href: "/projects", label: "Projects" },
-  { href: "/writings", label: "Writings" },
-];
+import { homeSectionNavItems, navItems } from "@/content";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -19,11 +13,15 @@ export function Navigation() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme") as "dark" | "light" | null;
-    const newTheme = stored || "light";
-    setTheme(newTheme);
-    document.documentElement.classList.toggle("light", newTheme === "light");
+    const frame = requestAnimationFrame(() => {
+      const stored = localStorage.getItem("theme") as "dark" | "light" | null;
+      const newTheme = stored || "light";
+      setTheme(newTheme);
+      setMounted(true);
+      document.documentElement.classList.toggle("light", newTheme === "light");
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -79,14 +77,13 @@ export function Navigation() {
         <div className="nav-right">
           {pathname === "/" && (
             <div className="nav-dots">
-              {["now", "explore", "highlights", "piano", "connect"].map((section) => {
-                const title = section === "piano" ? "Off the Keys" : section.charAt(0).toUpperCase() + section.slice(1);
+              {homeSectionNavItems.map((section) => {
                 return (
                   <a
-                    key={section}
-                    href={`#${section}`}
-                    className={`nav-dot ${activeSection === section ? "nav-dot-active" : ""}`}
-                    title={title}
+                    key={section.id}
+                    href={`#${section.id}`}
+                    className={`nav-dot ${activeSection === section.id ? "nav-dot-active" : ""}`}
+                    title={section.label}
                   />
                 );
               })}
