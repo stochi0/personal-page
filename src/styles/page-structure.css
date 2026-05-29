@@ -108,7 +108,6 @@
 .editorial-chapter + .editorial-chapter {
   margin-top: 2.4rem;
   padding-top: 1.8rem;
-  border-top: 1px solid var(--border-color);
 }
 
 .editorial-chapter-header {
@@ -120,17 +119,15 @@
 
 .editorial-chapter-label {
   flex: 0 0 auto;
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   color: var(--text-muted);
 }
 
 .editorial-chapter-rule {
-  height: 1px;
-  flex: 1;
-  background: linear-gradient(to right, var(--border-color), transparent);
+  display: none;
 }
 
 .editorial-intro {
