@@ -60,7 +60,7 @@ export function ExploreSection() {
 
 export function HighlightsSection() {
   return (
-    <Section id="highlights" title="Selected">
+    <Section id="highlights" title="Highlights">
       <HighlightGroups groups={highlightGroups} />
       <ProgramHighlights intro={programHighlights.intro} items={programHighlights.items} />
       <MusicHighlights intro={musicHighlights.intro} items={musicHighlights.items} />

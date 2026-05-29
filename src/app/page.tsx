@@ -20,13 +20,16 @@ export default function Home() {
   return (
     <PageShell>
       <HeroSection />
-      <DecorativeStar />
-      <NowSection />
-      <ExploreSection />
-      <DecorativeStar />
-      <HighlightsSection />
-      <DecorativeStar />
-      <ConnectSection />
+      <div className="home-sections">
+        <DecorativeStar />
+        <NowSection />
+        <DecorativeStar />
+        <ExploreSection />
+        <DecorativeStar />
+        <HighlightsSection />
+        <DecorativeStar />
+        <ConnectSection />
+      </div>
       <DecorativeStar />
       <HeroQuotesSection />
       <SiteFooter />

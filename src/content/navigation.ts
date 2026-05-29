@@ -10,6 +10,6 @@ export const navItems = [
 export const homeSectionNavItems = [
   { id: "now", label: "Now" },
   { id: "explore", label: "Explore" },
-  { id: "highlights", label: "Selected" },
+  { id: "highlights", label: "Highlights" },
   { id: "connect", label: "Connect" },
 ] as const satisfies readonly HomeSectionNavItem[];

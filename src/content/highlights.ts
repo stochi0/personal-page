@@ -98,7 +98,7 @@ export const highlightGroups = [
 ] as const satisfies readonly HighlightGroup[];
 
 export const programHighlights = {
-  intro: "Selected for {7 international programs} in China, 2025",
+  intro: "{7 international programs} in China, 2025",
   items: highlightItems.filter((item) => item.category === "programs"),
 } as const;
 
