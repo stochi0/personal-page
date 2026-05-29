@@ -3,7 +3,7 @@ import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Navigation, ScrollToTop } from "../components/Navigation";
-import { profile } from "@/content/profile";
+import { profile, siteDescription } from "@/content";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: profile.title,
     template: `%s | ${profile.name}`,
   },
-  description: profile.metaDescription,
+  description: siteDescription,
   keywords: ["AI", "Machine Learning", "stochi", "stochi0", "Portfolio", "Software Engineer", "Research"],
   authors: [{ name: profile.name }],
   creator: profile.name,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: profile.title,
-    description: profile.metaDescription,
+    description: siteDescription,
     url: process.env.NEXT_PUBLIC_VERCEL_URL
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
       : 'http://localhost:3000',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: profile.title,
-    description: profile.metaDescription,
+    description: siteDescription,
   },
   robots: {
     index: true,
@@ -76,7 +76,6 @@ export default function RootLayout({
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-        <link rel="manifest" href="/manifest.json" />
         <meta httpEquiv="Cache-Control" content="max-age=86400" />
         <meta name="applicable-device" content="pc,mobile" />
         <meta name="MobileOptimized" content="width" />

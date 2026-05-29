@@ -2,14 +2,7 @@ import type { Profile, SocialLink } from "./types";
 
 export const profile = {
   name: "stochi",
-  aka: "stochi0",
-
   title: "Stochi",
-  description:
-    "AI, Agents, RL, Vision. Research & Engineering. Open to AI research & applied roles.",
-  /** Used for page metadata / OG / Twitter (from bio) */
-  metaDescription:
-    "I like Post-Training, Agents, RL, ModelArchitectures and ML Systems.",
   bio: ["Towards {Autonomy}. {Self-Evolution}. {Open-Ended Discovery}."],
   heroQuotes: [
     `胜则生，败则死。
