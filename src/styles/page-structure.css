@@ -54,7 +54,7 @@
 .piano-intro {
   margin-bottom: 2.2rem;
   font-style: italic;
-  text-align: center;
+  text-align: left;
 }
 
 .hero-quotes-section {
@@ -244,6 +244,7 @@
 .editorial-details {
   margin: 0.7rem 0 0;
   padding-left: 1.05rem;
+  list-style: disc;
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.65;
