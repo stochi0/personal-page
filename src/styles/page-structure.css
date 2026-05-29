@@ -1,15 +1,26 @@
 .page-title-section {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .page-title {
-  font-size: 2.5rem;
+  color: var(--text-primary);
+  font-size: 2.85rem;
   font-weight: var(--title-weight);
+  letter-spacing: 0.01em;
 }
 
 .page-tagline {
   margin-top: 1rem;
+}
+
+.home-hero-section {
+  margin-bottom: 1.5rem;
+}
+
+.home-hero-section .page-title {
+  font-size: 3.25rem;
+  line-height: 1;
 }
 
 .hero-bio-primary {

@@ -15,7 +15,7 @@ import { Section } from "@/components/layout/PageShell";
 
 export function HeroSection() {
   return (
-    <header className="section page-title-section">
+    <header className="section page-title-section home-hero-section">
       <p className="hero-greeting">Hey, I&apos;m</p>
       <h1 className="page-title">{profile.name}</h1>
       {profile.bio.map((paragraph, index) => (

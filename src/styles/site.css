@@ -218,11 +218,12 @@ html.light .nav-scrolled {
    ======================================== */
 
 .hero-greeting {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  letter-spacing: 0.15em;
+  font-size: 0.82rem;
+  color: var(--accent);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.72;
 }
 
 .hero-aka {
@@ -885,11 +886,17 @@ html.light .craft-card-featured {
 
 /* Tagline */
 .tagline {
-  font-size: 1.15rem;
+  font-size: 1.16rem;
   font-style: italic;
   color: var(--text-secondary);
   line-height: 1.6;
   letter-spacing: 0.02em;
+}
+
+.home-hero-section .tagline {
+  color: var(--text-secondary);
+  font-size: 1.24rem;
+  line-height: 1.55;
 }
 
 /* Decorative star */
