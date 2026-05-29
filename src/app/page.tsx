@@ -43,7 +43,10 @@ export default function Home() {
       {/* Now - What I'm up to */}
       <section id="now" className="section">
         {/* <h2 className="section-title">Now</h2> */}
-        <p className="body-text">{renderBold(now.current)}</p>
+        <p className="body-text">{renderHighlights(now.interests)}</p>
+        <p className="body-text" style={{ marginTop: "1.5rem" }}>
+          {renderBold(now.current)}
+        </p>
         <p className="body-text" style={{ marginTop: "1.5rem" }}>
           Previously shipped AI at{" "}
           {now.previous.map((item, i) => (

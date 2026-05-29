@@ -8,9 +8,7 @@ export const profile = {
   /** Used for page metadata / OG / Twitter (from bio) */
   metaDescription:
     "I like Post-Training, Agents, RL, ModelArchitectures and ML Systems.",
-  bio: [
-    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
-  ],
+  bio: ["Towards {Autonomy}. {Self-Improvement}. {Open-Ended Discovery}."],
   heroQuotes: [
     `胜则生，败则死。
 不战，何来胜利？
@@ -32,7 +30,9 @@ Keep moving forward.
 };
 
 export const now = {
-  current: `In a different vein, a few months back, I traveled solo through 11 cities in China, Macau, and Hong Kong. Oh, and I love hotpot.`,
+  interests:
+    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
+  current: `In a different vein, I traveled solo through 11 cities in China, Macau, Hong Kong, and Vietnam. Oh, and I love hotpot.`,
   previous: [
     { name: "QX Labs", link: "/work" },
     { name: "Unsiloed AI", link: "/work", badge: "YC F25" },
