@@ -13,6 +13,8 @@
   --border-color: rgba(232, 228, 220, 0.08);
   --border-hover: rgba(232, 228, 220, 0.2);
   --radius: 0.25rem;
+  --title-weight: 400;
+  --emphasis-weight: 450;
 }
 
 /* Light Mode */
@@ -257,7 +259,7 @@ html.light .nav-scrolled {
   text-transform: uppercase;
   letter-spacing: 0.25em;
   color: var(--accent);
-  font-weight: 500;
+  font-weight: var(--title-weight);
   white-space: nowrap;
 }
 
@@ -310,7 +312,7 @@ html.light .nav-scrolled {
 .explore-link-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   transition: color 0.2s ease;
 }
@@ -337,7 +339,7 @@ html.light .nav-scrolled {
 
 .body-text strong {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--emphasis-weight);
 }
 
 /* ========================================
@@ -419,7 +421,7 @@ html.light .craft-card-featured {
 .craft-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
@@ -488,7 +490,7 @@ html.light .craft-card-featured {
 .journey-role {
   display: block;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
@@ -558,7 +560,7 @@ html.light .craft-card-featured {
   display: block;
   font-size: 0.95rem;
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--title-weight);
   margin-bottom: 0.25rem;
 }
 
@@ -788,7 +790,7 @@ html.light .craft-card-featured {
 .work-title {
   font-size: 1.15rem;
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--title-weight);
   transition: color 0.3s ease;
 }
 
@@ -850,7 +852,7 @@ html.light .craft-card-featured {
 .item-title {
   font-size: 1.1rem;
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--title-weight);
   margin-bottom: 0.25rem;
 }
 
@@ -932,7 +934,7 @@ html.light .craft-card-featured {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--accent);
-  font-weight: 500;
+  font-weight: var(--emphasis-weight);
   min-width: 3.5rem;
   padding-top: 0.2rem;
 }
@@ -946,7 +948,7 @@ html.light .craft-card-featured {
 .accolade-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
 }
 
@@ -1057,7 +1059,7 @@ html.light .craft-card-featured {
 .piano-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   transition: color 0.2s ease;
 }
@@ -1097,8 +1099,8 @@ html.light .craft-card-featured {
 h1 {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 3.5rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: var(--title-weight);
+  letter-spacing: 0;
   line-height: 1.1;
   color: var(--text-primary);
 }
@@ -1106,7 +1108,7 @@ h1 {
 h2 {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -1116,7 +1118,7 @@ h2 {
 h3 {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
 }
 
@@ -1191,8 +1193,8 @@ section[id] {
 .writing-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 2rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: var(--title-weight);
+  letter-spacing: 0;
   line-height: 1.25;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
@@ -1201,7 +1203,7 @@ section[id] {
 .writing-heading {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -1218,7 +1220,7 @@ section[id] {
 .writing-subheading {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   margin-top: 1.75rem;
   margin-bottom: 0.75rem;
@@ -1236,7 +1238,7 @@ section[id] {
 
 .writing-strong {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--emphasis-weight);
 }
 
 .writing-list {
@@ -1314,7 +1316,7 @@ section[id] {
 .writing-disclosure-summary span {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   letter-spacing: 0.12em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -1462,7 +1464,7 @@ section[id] {
 
 .writing-article th {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--emphasis-weight);
   text-align: left;
 }
 
@@ -1530,7 +1532,7 @@ section[id] {
   display: block;
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   font-size: 1.15rem;
-  font-weight: 500;
+  font-weight: var(--title-weight);
   color: var(--text-primary);
   margin-bottom: 0.35rem;
   transition: color 0.2s ease;

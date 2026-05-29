@@ -66,8 +66,14 @@ export function EditorialDetails({ items }: { items: readonly string[] }) {
   );
 }
 
-export function EditorialChapter({ children }: { children: ReactNode }) {
-  return <div className="editorial-chapter">{children}</div>;
+export function EditorialChapter({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={["editorial-chapter", className].filter(Boolean).join(" ")}>{children}</div>;
 }
 
 export function EditorialChapterHeader({ children }: { children: ReactNode }) {

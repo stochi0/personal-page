@@ -51,21 +51,18 @@ export function HighlightGroups({ groups }: HighlightGroupsProps) {
 
 export function ProgramHighlights({ intro, items }: ProgramHighlightsProps) {
   return (
-    <EditorialChapter>
-      <EditorialChapterHeader>Selected Programs</EditorialChapterHeader>
-      <p className="programs-intro editorial-intro">
+    <EditorialChapter className="selected-programs-chapter">
+      <p className="programs-intro selected-programs-intro">
         <RichText text={intro} />
       </p>
-      <EditorialList>
+      <div className="selected-program-list">
         {items.map((program) => (
-          <EditorialRow
-            key={program.title}
-            title={program.title}
-            meta={[program.location, program.year].filter(Boolean).join(" · ")}
-            compact
-          />
+          <div key={program.title} className="selected-program-row">
+            <span className="selected-program-marker">✦</span>
+            <span className="selected-program-title">{program.title}</span>
+          </div>
         ))}
-      </EditorialList>
+      </div>
     </EditorialChapter>
   );
 }
@@ -75,16 +72,16 @@ export function MusicHighlights({ intro, items }: MusicHighlightsProps) {
     <EditorialChapter>
       <EditorialChapterHeader>OFF THE KEYS</EditorialChapterHeader>
       <p className="body-text piano-intro editorial-intro">{intro}</p>
-      <EditorialList>
+      <div className="selected-music-list">
         {items.map((item) => (
-          <EditorialRow
-            key={item.title}
-            title={item.title}
-            meta={item.detail}
-            compact
-          />
+          <div key={item.title} className="selected-music-row">
+            <span className="selected-music-title">{item.title}</span>
+            {item.detail && (
+              <span className="selected-music-detail">— {item.detail}</span>
+            )}
+          </div>
         ))}
-      </EditorialList>
+      </div>
     </EditorialChapter>
   );
 }
