@@ -47,19 +47,6 @@ export default function Home() {
         <p className="body-text" style={{ marginTop: "1.5rem" }}>
           {renderBold(now.current)}
         </p>
-        <p className="body-text" style={{ marginTop: "1.5rem" }}>
-          Previously shipped AI at{" "}
-          {now.previous.map((item, i) => (
-            <span key={item.name}>
-              <Link href={item.link} className="inline-link">
-                {item.name}
-              </Link>
-              {item.badge && ` (${item.badge})`}
-              {i < now.previous.length - 1 && " and "}
-            </span>
-          ))}
-          .
-        </p>
       </section>
 
       {/* Explore - Minimal links */}

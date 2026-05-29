@@ -33,10 +33,6 @@ export const now = {
   interests:
     "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
   current: `In a different vein, I traveled solo through 11 cities in China, Macau, Hong Kong, and Vietnam. Oh, and I love hotpot.`,
-  previous: [
-    { name: "QX Labs", link: "/work" },
-    { name: "Unsiloed AI", link: "/work", badge: "YC F25" },
-  ],
 };
 
 export const social = {
