@@ -1,40 +1,39 @@
 import type { WorkItem, WorkSection } from "@/content";
+import {
+  EditorialChapter,
+  EditorialChapterHeader,
+  EditorialDetails,
+  EditorialList,
+  EditorialRow,
+} from "./EditorialList";
 
 type ExperienceListProps = {
   sections: readonly WorkSection[];
 };
 
 function ExperienceItem({ item }: { item: WorkItem }) {
+  const meta = [item.company, item.location, item.date].filter(Boolean).join(" · ");
+
   return (
-    <div className="work-item">
-      <div className="work-header">
-        <span className="work-title">{item.title}</span>
-        <span className="work-date">{item.date}</span>
-      </div>
-      <div className="work-company">
-        {item.company}
-        {item.location && `, ${item.location}`}
-      </div>
-      <ul className="work-description">
-        {item.description.map((point) => (
-          <li key={point}>{point}</li>
-        ))}
-      </ul>
-    </div>
+    <EditorialRow title={item.title} meta={meta}>
+      <EditorialDetails items={item.description} />
+    </EditorialRow>
   );
 }
 
 export function ExperienceList({ sections }: ExperienceListProps) {
   return (
-    <>
+    <section id="work-list" className="section">
       {sections.map((section) => (
-        <section key={section.title} className="section">
-          <h2 className="section-title">{section.title}</h2>
-          {section.items.map((item) => (
-            <ExperienceItem key={`${item.company}-${item.title}-${item.date}`} item={item} />
-          ))}
-        </section>
+        <EditorialChapter key={section.title}>
+          <EditorialChapterHeader>{section.title}</EditorialChapterHeader>
+          <EditorialList>
+            {section.items.map((item) => (
+              <ExperienceItem key={`${item.company}-${item.title}-${item.date}`} item={item} />
+            ))}
+          </EditorialList>
+        </EditorialChapter>
       ))}
-    </>
+    </section>
   );
 }

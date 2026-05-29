@@ -60,16 +60,9 @@ export function ExploreSection() {
 
 export function HighlightsSection() {
   return (
-    <Section id="highlights" title="Highlights">
+    <Section id="highlights" title="Selected">
       <HighlightGroups groups={highlightGroups} />
       <ProgramHighlights intro={programHighlights.intro} items={programHighlights.items} />
-    </Section>
-  );
-}
-
-export function MusicSection() {
-  return (
-    <Section id="piano" title="Off the Keys">
       <MusicHighlights intro={musicHighlights.intro} items={musicHighlights.items} />
     </Section>
   );

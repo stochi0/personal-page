@@ -5,7 +5,6 @@ import {
   HeroQuotesSection,
   HeroSection,
   HighlightsSection,
-  MusicSection,
   NowSection,
 } from "@/components/home/HomeSections";
 import { DecorativeStar, PageShell, SiteFooter } from "@/components/layout/PageShell";
@@ -26,7 +25,6 @@ export default function Home() {
       <ExploreSection />
       <DecorativeStar />
       <HighlightsSection />
-      <MusicSection />
       <DecorativeStar />
       <ConnectSection />
       <DecorativeStar />

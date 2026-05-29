@@ -25,7 +25,6 @@ export type HomeSectionId =
   | "now"
   | "explore"
   | "highlights"
-  | "piano"
   | "connect";
 
 export type NavItem = {

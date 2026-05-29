@@ -1,4 +1,11 @@
 import type { Project, ProjectCategory } from "@/content";
+import {
+  EditorialChapter,
+  EditorialChapterHeader,
+  EditorialDetails,
+  EditorialList,
+  EditorialRow,
+} from "./EditorialList";
 
 type ProjectListProps = {
   categories: readonly ProjectCategory[];
@@ -6,41 +13,40 @@ type ProjectListProps = {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="work-item">
-      <div className="work-header">
-        <span className="work-title">{project.title}</span>
-        {project.link && (
+    <EditorialRow
+      title={project.title}
+      meta={project.tech}
+      action={
+        project.link ? (
           <a
             href={project.link}
             target="_blank"
             rel="noreferrer noopener"
-            className="content-link project-link"
+            className="editorial-action"
           >
             {project.linkText || "View →"}
           </a>
-        )}
-      </div>
-      <div className="work-company project-tech">{project.tech}</div>
-      <ul className="work-description">
-        {project.description.map((point) => (
-          <li key={point}>{point}</li>
-        ))}
-      </ul>
-    </div>
+        ) : null
+      }
+    >
+      <EditorialDetails items={project.description} />
+    </EditorialRow>
   );
 }
 
 export function ProjectList({ categories }: ProjectListProps) {
   return (
-    <>
+    <section id="project-list" className="section">
       {categories.map((category) => (
-        <section key={category.name} className="section">
-          <h2 className="section-title">{category.name}</h2>
-          {category.projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
-          ))}
-        </section>
+        <EditorialChapter key={category.name}>
+          <EditorialChapterHeader>{category.name}</EditorialChapterHeader>
+          <EditorialList>
+            {category.projects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </EditorialList>
+        </EditorialChapter>
       ))}
-    </>
+    </section>
   );
 }

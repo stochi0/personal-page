@@ -1,4 +1,10 @@
 import type { HighlightGroup, HighlightItem } from "@/content";
+import {
+  EditorialChapter,
+  EditorialChapterHeader,
+  EditorialList,
+  EditorialRow,
+} from "./EditorialList";
 import { RichText } from "./RichText";
 
 type HighlightGroupsProps = {
@@ -15,57 +21,70 @@ type MusicHighlightsProps = {
   items: readonly HighlightItem[];
 };
 
+function formatHighlightMeta(item: HighlightItem) {
+  return [item.detail, item.location, item.year ?? item.date].filter(Boolean).join(" · ");
+}
+
 function HighlightList({ items }: { items: readonly HighlightItem[] }) {
   return (
-    <div className="accolades-grid">
+    <EditorialList>
       {items.map((item) => (
-        <div key={`${item.category}-${item.title}`} className="accolade-item">
-          <span className="accolade-year">{item.year ?? item.date}</span>
-          <div className="accolade-content">
-            <span className="accolade-title">{item.title}</span>
-            {item.detail && <span className="accolade-detail">{item.detail}</span>}
-          </div>
-        </div>
+        <EditorialRow
+          key={`${item.category}-${item.title}`}
+          title={item.title}
+          meta={formatHighlightMeta(item)}
+          compact
+        />
       ))}
-    </div>
+    </EditorialList>
   );
 }
 
 export function HighlightGroups({ groups }: HighlightGroupsProps) {
-  const items = groups.flatMap((group) => group.items);
-  return <HighlightList items={items} />;
+  return (
+    <EditorialChapter>
+      <EditorialChapterHeader>Distinctions</EditorialChapterHeader>
+      <HighlightList items={groups.flatMap((group) => group.items)} />
+    </EditorialChapter>
+  );
 }
 
 export function ProgramHighlights({ intro, items }: ProgramHighlightsProps) {
   return (
-    <div className="programs-section">
-      <p className="programs-intro">
+    <EditorialChapter>
+      <EditorialChapterHeader>Selected Programs</EditorialChapterHeader>
+      <p className="programs-intro editorial-intro">
         <RichText text={intro} />
       </p>
-      <div className="programs-list">
+      <EditorialList>
         {items.map((program) => (
-          <div key={program.title} className="program-item">
-            <span className="program-marker">✦</span>
-            <span className="program-name">{program.title}</span>
-          </div>
+          <EditorialRow
+            key={program.title}
+            title={program.title}
+            meta={[program.location, program.year].filter(Boolean).join(" · ")}
+            compact
+          />
         ))}
-      </div>
-    </div>
+      </EditorialList>
+    </EditorialChapter>
   );
 }
 
 export function MusicHighlights({ intro, items }: MusicHighlightsProps) {
   return (
-    <>
-      <p className="body-text piano-intro">{intro}</p>
-      <div className="piano-list">
+    <EditorialChapter>
+      <EditorialChapterHeader>OFF THE KEYS</EditorialChapterHeader>
+      <p className="body-text piano-intro editorial-intro">{intro}</p>
+      <EditorialList>
         {items.map((item) => (
-          <div key={item.title} className="piano-item">
-            <span className="piano-title">{item.title}</span>
-            {item.detail && <span className="piano-context">— {item.detail}</span>}
-          </div>
+          <EditorialRow
+            key={item.title}
+            title={item.title}
+            meta={item.detail}
+            compact
+          />
         ))}
-      </div>
-    </>
+      </EditorialList>
+    </EditorialChapter>
   );
 }
