@@ -79,6 +79,11 @@ const components: MDXComponents = {
       <img {...props} alt={props.alt ?? ""} className="writing-image" />
     </span>
   ),
+  table: ({ children, ...props }) => (
+    <div className="writing-table-wrap">
+      <table {...props}>{children}</table>
+    </div>
+  ),
 };
 
 export function useMDXComponents(provided: MDXComponents): MDXComponents {

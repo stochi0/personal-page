@@ -1440,21 +1440,29 @@ section[id] {
   white-space: nowrap;
 }
 
-.writing-article table {
-  display: block;
-  width: 100% !important;
-  max-width: 100%;
-  margin: 1.25rem 0 1.5rem !important;
+.writing-table-wrap {
   overflow-x: auto;
-  border-collapse: separate !important;
-  border-spacing: 0;
+  margin: 1.25rem 0 1.5rem;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   background: color-mix(in srgb, var(--bg-secondary) 56%, transparent);
-  font-size: 0.82rem !important;
-  line-height: 1.5;
   scrollbar-width: thin;
   scrollbar-color: var(--border-hover) transparent;
+}
+
+.writing-article table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.82rem !important;
+  line-height: 1.5;
+  table-layout: auto;
 }
 
 .writing-article thead {
@@ -1473,6 +1481,11 @@ section[id] {
   color: var(--text-primary);
   font-weight: var(--emphasis-weight);
   text-align: left;
+}
+
+.writing-article th[align="right"],
+.writing-article td[align="right"] {
+  text-align: right;
 }
 
 .writing-article tbody tr:last-child td {
