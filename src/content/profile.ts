@@ -10,7 +10,7 @@ export const profile = {
   /** Used for page metadata / OG / Twitter (from bio) */
   metaDescription:
     "I like Post-Training, Agents, RL, ModelArchitectures and ML Systems.",
-  bio: ["Towards {Autonomy}. {Self-Improvement}. {Open-Ended Discovery}."],
+  bio: ["Towards {Autonomy}. {Self-Evolution}. {Open-Ended Discovery}."],
   heroQuotes: [
     `胜则生，败则死。
 不战，何来胜利？
