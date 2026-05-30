@@ -3,7 +3,6 @@ import {
   EditorialChapter,
   EditorialChapterHeader,
   EditorialList,
-  EditorialRow,
 } from "./EditorialList";
 import { RichText } from "./RichText";
 
@@ -27,15 +26,18 @@ function formatHighlightMeta(item: HighlightItem) {
 
 function HighlightList({ items }: { items: readonly HighlightItem[] }) {
   return (
-    <EditorialList>
-      {items.map((item) => (
-        <EditorialRow
-          key={`${item.category}-${item.title}`}
-          title={item.title}
-          meta={formatHighlightMeta(item)}
-          compact
-        />
-      ))}
+    <EditorialList className="highlight-point-list">
+      {items.map((item) => {
+        const meta = formatHighlightMeta(item);
+
+        return (
+          <div key={`${item.category}-${item.title}`} className="highlight-point-row">
+            <span className="highlight-point-marker">✦</span>
+            <span className="highlight-point-title">{item.title}</span>
+            {meta && <span className="highlight-point-detail">— {meta}</span>}
+          </div>
+        );
+      })}
     </EditorialList>
   );
 }
@@ -55,16 +57,16 @@ export function HighlightGroups({ groups }: HighlightGroupsProps) {
 
 export function ProgramHighlights({ intro, items }: ProgramHighlightsProps) {
   return (
-    <EditorialChapter className="selected-programs-chapter">
-      <EditorialChapterHeader>Selected Programs</EditorialChapterHeader>
-      <p className="programs-intro selected-programs-intro">
+    <EditorialChapter className="programs-chapter">
+      <EditorialChapterHeader>Programs</EditorialChapterHeader>
+      <p className="programs-intro programs-summary">
         <RichText text={intro} />
       </p>
-      <div className="selected-program-list">
+      <div className="programs-list">
         {items.map((program) => (
-          <div key={program.title} className="selected-program-row">
-            <span className="selected-program-marker">✦</span>
-            <span className="selected-program-title">{program.title}</span>
+          <div key={program.title} className="programs-row">
+            <span className="highlight-point-marker">✦</span>
+            <span className="highlight-point-title">{program.title}</span>
           </div>
         ))}
       </div>
@@ -77,12 +79,13 @@ export function MusicHighlights({ intro, items }: MusicHighlightsProps) {
     <EditorialChapter>
       <EditorialChapterHeader>OFF THE KEYS</EditorialChapterHeader>
       <p className="body-text piano-intro editorial-intro">{intro}</p>
-      <div className="selected-music-list">
+      <div className="music-point-list">
         {items.map((item) => (
-          <div key={item.title} className="selected-music-row">
-            <span className="selected-music-title">{item.title}</span>
+          <div key={item.title} className="music-point-row">
+            <span className="highlight-point-marker">✦</span>
+            <span className="highlight-point-title">{item.title}</span>
             {item.detail && (
-              <span className="selected-music-detail">— {item.detail}</span>
+              <span className="highlight-point-detail">— {item.detail}</span>
             )}
           </div>
         ))}
