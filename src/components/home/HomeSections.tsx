@@ -33,12 +33,13 @@ export function HeroSection() {
 export function NowSection() {
   return (
     <Section id="now">
-      <p className="body-text">
-        <RichText text={now.interests} />
-      </p>
-      <p className="body-text body-text-spaced">
-        <RichText text={now.current} variant="bold" />
-      </p>
+      <div className="home-text-block">
+        {now.copy.map((paragraph) => (
+          <p key={paragraph} className="body-text">
+            <RichText text={paragraph} />
+          </p>
+        ))}
+      </div>
     </Section>
   );
 }

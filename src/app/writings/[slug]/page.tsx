@@ -32,7 +32,7 @@ export default async function WritingPage({ params }: Props) {
 
   return (
     <PageShell>
-      <header className="section">
+      <header className="section writing-post-header">
         <Link href="/writings" className="back-link">
           ← Writings
         </Link>
@@ -42,7 +42,7 @@ export default async function WritingPage({ params }: Props) {
           </time>
         )}
       </header>
-      
+
       <article className="writing-article">
         <Content />
       </article>

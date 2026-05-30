@@ -333,7 +333,7 @@ html.light .nav-scrolled {
    ======================================== */
 
 .body-text {
-  font-size: 1.05rem;
+  font-size: 1.07rem;
   color: var(--text-secondary);
   line-height: 1.8;
 }
@@ -341,6 +341,16 @@ html.light .nav-scrolled {
 .body-text strong {
   color: var(--text-primary);
   font-weight: var(--emphasis-weight);
+}
+
+.home-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.home-text-block .body-text {
+  margin: 0;
 }
 
 /* ========================================
@@ -829,27 +839,6 @@ html.light .craft-card-featured {
   color: var(--text-muted);
 }
 
-/* Item lists (for projects page etc) */
-.item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.item-list li {
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-/* Writing entries use .writing-entry-link for their border; avoid double line */
-.item-list li:has(.writing-entry-link) {
-  border-bottom: none;
-}
-
-.item-list li:last-child {
-  border-bottom: none;
-}
-
 .item-title {
   font-size: 1.1rem;
   color: var(--text-primary);
@@ -1217,44 +1206,50 @@ section[id] {
 
 .writing-title {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 2rem;
+  font-size: 2.35rem;
   font-weight: var(--title-weight);
   letter-spacing: 0;
   line-height: 1.25;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin: 0 0 1.35rem;
 }
 
 .writing-heading {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 1.1rem;
+  font-size: 1.02rem;
   font-weight: var(--title-weight);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
+  color: var(--accent);
+  margin: 2.8rem 0 1.15rem;
 }
 
 .writing-heading:first-of-type {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+}
+
+.writing-heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-hover);
 }
 
 .writing-subheading {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   font-weight: var(--title-weight);
   color: var(--text-primary);
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  margin: 2rem 0 0.7rem;
 }
 
 .writing-body {
   line-height: inherit;
   color: inherit;
-  margin-bottom: 1.25rem;
+  margin: 0 0 1.15rem;
 }
 
 .writing-body:last-child {
@@ -1269,7 +1264,7 @@ section[id] {
 .writing-list {
   list-style: disc;
   padding-left: 1.35rem;
-  margin: 1rem 0 1.5rem;
+  margin: 1rem 0 1.45rem;
 }
 
 .writing-list-ordered {
@@ -1280,7 +1275,7 @@ section[id] {
 .writing-list-item {
   line-height: inherit;
   color: inherit;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.5rem;
   padding-left: 0.35rem;
 }
 
@@ -1297,10 +1292,10 @@ section[id] {
 }
 
 .writing-blockquote {
-  margin: 1.5rem 0;
-  padding: 0.75rem 0 0.75rem 1.25rem;
+  margin: 1.65rem 0;
+  padding: 0.85rem 0 0.85rem 1.25rem;
   border-left: 2px solid var(--accent);
-  color: inherit;
+  color: var(--text-secondary);
   font-style: italic;
   line-height: inherit;
 }
@@ -1340,9 +1335,9 @@ section[id] {
 
 .writing-disclosure-summary span {
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-weight: var(--title-weight);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   line-height: 1.35;
   text-transform: uppercase;
 }
@@ -1526,7 +1521,7 @@ section[id] {
 
 .writing-image-wrap {
   display: block;
-  margin: 1.5rem 0;
+  margin: 1.65rem 0;
 }
 
 .writing-image {
@@ -1537,64 +1532,33 @@ section[id] {
 }
 
 .writing-article {
-  margin-bottom: 2rem;
-  font-size: 1.05rem;
-  line-height: 1.8;
+  margin-bottom: 2.4rem;
+  font-size: 1.07rem;
+  line-height: 1.82;
   color: var(--text-secondary);
 }
 
 .writing-post-date {
   display: block;
-  margin-top: 0.75rem;
+  margin-top: 0.85rem;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--text-muted);
 }
 
-/* Writings index list entries */
-.writing-entry-link {
-  display: block;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--border-color);
+.writing-post-header {
+  margin-bottom: 2.25rem;
+}
+
+.writing-title-link {
+  color: inherit;
   text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.writing-entry-link:hover {
-  padding-left: 0.5rem;
-  border-color: var(--accent);
-}
-
-.writing-entry-title {
-  display: block;
-  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 1.15rem;
-  font-weight: var(--title-weight);
-  color: var(--text-primary);
-  margin-bottom: 0.35rem;
   transition: color 0.2s ease;
 }
 
-.writing-entry-link:hover .writing-entry-title {
+.writing-title-link:hover {
   color: var(--accent);
-}
-
-.writing-entry-desc {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  font-style: italic;
-  line-height: 1.5;
-  margin-bottom: 0.25rem;
-}
-
-.writing-entry-date {
-  display: block;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
 }
 
 /* ========================================

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { WritingMeta } from "@/content";
 import { formatDisplayDate } from "@/lib/dates";
+import { EditorialList, EditorialRow } from "./EditorialList";
 
 type WritingListProps = {
   writings: readonly { slug: string; metadata: WritingMeta }[];
@@ -12,24 +13,23 @@ export function WritingList({ writings }: WritingListProps) {
   }
 
   return (
-    <ul className="item-list">
+    <EditorialList>
       {writings.map(({ slug, metadata }) => {
         const dateFormatted = formatDisplayDate(metadata.date);
 
         return (
-          <li key={slug}>
-            <Link href={`/writings/${slug}`} className="content-link writing-entry-link">
-              <span className="writing-entry-title">{metadata.title}</span>
-              {metadata.description && (
-                <span className="writing-entry-desc">{metadata.description}</span>
-              )}
-              {dateFormatted && (
-                <span className="writing-entry-date">{dateFormatted}</span>
-              )}
-            </Link>
-          </li>
+          <EditorialRow
+            key={slug}
+            title={
+              <Link href={`/writings/${slug}`} className="content-link writing-title-link">
+                {metadata.title}
+              </Link>
+            }
+            meta={dateFormatted}
+            summary={metadata.description}
+          />
         );
       })}
-    </ul>
+    </EditorialList>
   );
 }
