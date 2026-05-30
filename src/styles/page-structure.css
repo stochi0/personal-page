@@ -21,8 +21,8 @@
 .home-sections {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding-top: 4rem;
+  gap: 4.4rem;
+  padding-top: 4.4rem;
 }
 
 .home-sections > .section {
@@ -34,7 +34,7 @@
 }
 
 .home-sections + .star {
-  margin: 4rem 0;
+  margin: 4.6rem 0;
 }
 
 .home-hero-section .page-title {
@@ -67,7 +67,7 @@
 }
 
 .piano-intro {
-  margin-bottom: 2.2rem;
+  margin-bottom: 1.45rem;
   font-style: italic;
   text-align: left;
 }
@@ -134,24 +134,24 @@
    ======================================== */
 
 .editorial-chapter + .editorial-chapter {
-  margin-top: 3rem;
-  padding-top: 0.25rem;
+  margin-top: 3.25rem;
+  padding-top: 0.15rem;
 }
 
 .editorial-chapter-header {
   display: flex;
   align-items: center;
-  gap: 1.15rem;
-  margin-bottom: 1.2rem;
+  gap: 1.2rem;
+  margin-bottom: 1.35rem;
 }
 
 .editorial-chapter-label {
   flex: 0 0 auto;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--text-secondary);
+  letter-spacing: 0.22em;
+  color: var(--accent);
 }
 
 .editorial-chapter-rule {
@@ -172,16 +172,19 @@
 }
 
 .editorial-row {
-  padding: 1.15rem 0;
+  padding: 1.28rem 0;
   border-bottom: 1px solid var(--border-color);
-  transition: border-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    padding-left 0.2s ease;
 }
 
 .editorial-row-compact {
-  padding: 0.86rem 0;
+  padding: 0.94rem 0;
 }
 
 .editorial-row:hover {
+  padding-left: 0.35rem;
   border-color: var(--accent);
 }
 
@@ -205,7 +208,7 @@
 .editorial-title {
   min-width: 0;
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 1.2rem;
+  font-size: 1.22rem;
   font-weight: var(--title-weight);
   line-height: 1.35;
   color: var(--text-primary);
@@ -253,19 +256,19 @@
 }
 
 .editorial-summary {
-  margin: 0.55rem 0 0;
+  margin: 0.58rem 0 0;
   color: var(--text-secondary);
-  font-size: 0.94rem;
-  line-height: 1.65;
+  font-size: 0.95rem;
+  line-height: 1.68;
 }
 
 .editorial-details {
-  margin: 0.7rem 0 0;
+  margin: 0.74rem 0 0;
   padding-left: 1.05rem;
   list-style: disc;
   color: var(--text-secondary);
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.68;
 }
 
 .editorial-details li {
@@ -286,13 +289,13 @@
    ======================================== */
 
 .selected-programs-chapter {
-  margin-top: 3.4rem;
+  margin-top: 3.25rem;
 }
 
 .selected-programs-intro {
-  margin: -0.35rem 0 1.65rem;
+  margin: -0.45rem 0 1.35rem;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -301,16 +304,6 @@
 .selected-programs-intro strong {
   color: var(--accent);
   font-weight: var(--emphasis-weight);
-}
-
-#highlights .editorial-row {
-  transition:
-    border-color 0.2s ease,
-    padding-left 0.2s ease;
-}
-
-#highlights .editorial-row:hover {
-  padding-left: 0.5rem;
 }
 
 .selected-program-list,
@@ -331,18 +324,18 @@
 }
 
 .selected-program-row {
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: 0.86rem;
+  padding: 0.94rem 0;
 }
 
 .selected-music-row {
   gap: 0.65rem;
-  padding: 1.05rem 0;
+  padding: 0.94rem 0;
 }
 
 .selected-program-row:hover,
 .selected-music-row:hover {
-  padding-left: 0.5rem;
+  padding-left: 0.35rem;
   border-color: var(--accent);
 }
 
@@ -359,7 +352,7 @@
   min-width: 0;
   color: var(--text-primary);
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-size: 1.28rem;
+  font-size: 1.12rem;
   font-weight: var(--title-weight);
   line-height: 1.35;
   transition: color 0.2s ease;
@@ -374,14 +367,23 @@
 .selected-music-detail {
   min-width: 0;
   color: var(--text-muted);
-  font-size: 1.02rem;
+  font-size: 0.92rem;
   font-style: italic;
   line-height: 1.45;
 }
 
 @media (max-width: 600px) {
+  .home-sections {
+    gap: 3.6rem;
+    padding-top: 3.6rem;
+  }
+
+  .home-sections + .star {
+    margin: 3.7rem 0;
+  }
+
   .editorial-chapter + .editorial-chapter {
-    margin-top: 2.55rem;
+    margin-top: 2.45rem;
   }
 
   .editorial-chapter-header {
@@ -391,8 +393,16 @@
   }
 
   .editorial-chapter-label {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     line-height: 1.2;
+  }
+
+  .editorial-row {
+    padding: 1.08rem 0;
+  }
+
+  .editorial-row-compact {
+    padding: 0.86rem 0;
   }
 
   .editorial-chapter-rule {
@@ -415,7 +425,7 @@
     display: none;
   }
 
-  #highlights .editorial-row:hover {
+  .editorial-row:hover {
     padding-left: 0;
   }
 
@@ -436,10 +446,10 @@
 
   .selected-program-title,
   .selected-music-title {
-    font-size: 1.18rem;
+    font-size: 1.08rem;
   }
 
   .selected-music-detail {
-    font-size: 0.98rem;
+    font-size: 0.9rem;
   }
 }
