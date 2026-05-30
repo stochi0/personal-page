@@ -2,8 +2,7 @@ import { plainTextFromRichText } from "@/lib/plain-text";
 
 export const now = {
   copy: [
-    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}.",
-    "In a different vein, I traveled solo through 11 cities in China, Macau, Hong Kong, and Vietnam. Oh, and I love hotpot.",
+    "I like {Post-Training}, {Agents}, {RL}, {Model Architectures} and {ML Systems}. In a different vein, I traveled solo through 11 cities in China, Macau, Hong Kong, and Vietnam. Oh, and I love hotpot."
   ],
 } as const;
 
