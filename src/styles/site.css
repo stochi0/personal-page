@@ -876,12 +876,30 @@ html.light .craft-card-featured {
 
 /* Section titles for other pages */
 .section-title {
-  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 2.35rem;
   font-weight: 400;
+}
+
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-hover);
+}
+
+.centered-section .section-title {
+  justify-content: center;
+}
+
+.centered-section .section-title::after {
+  display: none;
 }
 
 /* Tagline */

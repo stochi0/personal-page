@@ -42,16 +42,21 @@ function HighlightList({ items }: { items: readonly HighlightItem[] }) {
 
 export function HighlightGroups({ groups }: HighlightGroupsProps) {
   return (
-    <EditorialChapter>
-      <EditorialChapterHeader>Distinctions</EditorialChapterHeader>
-      <HighlightList items={groups.flatMap((group) => group.items)} />
-    </EditorialChapter>
+    <>
+      {groups.map((group) => (
+        <EditorialChapter key={group.category}>
+          <EditorialChapterHeader>{group.title}</EditorialChapterHeader>
+          <HighlightList items={group.items} />
+        </EditorialChapter>
+      ))}
+    </>
   );
 }
 
 export function ProgramHighlights({ intro, items }: ProgramHighlightsProps) {
   return (
     <EditorialChapter className="selected-programs-chapter">
+      <EditorialChapterHeader>Selected Programs</EditorialChapterHeader>
       <p className="programs-intro selected-programs-intro">
         <RichText text={intro} />
       </p>
