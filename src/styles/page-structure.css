@@ -318,15 +318,20 @@
    ======================================== */
 
 .experience-timeline {
+  --timeline-gutter: 1.55rem;
+  --timeline-line-x: 0.23rem;
+  --timeline-marker-size: 0.58rem;
+  --timeline-marker-top: 1.82rem;
+
   position: relative;
-  padding-left: 1.55rem;
+  padding-left: var(--timeline-gutter);
 }
 
 .experience-timeline::before {
   content: "";
   position: absolute;
-  left: 0.23rem;
-  top: 2.12rem;
+  left: var(--timeline-line-x);
+  top: calc(var(--timeline-marker-top) + (var(--timeline-marker-size) / 2));
   bottom: 1.4rem;
   width: 1px;
   background: linear-gradient(to bottom, var(--accent), var(--border-color));
@@ -338,11 +343,15 @@
 
 .experience-timeline-marker {
   position: absolute;
-  left: -1.55rem;
-  top: 1.82rem;
+  left: calc(
+    var(--timeline-line-x) - var(--timeline-gutter) -
+      (var(--timeline-marker-size) / 2)
+  );
+  top: var(--timeline-marker-top);
   z-index: 1;
-  width: 0.58rem;
-  height: 0.58rem;
+  box-sizing: border-box;
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
   border: 2px solid var(--accent);
   border-radius: 999px;
   background: var(--bg-primary);
@@ -561,17 +570,13 @@
   }
 
   .experience-timeline {
-    padding-left: 1rem;
-  }
-
-  .experience-timeline::before {
-    left: 0.12rem;
-    top: 1.88rem;
+    --timeline-gutter: 1rem;
+    --timeline-line-x: 0.12rem;
+    --timeline-marker-size: 0.58rem;
+    --timeline-marker-top: 1.56rem;
   }
 
   .experience-timeline-marker {
-    left: -1rem;
-    top: 1.56rem;
     box-shadow: 0 0 0 4px var(--bg-primary);
   }
 
@@ -632,17 +637,13 @@
 
 @media (max-width: 340px) {
   .experience-timeline {
-    padding-left: 0.82rem;
-  }
-
-  .experience-timeline::before {
-    left: 0.08rem;
+    --timeline-gutter: 0.82rem;
+    --timeline-line-x: 0.08rem;
+    --timeline-marker-size: 0.52rem;
   }
 
   .experience-timeline-marker {
-    left: -0.86rem;
-    width: 0.52rem;
-    height: 0.52rem;
+    box-shadow: 0 0 0 3px var(--bg-primary);
   }
 
   .experience-timeline .editorial-row,
