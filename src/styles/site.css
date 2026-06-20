@@ -41,7 +41,7 @@ html.light ::selection {
 }
 
 html {
-  min-width: 360px;
+  min-width: 320px;
   scroll-behavior: smooth;
   background-color: var(--bg-primary);
   transition: background-color 0.4s ease;
@@ -61,6 +61,11 @@ body {
   transition:
     background-color 0.4s ease,
     color 0.3s ease;
+}
+
+body,
+.main-container {
+  overflow-x: clip;
 }
 
 /* ========================================
@@ -860,6 +865,7 @@ html.light .craft-card-featured {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s ease;
+  overflow-wrap: anywhere;
 }
 
 .content-link:hover {
@@ -1088,6 +1094,30 @@ html.light .craft-card-featured {
 }
 
 @media (max-width: 600px) {
+  .section {
+    margin-bottom: 3.6rem;
+  }
+
+  .page-title {
+    font-size: 2.38rem;
+    line-height: 1.08;
+  }
+
+  .home-hero-section .page-title {
+    font-size: 2.72rem;
+  }
+
+  .tagline,
+  .home-hero-section .tagline {
+    font-size: 1.06rem;
+    line-height: 1.6;
+  }
+
+  .body-text {
+    font-size: 1rem;
+    line-height: 1.76;
+  }
+
   .explore-link {
     align-items: flex-start;
     flex-direction: column;
@@ -1111,6 +1141,7 @@ html.light .craft-card-featured {
     gap: 0.8rem;
     font-size: 0.82rem;
     margin-bottom: 1.75rem;
+    line-height: 1.25;
   }
 
   .accolade-item {
@@ -1130,10 +1161,42 @@ html.light .craft-card-featured {
     padding: 0.75rem 0;
   }
 
+  .program-item:hover,
+  .accolade-item:hover,
+  .piano-item:hover {
+    padding-left: 0;
+  }
+
   .piano-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
+  }
+
+  .social-links {
+    row-gap: 0.55rem;
+    column-gap: 0.9rem;
+  }
+
+  .social-link-group {
+    gap: 0;
+  }
+
+  .social-divider {
+    display: none;
+  }
+
+  .footer {
+    margin-top: 2.2rem;
+    padding: 2.35rem 0 1.6rem;
+  }
+
+  .hero-quotes {
+    gap: 1rem;
+  }
+
+  .hero-quote {
+    padding-left: 0.75rem;
   }
 }
 
@@ -1223,8 +1286,63 @@ section[id] {
 }
 
 @media (max-width: 480px) {
+  .nav-container {
+    padding: 14px 14px;
+  }
+
+  .nav-scrolled {
+    padding: 11px 14px;
+  }
+
+  .nav-links {
+    gap: 0.8rem;
+  }
+
+  .nav-right {
+    gap: 0.7rem;
+  }
+
+  .nav-link {
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+  }
+
+  .main-container {
+    padding: 92px 16px 52px;
+  }
+
   .craft-card {
     padding: 1.25rem 1.5rem;
+  }
+
+  .section-title {
+    gap: 0.65rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav-container {
+    padding-inline: 12px;
+  }
+
+  .nav-links {
+    gap: 0.58rem;
+  }
+
+  .nav-link {
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-theme-toggle {
+    width: 26px;
+    height: 26px;
+  }
+
+  .main-container {
+    padding-inline: 14px;
   }
 }
 
@@ -1587,6 +1705,67 @@ section[id] {
 
 .writing-title-link:hover {
   color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .writing-title {
+    font-size: 1.92rem;
+    line-height: 1.18;
+    margin-bottom: 1.05rem;
+  }
+
+  .writing-heading {
+    gap: 0.8rem;
+    font-size: 0.88rem;
+    letter-spacing: 0.14em;
+    margin: 2.25rem 0 0.95rem;
+  }
+
+  .writing-subheading {
+    font-size: 1.16rem;
+    margin-top: 1.65rem;
+  }
+
+  .writing-article {
+    font-size: 1rem;
+    line-height: 1.76;
+    margin-bottom: 2rem;
+  }
+
+  .writing-list,
+  .writing-list-ordered {
+    padding-left: 1.2rem;
+  }
+
+  .writing-list-item {
+    padding-left: 0.2rem;
+  }
+
+  .writing-blockquote {
+    margin: 1.35rem 0;
+    padding-left: 1rem;
+  }
+
+  .writing-pre {
+    margin: 1rem 0 1.25rem;
+    padding: 0.85rem 0.9rem;
+    font-size: 0.72rem;
+  }
+
+  .writing-table-wrap,
+  .writing-math-block {
+    margin-inline: -0.1rem;
+  }
+
+  .writing-disclosure-summary {
+    align-items: flex-start;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .writing-disclosure-summary span {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+  }
 }
 
 /* ========================================

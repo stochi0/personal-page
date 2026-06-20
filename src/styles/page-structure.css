@@ -214,6 +214,7 @@
   color: var(--text-primary);
   margin: 0;
   transition: color 0.2s ease;
+  overflow-wrap: anywhere;
 }
 
 .editorial-row-compact .editorial-title {
@@ -231,6 +232,7 @@
   line-height: 1.5;
   color: var(--text-muted);
   font-style: italic;
+  overflow-wrap: anywhere;
 }
 
 .editorial-meta-divider {
@@ -260,6 +262,7 @@
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .editorial-details {
@@ -269,6 +272,7 @@
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .editorial-details li {
@@ -322,7 +326,7 @@
   content: "";
   position: absolute;
   left: 0.23rem;
-  top: 1.4rem;
+  top: 2.12rem;
   bottom: 1.4rem;
   width: 1px;
   background: linear-gradient(to bottom, var(--accent), var(--border-color));
@@ -424,6 +428,7 @@
   font-weight: var(--title-weight);
   line-height: 1.35;
   transition: color 0.2s ease;
+  overflow-wrap: anywhere;
 }
 
 .highlight-point-row:hover .highlight-point-marker,
@@ -441,16 +446,33 @@
   font-size: 0.92rem;
   font-style: italic;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 600px) {
+  .page-title-section {
+    margin-bottom: 0.85rem;
+  }
+
+  .page-tagline {
+    margin-top: 0.85rem;
+  }
+
   .home-sections {
-    gap: 3.6rem;
-    padding-top: 3.6rem;
+    gap: 3.1rem;
+    padding-top: 3.1rem;
   }
 
   .home-sections + .star {
-    margin: 3.7rem 0;
+    margin: 3.25rem 0;
+  }
+
+  .hero-bio-primary {
+    margin-top: 1.2rem;
+  }
+
+  .hero-bio {
+    margin-top: 0.82rem;
   }
 
   .editorial-chapter + .editorial-chapter {
@@ -466,6 +488,7 @@
   .editorial-chapter-label {
     font-size: 0.8rem;
     line-height: 1.2;
+    letter-spacing: 0.18em;
   }
 
   .editorial-row {
@@ -483,7 +506,7 @@
   .editorial-title-line {
     align-items: flex-start;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
   }
 
   .editorial-meta-line {
@@ -500,28 +523,72 @@
     padding-left: 0;
   }
 
+  .editorial-title {
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+
+  .editorial-row-compact .editorial-title {
+    font-size: 1.06rem;
+  }
+
+  .editorial-action-wrap {
+    white-space: normal;
+  }
+
+  .editorial-meta {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .editorial-summary,
+  .editorial-details {
+    font-size: 0.92rem;
+    line-height: 1.62;
+  }
+
+  .editorial-details {
+    padding-left: 0.95rem;
+  }
+
+  .editorial-projects {
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .editorial-project + .editorial-project {
+    padding-top: 1rem;
+  }
+
   .experience-timeline {
-    padding-left: 1.25rem;
+    padding-left: 1rem;
   }
 
   .experience-timeline::before {
-    left: 0.17rem;
+    left: 0.12rem;
+    top: 1.88rem;
   }
 
   .experience-timeline-marker {
-    left: -1.25rem;
-    top: 1.58rem;
+    left: -1rem;
+    top: 1.56rem;
+    box-shadow: 0 0 0 4px var(--bg-primary);
   }
 
   .experience-timeline .editorial-row,
   .experience-timeline .editorial-row:hover {
-    padding-left: 0.15rem;
+    padding-left: 0.12rem;
   }
 
   .highlight-point-row,
   .programs-row,
   .music-point-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: flex-start;
+    column-gap: 0.7rem;
+    row-gap: 0.16rem;
+    padding: 0.88rem 0;
   }
 
   .highlight-point-row:hover,
@@ -530,11 +597,56 @@
     padding-left: 0;
   }
 
+  .highlight-point-marker {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0.45rem;
+  }
+
   .highlight-point-title {
+    grid-column: 2;
     font-size: 1.08rem;
   }
 
   .highlight-point-detail {
+    grid-column: 2;
     font-size: 0.9rem;
+    line-height: 1.42;
+  }
+
+  .programs-chapter {
+    margin-top: 2.45rem;
+  }
+
+  .programs-summary {
+    margin: -0.2rem 0 1.05rem;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    letter-spacing: 0.16em;
+  }
+
+  .piano-intro {
+    margin-bottom: 1.2rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .experience-timeline {
+    padding-left: 0.82rem;
+  }
+
+  .experience-timeline::before {
+    left: 0.08rem;
+  }
+
+  .experience-timeline-marker {
+    left: -0.86rem;
+    width: 0.52rem;
+    height: 0.52rem;
+  }
+
+  .experience-timeline .editorial-row,
+  .experience-timeline .editorial-row:hover {
+    padding-left: 0.08rem;
   }
 }
