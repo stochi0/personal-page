@@ -353,22 +353,6 @@
   padding-left: 0.7rem;
 }
 
-.experience-category {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--border-hover);
-  border-radius: 999px;
-  padding: 0.16rem 0.5rem;
-  color: var(--accent);
-  font-size: 0.68rem;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  line-height: 1.25;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
 /* ========================================
    HOME HIGHLIGHT POINTS
    ======================================== */
@@ -532,10 +516,6 @@
   .experience-timeline .editorial-row,
   .experience-timeline .editorial-row:hover {
     padding-left: 0.15rem;
-  }
-
-  .experience-category {
-    margin-top: 0.08rem;
   }
 
   .highlight-point-row,
