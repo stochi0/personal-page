@@ -4,7 +4,7 @@ import {
   exploreLinks,
   highlightGroups,
   musicHighlights,
-  now,
+  nowSection,
   profile,
   programHighlights,
   socialLinks,
@@ -34,7 +34,7 @@ export function NowSection() {
   return (
     <Section id="now">
       <div className="home-text-block">
-        {now.copy.map((paragraph) => (
+        {nowSection.paragraphs.map((paragraph) => (
           <p key={paragraph} className="body-text">
             <RichText text={paragraph} />
           </p>
