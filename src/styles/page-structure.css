@@ -310,6 +310,66 @@
 }
 
 /* ========================================
+   EXPERIENCE TIMELINE
+   ======================================== */
+
+.experience-timeline {
+  position: relative;
+  padding-left: 1.55rem;
+}
+
+.experience-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.23rem;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--border-color));
+}
+
+.experience-timeline-item {
+  position: relative;
+}
+
+.experience-timeline-marker {
+  position: absolute;
+  left: -1.55rem;
+  top: 1.82rem;
+  z-index: 1;
+  width: 0.58rem;
+  height: 0.58rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 5px var(--bg-primary);
+}
+
+.experience-timeline .editorial-row {
+  padding-left: 0.35rem;
+}
+
+.experience-timeline .editorial-row:hover {
+  padding-left: 0.7rem;
+}
+
+.experience-category {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-hover);
+  border-radius: 999px;
+  padding: 0.16rem 0.5rem;
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ========================================
    HOME HIGHLIGHT POINTS
    ======================================== */
 
@@ -454,6 +514,28 @@
 
   .editorial-row:hover {
     padding-left: 0;
+  }
+
+  .experience-timeline {
+    padding-left: 1.25rem;
+  }
+
+  .experience-timeline::before {
+    left: 0.17rem;
+  }
+
+  .experience-timeline-marker {
+    left: -1.25rem;
+    top: 1.58rem;
+  }
+
+  .experience-timeline .editorial-row,
+  .experience-timeline .editorial-row:hover {
+    padding-left: 0.15rem;
+  }
+
+  .experience-category {
+    margin-top: 0.08rem;
   }
 
   .highlight-point-row,
