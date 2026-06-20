@@ -65,12 +65,18 @@ export type HighlightGroup = {
   items: HighlightItem[];
 };
 
+export type WorkProject = {
+  title: string;
+  description: string[];
+};
+
 export type WorkItem = {
   title: string;
   company: string;
   location?: string;
   date: string;
   description: string[];
+  projects?: WorkProject[];
   link?: string;
 };
 

@@ -13,10 +13,22 @@ type ExperienceListProps = {
 
 function ExperienceItem({ item }: { item: WorkItem }) {
   const meta = [item.company, item.location, item.date].filter(Boolean).join(" · ");
+  const hasProjects = item.projects && item.projects.length > 0;
 
   return (
     <EditorialRow title={item.title} meta={meta}>
-      <EditorialDetails items={item.description} />
+      {hasProjects ? (
+        <div className="editorial-projects">
+          {item.projects!.map((project) => (
+            <div key={project.title} className="editorial-project">
+              <h4 className="editorial-project-title">{project.title}</h4>
+              <EditorialDetails items={project.description} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <EditorialDetails items={item.description} />
+      )}
     </EditorialRow>
   );
 }

@@ -1,6 +1,6 @@
 import type { PageMeta, WorkItem, WorkSection } from "./types";
 
-export type { WorkItem, WorkSection } from "./types";
+export type { WorkItem, WorkProject, WorkSection } from "./types";
 
 export const industry: WorkItem[] = [
   {
@@ -47,6 +47,37 @@ export const industry: WorkItem[] = [
 ];
 
 export const research: WorkItem[] = [
+  {
+    title: "RL Residency",
+    company: "Prime Intellect",
+    date: "03/2026–05/2026",
+    description: [],
+    projects: [
+      {
+        title: "Undertow",
+        description: [
+          "Built Undertow, a synthetic PTC benchmark with hidden mutable worlds and dependency graphs.",
+          "Designed hidden_dag and repair_chain task families to test value ledgers, tool sequencing, stale observations, repeated calls, constraint failures, and runtime budgeting.",
+          "Led PTC vs native tool-use evaluations on Prime Intellect infrastructure, using trace analysis and budget calibration to separate true progress from repeated-call loops, stale-state errors, and timeout behavior.",
+        ],
+      },
+      {
+        title: "Sparse Signal Loop",
+        description: [
+          "Designed and ran Sparse Signal Loop, a controlled 2×2 study of chat vs RLM and dense vs sparse judge feedback across LongBench-Pro and Mini SWE Agent Plus.",
+          "Extended with notebook/file persistence and skill-file variants to test how feedback sparsity and memory placement changed refinement behavior.",
+          "Showed that management choices mattered more than heavier harnesses or durable file memory, with judge agreement sometimes diverging from real task success.",
+        ],
+      },
+      {
+        title: "Environments & LongCoT Evals",
+        description: [
+          "Built a broad suite of PTC/RLM benchmark environments under stochi — Factory Sokoban, GraphWalks, ritual-machine, long-context-retrieval, LHAW, LOCA-bench, ProgramBench, and rubric-discovery — with paired baseline and PTC/RLM variants for controlled ablations.",
+          "Implemented LongCoT / LongCoT-RLM environments and ran hosted evaluations showing strong RLM gains on long-horizon reasoning, including Qwen 3.5 9B reaching 15.69% on full LongCoT and Qwen 3.5 27B reaching 22.18%.",
+        ],
+      },
+    ],
+  },
   {
     title: "Research Mentee (independent work)",
     company: "Independent research · Tsinghua University",

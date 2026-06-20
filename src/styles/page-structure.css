@@ -284,6 +284,31 @@
   font-size: 0.65em;
 }
 
+.editorial-projects {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.85rem;
+}
+
+.editorial-project + .editorial-project {
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.editorial-project-title {
+  margin: 0;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+  font-size: 1.02rem;
+  font-weight: var(--title-weight);
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.editorial-project .editorial-details {
+  margin-top: 0.5rem;
+}
+
 /* ========================================
    HOME HIGHLIGHT POINTS
    ======================================== */
