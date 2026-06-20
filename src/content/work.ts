@@ -72,7 +72,7 @@ export const research: WorkItem[] = [
       {
         title: "Environments & LongCoT Evals",
         description: [
-          "Built a broad suite of PTC/RLM benchmark environments under stochi — Factory Sokoban, GraphWalks, ritual-machine, long-context-retrieval, LHAW, LOCA-bench, ProgramBench, and rubric-discovery — with paired baseline and PTC/RLM variants for controlled ablations.",
+          "Built a broad suite of RL environments — Factory Sokoban, GraphWalks, ritual-machine, long-context-retrieval, LHAW, LOCA-bench, ProgramBench, and rubric-discovery — with paired baseline and PTC/standard variants for controlled ablations.",
           "Implemented LongCoT / LongCoT-RLM environments and ran hosted evaluations showing strong RLM gains on long-horizon reasoning, including Qwen 3.5 9B reaching 15.69% on full LongCoT and Qwen 3.5 27B reaching 22.18%.",
         ],
       },
