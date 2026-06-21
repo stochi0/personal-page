@@ -245,6 +245,15 @@ html.light .nav-scrolled {
   font-style: italic;
 }
 
+.highlight-link {
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+}
+
+.highlight-link:hover {
+  text-decoration: underline;
+}
+
 /* ========================================
    SECTIONS
    ======================================== */
