@@ -4,7 +4,7 @@ export const profile = {
   name: "stochi",
   displayName: {
     alias: "stochi",
-    realName: "Ayush",
+    realName: "ayush",
   },
   title: "Stochi",
   bio: ["Towards {Autonomy}. {Self-Evolution}. {Open-Ended Discovery}."],
