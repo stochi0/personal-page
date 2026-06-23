@@ -17,7 +17,13 @@ export function HeroSection() {
   return (
     <header className="section page-title-section home-hero-section">
       <p className="hero-greeting">Hey, I&apos;m</p>
-      <h1 className="page-title">{profile.name}</h1>
+      <h1 className="page-title hero-name">
+        <span>{profile.displayName.alias}</span>
+        <span className="hero-name-divider" aria-hidden="true">
+          /
+        </span>
+        <span>{profile.displayName.realName}</span>
+      </h1>
       {profile.bio.map((paragraph, index) => (
         <p
           key={paragraph}

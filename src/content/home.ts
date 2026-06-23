@@ -15,5 +15,5 @@ export const siteDescription = nowSection.paragraphs
 
 export const connectCopy = {
   heading: "Connect",
-  body: "Always up for interesting conversations. You'll find me on Twitter, or by email.",
+  body: "Always up for interesting conversations. You'll find me on Twitter, LinkedIn, or by email.",
 } as const;

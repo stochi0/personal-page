@@ -6,6 +6,10 @@ export type PageMeta = {
 
 export type Profile = {
   name: string;
+  displayName: {
+    alias: string;
+    realName: string;
+  };
   title: string;
   bio: string[];
   heroQuotes: string[];

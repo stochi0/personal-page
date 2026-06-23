@@ -2,6 +2,10 @@ import type { Profile, SocialLink } from "./types";
 
 export const profile = {
   name: "stochi",
+  displayName: {
+    alias: "stochi",
+    realName: "Ayush",
+  },
   title: "Stochi",
   bio: ["Towards {Autonomy}. {Self-Evolution}. {Open-Ended Discovery}."],
   heroQuotes: [
@@ -27,11 +31,13 @@ Keep moving forward.
 export const social = {
   email: "heystochi@gmail.com",
   twitter: "https://x.com/stochi0",
+  linkedin: "https://www.linkedin.com/in/ayushbodade",
   github: "https://github.com/stochi0",
 };
 
 export const socialLinks = [
   { label: "Email", href: `mailto:${social.email}`, external: false },
   { label: "Twitter", href: social.twitter, external: true },
+  { label: "LinkedIn", href: social.linkedin, external: true },
   { label: "GitHub", href: social.github, external: true },
 ] as const satisfies readonly SocialLink[];

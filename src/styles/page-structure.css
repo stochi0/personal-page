@@ -42,6 +42,21 @@
   line-height: 1;
 }
 
+.hero-name {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.34em;
+  flex-wrap: wrap;
+}
+
+.hero-name-divider {
+  color: var(--accent);
+  font-size: 0.62em;
+  font-style: italic;
+  opacity: 0.68;
+}
+
 .hero-bio-primary {
   margin-top: 1.5rem;
 }
@@ -482,6 +497,10 @@
 
   .hero-bio {
     margin-top: 0.82rem;
+  }
+
+  .hero-name {
+    gap: 0.26em;
   }
 
   .editorial-chapter + .editorial-chapter {
