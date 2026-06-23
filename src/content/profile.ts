@@ -6,7 +6,7 @@ export const profile = {
     alias: "stochi",
     realName: "ayush",
   },
-  title: "Stochi",
+  title: "stochi",
   bio: ["Towards {Autonomy}. {Self-Evolution}. {Open-Ended Discovery}."],
   heroQuotes: [
     `胜则生，败则死。
